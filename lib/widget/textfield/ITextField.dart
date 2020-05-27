@@ -3,8 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hrlweibo/constant/constant.dart';
 
 
-
-
 typedef void ITextFieldCallBack(String content);
 
 enum ITextInputType {
@@ -43,10 +41,11 @@ class ITextField extends StatefulWidget {
     this.inputBorder,
     this.textStyle,
     this.prefixIcon, this.validator,
-  })  : assert(maxLines == null || maxLines > 0),
-        assert(maxLength == null || maxLength > 0),
-        keyboardType = maxLines == 1 ? keyboardType : ITextInputType.multiline,
-        super(key: key);
+  })
+    : assert(maxLines == null || maxLines > 0),
+      assert(maxLength == null || maxLength > 0),
+      keyboardType = maxLines == 1 ? keyboardType : ITextInputType.multiline,
+      super(key: key);
 
   @override
   State<StatefulWidget> createState() => _ITextFieldState();
@@ -86,49 +85,51 @@ class _ITextFieldState extends State<ITextField> {
   ///输入范围
   List<TextInputFormatter> _getTextInputFormatter() {
     return _isNumber
-        ? <TextInputFormatter>[
+      ? <TextInputFormatter>[
       WhitelistingTextInputFormatter.digitsOnly,
     ]
-        : null;
+      : null;
   }
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller = new TextEditingController.fromValue(
-        TextEditingValue(
-            text: _inputText,
-            selection: new TextSelection.fromPosition(TextPosition(
-                affinity: TextAffinity.downstream,
-                offset: _inputText.length))));
-    TextField textField = new TextField(
+    TextEditingController _controller = TextEditingController.fromValue(
+      TextEditingValue(
+        text: _inputText,
+        selection: TextSelection.fromPosition(TextPosition(
+          affinity: TextAffinity.downstream,
+          offset: _inputText.length))));
+    TextField textField = TextField(
       controller: _controller,
 
       decoration: InputDecoration(
         hintStyle: widget.hintStyle,
         counterStyle: TextStyle(color: Colors.white),
         hintText: widget.hintText,
-        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.lightGreenAccent,width: 0.5),borderRadius: BorderRadius.only(
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.lightGreenAccent, width: 0.5), borderRadius: BorderRadius.only(
           topLeft: Radius.circular(1.0),
           topRight: Radius.circular(1.0),
         )),
-        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.yellowAccent,width: 0.5),borderRadius: BorderRadius.only(
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.yellowAccent, width: 0.5), borderRadius: BorderRadius.only(
           topLeft: Radius.circular(1.0),
           topRight: Radius.circular(1.0),
         )),
         fillColor: Colors.transparent,
         filled: true,
-       // prefixIcon: widget.prefixIcon,
+        // prefixIcon: widget.prefixIcon,
         suffixIcon: _hasdeleteIcon
-            ? new Container(
+          ? Container(
           width: 20.0,
           height: 20.0,
-          child: new IconButton(
+          child: IconButton(
             alignment: Alignment.center,
             padding: const EdgeInsets.all(0.0),
             iconSize: 18.0,
             icon: widget.deleteIcon != null
-                ? widget.deleteIcon
-                : Image.asset(
+              ? widget.deleteIcon
+              : Image.asset(
               Constant.ASSETS_IMG + 'icon_close.png',
               width: 20.0,
               height: 20.0,
@@ -142,7 +143,7 @@ class _ITextFieldState extends State<ITextField> {
             },
           ),
         )
-            : new Text(""),
+          : Text(""),
       ),
       onChanged: (str) {
         setState(() {

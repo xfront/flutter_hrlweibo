@@ -9,15 +9,15 @@ class ForwardList {
 
   ForwardList.fromJson(Map<String, dynamic> json) {
     if (json['list'] != null) {
-      list = new List<Forward>();
+      list = List<Forward>();
       json['list'].forEach((v) {
-        list.add(new Forward.fromJson(v));
+        list.add(Forward.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
 
     if (this.list != null) {
       data['list'] = this.list.map((v) => v.toJson()).toList();

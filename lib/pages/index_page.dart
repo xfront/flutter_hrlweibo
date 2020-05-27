@@ -35,16 +35,16 @@ class _IndexPageState extends State<IndexPage> {
    */
   Text getTabTitle(int curIndex) {
     if (curIndex == _tabIndex) {
-      return new Text(appBarTitles[curIndex],
-          style: new TextStyle(fontSize: 13.0, color: Colors.black));
+      return Text(appBarTitles[curIndex],
+        style: TextStyle(fontSize: 13.0, color: Colors.black));
     } else {
-      return new Text(appBarTitles[curIndex],
-          style: new TextStyle(fontSize: 13.0, color: Colors.black));
+      return Text(appBarTitles[curIndex],
+        style: TextStyle(fontSize: 13.0, color: Colors.black));
     }
   }
 
   Image getTabImage(path) {
-    return new Image.asset(path, width: 25.0, height: 25.0);
+    return Image.asset(path, width: 25.0, height: 25.0);
   }
 
   void initData() {
@@ -111,7 +111,7 @@ class _IndexPageState extends State<IndexPage> {
             children: tabBodies,
           ),
         ),
-          onWillPop: ()   {
+        onWillPop: () {
           // 点击返回键的操作
           if (lastPopTime == null || DateTime.now().difference(lastPopTime) > Duration(seconds: 2)) {
             lastPopTime = DateTime.now();
@@ -119,7 +119,7 @@ class _IndexPageState extends State<IndexPage> {
           } else {
             lastPopTime = DateTime.now();
             // 退出app
-              SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+            SystemChannels.platform.invokeMethod('SystemNavigator.pop');
           }
         },
       ),

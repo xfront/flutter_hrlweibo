@@ -8,21 +8,21 @@ class WeiboAtUsers {
 
   WeiboAtUsers.fromJson(Map<String, dynamic> json) {
     if (json['hotusers'] != null) {
-      hotusers = new List<WeiboAtUser>();
+      hotusers = List<WeiboAtUser>();
       json['hotusers'].forEach((v) {
-        hotusers.add(new WeiboAtUser.fromJson(v));
+        hotusers.add(WeiboAtUser.fromJson(v));
       });
     }
     if (json['normalusers'] != null) {
-      normalusers = new List<WeiboAtUser>();
+      normalusers = List<WeiboAtUser>();
       json['normalusers'].forEach((v) {
-        normalusers.add(new WeiboAtUser.fromJson(v));
+        normalusers.add(WeiboAtUser.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.hotusers != null) {
       data['hotusers'] = this.hotusers.map((v) => v.toJson()).toList();
     }
@@ -33,7 +33,7 @@ class WeiboAtUsers {
   }
 }
 
-class WeiboAtUser extends ISuspensionBean{
+class WeiboAtUser extends ISuspensionBean {
   String id;
   String nick;
   String headurl;
@@ -45,14 +45,13 @@ class WeiboAtUser extends ISuspensionBean{
   String tagIndex;
   String namePinyin;
 
-  WeiboAtUser(
-      {this.id,
-        this.nick,
-        this.headurl,
-        this.decs,
-        this.gender,
-        this.followCount,
-        this.fanCount});
+  WeiboAtUser({this.id,
+    this.nick,
+    this.headurl,
+    this.decs,
+    this.gender,
+    this.followCount,
+    this.fanCount});
 
   WeiboAtUser.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -65,7 +64,7 @@ class WeiboAtUser extends ISuspensionBean{
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['nick'] = this.nick;
     data['headurl'] = this.headurl;
@@ -79,7 +78,6 @@ class WeiboAtUser extends ISuspensionBean{
 
   @override
   String getSuspensionTag() => tagIndex;
-
 
 
 }

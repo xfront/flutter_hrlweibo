@@ -24,13 +24,13 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   @override
   void initState() {
-     super.initState();
+    super.initState();
     mTabController = TabController(
       length: mTabList.length,
       vsync: ScrollableState(), //动画效果的异步处理
     );
     videoPlayerController =
-        VideoPlayerController.network(Constant.baseUrl + "file/weibo3.mp4");
+      VideoPlayerController.network(Constant.baseUrl + "file/weibo3.mp4");
     chewieController = ChewieController(
       videoPlayerController: videoPlayerController,
       aspectRatio: 4 / 2,
@@ -52,7 +52,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
       child: Scaffold(
         body: Column(
           children: <Widget>[
-            new Container(
+            Container(
               height: 200,
               child: Chewie(
                 controller: chewieController,
@@ -62,27 +62,27 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
               alignment: Alignment.centerLeft,
               height: 50,
               child: TabBar(
-                  isScrollable: true,
-                  indicatorColor: Color(0xffFF3700),
-                  indicator: UnderlineTabIndicator(
-                      borderSide:
-                          BorderSide(color: Color(0xffFF3700), width: 2),
-                      insets: EdgeInsets.only(bottom: 7)),
-                  labelColor: Color(0xff333333),
-                  unselectedLabelColor: Color(0xff666666),
-                  labelStyle:
-                      TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700),
-                  unselectedLabelStyle: TextStyle(fontSize: 13.0),
-                  indicatorSize: TabBarIndicatorSize.label,
-                  controller: mTabController,
-                  tabs: [
-                    new Tab(
-                      text: mTabList[0],
-                    ),
-                    new Tab(
-                      text: mTabList[1],
-                    ),
-                  ]),
+                isScrollable: true,
+                indicatorColor: Color(0xffFF3700),
+                indicator: UnderlineTabIndicator(
+                  borderSide:
+                  BorderSide(color: Color(0xffFF3700), width: 2),
+                  insets: EdgeInsets.only(bottom: 7)),
+                labelColor: Color(0xff333333),
+                unselectedLabelColor: Color(0xff666666),
+                labelStyle:
+                TextStyle(fontSize: 14.0, fontWeight: FontWeight.w700),
+                unselectedLabelStyle: TextStyle(fontSize: 13.0),
+                indicatorSize: TabBarIndicatorSize.label,
+                controller: mTabController,
+                tabs: [
+                  Tab(
+                    text: mTabList[0],
+                  ),
+                  Tab(
+                    text: mTabList[1],
+                  ),
+                ]),
             ),
             Container(
               height: 1,

@@ -10,7 +10,7 @@ class ChangeNickNamePage extends StatefulWidget {
 }
 
 class _ChangeNickNamePageState extends State<ChangeNickNamePage> {
-  TextEditingController _mEtController = new TextEditingController();
+  TextEditingController _mEtController = TextEditingController();
 
   //#F3F1F4
   String mInputName = "";
@@ -18,56 +18,56 @@ class _ChangeNickNamePageState extends State<ChangeNickNamePage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
             icon: Icon(Icons.close),
             onPressed: () {
               Navigator.pop(context);
             }),
-        title: Text(
-          '修改昵称',
-          style: TextStyle(fontSize: 16),
+          title: Text(
+            '修改昵称',
+            style: TextStyle(fontSize: 16),
+          ),
+          elevation: 0.5,
+          centerTitle: true,
         ),
-        elevation: 0.5,
-        centerTitle: true,
-      ),
-      body: Container(
+        body: Container(
           color: Color(0xffF3F1F4),
-          child: new Column(
+          child: Column(
             children: <Widget>[
               Container(
-                  height: 50,
-                  color: Color(0xffffffff),
-                  margin: EdgeInsets.only(top: 15),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextField(
-                      controller: _mEtController,
-                      decoration: InputDecoration(
-                        hintText: "请输入您的昵称",
-                        hintStyle:
-                            TextStyle(color: Color(0xff999999), fontSize: 16),
-                        contentPadding: EdgeInsets.only(left: 15, right: 15),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  )),
-              Align(
+                height: 50,
+                color: Color(0xffffffff),
+                margin: EdgeInsets.only(top: 15),
+                child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: EdgeInsets.only(top: 10, left: 10),
-                    child: new Text(
-                      "4-30个字符,支持中英文、数字",
-                      style: new TextStyle(
-                          fontSize: 14.0, color: Color(0xff999999)),
+                  child: TextField(
+                    controller: _mEtController,
+                    decoration: InputDecoration(
+                      hintText: "请输入您的昵称",
+                      hintStyle:
+                      TextStyle(color: Color(0xff999999), fontSize: 16),
+                      contentPadding: EdgeInsets.only(left: 15, right: 15),
+                      border: InputBorder.none,
                     ),
-                  )),
-              new Container(
+                  ),
+                )),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Container(
+                  margin: EdgeInsets.only(top: 10, left: 10),
+                  child: Text(
+                    "4-30个字符,支持中英文、数字",
+                    style: TextStyle(
+                      fontSize: 14.0, color: Color(0xff999999)),
+                  ),
+                )),
+              Container(
                 margin: const EdgeInsets.only(top: 60.0, left: 20, right: 20),
                 child: SizedBox(
                   width: double.infinity,
-                  child: new RaisedButton(
+                  child: RaisedButton(
                     color: Color(0xffFF8200),
                     textColor: Colors.white,
                     disabledTextColor: Colors.white,
@@ -88,12 +88,12 @@ class _ChangeNickNamePageState extends State<ChangeNickNamePage> {
                         ToastUtil.show('昵称不能为空!');
                         return;
                       }
-                      FormData params = FormData.from({
+                      var params = {
                         'userId': UserUtil.getUserInfo().id,
                         'nick': _mEtController.text
-                      });
-                      DioManager.getInstance()
-                          .post(ServiceUrl.updateNick, params, (data) {
+                      };
+                      DioManager()
+                        .post(ServiceUrl.updateNick, params, (data) {
                         ToastUtil.show('修改昵称成功!');
                         UserUtil.saveUserNick(_mEtController.text);
                         Constant.eventBus.fire(ChangeInfoEvent());
@@ -102,11 +102,11 @@ class _ChangeNickNamePageState extends State<ChangeNickNamePage> {
                         ToastUtil.show(error);
                       });
                     },
-                    child: new Padding(
-                      padding: new EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
-                      child: new Text(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                      child: Text(
                         "修改",
-                        style: new TextStyle(fontSize: 16.0),
+                        style: TextStyle(fontSize: 16.0),
                       ),
                     ),
                   ),
@@ -114,6 +114,6 @@ class _ChangeNickNamePageState extends State<ChangeNickNamePage> {
               )
             ],
           )),
-    ));
+      ));
   }
 }

@@ -29,7 +29,7 @@ class _HotSearchPageState extends State<HotSearchPage> {
     // TODO: implement initState
     super.initState();
 
-    DioManager.getInstance().post(ServiceUrl.getHotSearchList, null, (data) {
+    DioManager().post(ServiceUrl.getHotSearchList, null, (data) {
       mHotSearchList.clear();
       data['data'].forEach((data) {
         mHotSearchList.add(Findhottop.fromJson(data));
@@ -76,35 +76,35 @@ class _HotSearchPageState extends State<HotSearchPage> {
                 Container(
                   margin: EdgeInsets.only(left: 15, right: 15),
                   child: Text((index + 1).toString() + "",
-                      style: TextStyle(
-                        fontFamily: "HotSearch", // 指定该Text的字体。
-                        fontSize: 14,
-                        color: Colors.red,
-                      )),
+                    style: TextStyle(
+                      fontFamily: "HotSearch", // 指定该Text的字体。
+                      fontSize: 14,
+                      color: Colors.red,
+                    )),
                 ),
                 Container(
                   margin: EdgeInsets.only(right: 10),
                   child: Text(mHotSearchList[index].hotdesc + "",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.black,
-                      )),
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.black,
+                    )),
                 ),
                 Container(
                   child: Text(mHotSearchList[index].hotread + "",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey,
-                      )),
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.grey,
+                    )),
                 ),
                 Container(
                   child: Text(
-                      String.fromCharCode(mHotSearchList[index].hotattitude) +
-                          "",
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: Colors.grey,
-                      )),
+                    String.fromCharCode(mHotSearchList[index].hotattitude) +
+                      "",
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: Colors.grey,
+                    )),
                 ),
                 Spacer(),
                 Container(
@@ -126,13 +126,13 @@ class _HotSearchPageState extends State<HotSearchPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        //  color: Colors.white,
-        child: Scaffold(
-      backgroundColor: Colors.white,
-      body: NotificationListener(
+      //  color: Colors.white,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: NotificationListener(
           onNotification: (scrollNotification) {
             if (scrollNotification is ScrollUpdateNotification &&
-                scrollNotification.depth == 0) {
+              scrollNotification.depth == 0) {
               //滚动并且是列表滚动的时候
               listenScrollChangeTitle(scrollNotification.metrics.pixels);
             }
@@ -140,31 +140,31 @@ class _HotSearchPageState extends State<HotSearchPage> {
           child: Stack(
             children: <Widget>[
               NestedScrollView(headerSliverBuilder:
-                  (BuildContext context, bool innerBoxIsScrolled) {
+                (BuildContext context, bool innerBoxIsScrolled) {
                 // These are the slivers that show up in the "outer" scroll view.
                 return <Widget>[
                   SliverOverlapAbsorber(
                     handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                        context),
+                      context),
                     child: SliverAppBar(
                       leading:
-                          /*new IconButton(
+                      /*IconButton(
                         icon: Icon(Icons.arrow_back),
                         onPressed: () {},
                       ),*/
-                          new Container(
+                      Container(
                         margin: EdgeInsets.only(top: 20, bottom: 10),
                         child: isShowBlackTitle
-                            ? Image.asset(
-                                Constant.ASSETS_IMG +
-                                    'userinfo_icon_back_black.png',
-                                fit: BoxFit.fitHeight,
-                              )
-                            : Image.asset(
-                                Constant.ASSETS_IMG +
-                                    'userinfo_icon_back_white.png',
-                                fit: BoxFit.fitHeight,
-                              ),
+                          ? Image.asset(
+                          Constant.ASSETS_IMG +
+                            'userinfo_icon_back_black.png',
+                          fit: BoxFit.fitHeight,
+                        )
+                          : Image.asset(
+                          Constant.ASSETS_IMG +
+                            'userinfo_icon_back_white.png',
+                          fit: BoxFit.fitHeight,
+                        ),
                       ),
                       title: isShowBlackTitle ? Text('微博热搜') : Text(''),
                       centerTitle: true,
@@ -178,51 +178,51 @@ class _HotSearchPageState extends State<HotSearchPage> {
                       //是否显示阴影，直接取值innerBoxIsScrolled，展开不显示阴影，合并后会显示
                       forceElevated: innerBoxIsScrolled,
                       actions: <Widget>[
-                        new Container(
+                        Container(
                           margin:
-                              EdgeInsets.only(right: 10, top: 20, bottom: 10),
+                          EdgeInsets.only(right: 10, top: 20, bottom: 10),
                           child: isShowBlackTitle
-                              ? Image.asset(
-                                  Constant.ASSETS_IMG +
-                                      'userinfo_search_black.png',
-                                  width: 30,
-                                  height: 30,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  Constant.ASSETS_IMG +
-                                      'userinfo_search_white.png',
-                                  width: 30,
-                                  height: 30,
-                                  fit: BoxFit.cover,
-                                ),
+                            ? Image.asset(
+                            Constant.ASSETS_IMG +
+                              'userinfo_search_black.png',
+                            width: 30,
+                            height: 30,
+                            fit: BoxFit.cover,
+                          )
+                            : Image.asset(
+                            Constant.ASSETS_IMG +
+                              'userinfo_search_white.png',
+                            width: 30,
+                            height: 30,
+                            fit: BoxFit.cover,
+                          ),
                         ),
-                        new Container(
+                        Container(
                           margin:
-                              EdgeInsets.only(right: 10, top: 20, bottom: 10),
+                          EdgeInsets.only(right: 10, top: 20, bottom: 10),
                           child: isShowBlackTitle
-                              ? Image.asset(
-                                  Constant.ASSETS_IMG +
-                                      'userinfo_more_black.png',
-                                  width: 30,
-                                  height: 30,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  Constant.ASSETS_IMG +
-                                      'userinfo_more_white.png',
-                                  width: 30,
-                                  height: 30,
-                                  fit: BoxFit.cover,
-                                ),
+                            ? Image.asset(
+                            Constant.ASSETS_IMG +
+                              'userinfo_more_black.png',
+                            width: 30,
+                            height: 30,
+                            fit: BoxFit.cover,
+                          )
+                            : Image.asset(
+                            Constant.ASSETS_IMG +
+                              'userinfo_more_white.png',
+                            width: 30,
+                            height: 30,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                       ],
 
                       flexibleSpace: FlexibleSpaceBar(
                         collapseMode: CollapseMode.pin,
-                        background: new Column(
+                        background: Column(
                           children: <Widget>[
-                            new Container(
+                            Container(
                               height: 210,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -232,7 +232,7 @@ class _HotSearchPageState extends State<HotSearchPage> {
                                   fit: BoxFit.fill,
                                 ),
                               ),
-                              child: new Container(),
+                              child: Container(),
                             ),
                           ],
                         ),
@@ -240,12 +240,12 @@ class _HotSearchPageState extends State<HotSearchPage> {
                     ),
                   ),
                 ];
-              }, body: new Builder(builder: (BuildContext contexta) {
+              }, body: Builder(builder: (BuildContext contexta) {
                 return CustomScrollView(
                   slivers: <Widget>[
                     SliverOverlapInjector(
-                        handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
-                            contexta)),
+                      handle: NestedScrollView.sliverOverlapAbsorberHandleFor(
+                        contexta)),
                     SliverToBoxAdapter(
                       child: Container(
                         padding: EdgeInsets.only(top: 8, bottom: 5, left: 10),
@@ -253,13 +253,13 @@ class _HotSearchPageState extends State<HotSearchPage> {
                         child: Text(
                           "实时热点,每分钟更新一次",
                           style:
-                              TextStyle(fontSize: 12, color: Color(0xff333333)),
+                          TextStyle(fontSize: 12, color: Color(0xff333333)),
                         ),
                       ),
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
+                          (BuildContext context, int index) {
                           // return mCommentWidget(index);
                           return mHotSearchItem(index);
                         },
@@ -276,17 +276,17 @@ class _HotSearchPageState extends State<HotSearchPage> {
                 );
               })),
               Align(
-                  //对齐底部
-                  alignment: Alignment.bottomCenter,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        color: Color(0xffE7E7E7),
-                        height: 1,
-                      ),
-                      Container(
-                          child: Container(
+                //对齐底部
+                alignment: Alignment.bottomCenter,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      color: Color(0xffE7E7E7),
+                      height: 1,
+                    ),
+                    Container(
+                      child: Container(
                         color: Color(0xffF9F9F9),
                         height: 40,
                         child: Row(
@@ -299,7 +299,7 @@ class _HotSearchPageState extends State<HotSearchPage> {
                                   children: <Widget>[
                                     Image.asset(
                                       Constant.ASSETS_IMG +
-                                          'hot_search_bottom1.png',
+                                        'hot_search_bottom1.png',
                                       width: 20,
                                       height: 20,
                                       fit: BoxFit.fill,
@@ -307,8 +307,8 @@ class _HotSearchPageState extends State<HotSearchPage> {
                                     Text(
                                       "热搜榜",
                                       style: TextStyle(
-                                          color: Color(0xffE0905D),
-                                          fontSize: 12),
+                                        color: Color(0xffE0905D),
+                                        fontSize: 12),
                                     )
                                   ],
                                 ),
@@ -327,7 +327,7 @@ class _HotSearchPageState extends State<HotSearchPage> {
                                   children: <Widget>[
                                     Image.asset(
                                       Constant.ASSETS_IMG +
-                                          'hot_search_bottom2.png',
+                                        'hot_search_bottom2.png',
                                       width: 20,
                                       height: 20,
                                       fit: BoxFit.fill,
@@ -335,8 +335,8 @@ class _HotSearchPageState extends State<HotSearchPage> {
                                     Text(
                                       "话题榜",
                                       style: TextStyle(
-                                          color: Color(0xff333333),
-                                          fontSize: 12),
+                                        color: Color(0xff333333),
+                                        fontSize: 12),
                                     )
                                   ],
                                 ),
@@ -355,7 +355,7 @@ class _HotSearchPageState extends State<HotSearchPage> {
                                   children: <Widget>[
                                     Image.asset(
                                       Constant.ASSETS_IMG +
-                                          'hot_search_bottom3.png',
+                                        'hot_search_bottom3.png',
                                       width: 20,
                                       height: 20,
                                       fit: BoxFit.fill,
@@ -363,8 +363,8 @@ class _HotSearchPageState extends State<HotSearchPage> {
                                     Text(
                                       "要闻榜",
                                       style: TextStyle(
-                                          color: Color(0xff333333),
-                                          fontSize: 12),
+                                        color: Color(0xff333333),
+                                        fontSize: 12),
                                     )
                                   ],
                                 ),
@@ -373,10 +373,10 @@ class _HotSearchPageState extends State<HotSearchPage> {
                           ],
                         ),
                       ))
-                    ],
-                  )),
+                  ],
+                )),
             ],
           )),
-    ));
+      ));
   }
 }

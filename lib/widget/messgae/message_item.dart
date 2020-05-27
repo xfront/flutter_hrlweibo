@@ -15,8 +15,8 @@ class ChatMessageItem extends StatefulWidget {
 }
 
 class ChatMessageItemState extends State<ChatMessageItem> {
-  List<String> mAudioAssetRightList = new List();
-  List<String> mAudioAssetLeftList = new List();
+  List<String> mAudioAssetRightList = List();
+  List<String> mAudioAssetLeftList = List();
 
   bool mIsPlayint = false;
   String mUUid = "";
@@ -34,20 +34,18 @@ class ChatMessageItemState extends State<ChatMessageItem> {
     mAudioAssetRightList.add(Constant.ASSETS_IMG + "audio_animation_list_right_2.png");
     mAudioAssetRightList.add(Constant.ASSETS_IMG + "audio_animation_list_right_3.png");
 
-     mAudioAssetLeftList.add(Constant.ASSETS_IMG + "audio_animation_list_left_1.png");
+    mAudioAssetLeftList.add(Constant.ASSETS_IMG + "audio_animation_list_left_1.png");
     mAudioAssetLeftList.add(Constant.ASSETS_IMG + "audio_animation_list_left_2.png");
     mAudioAssetLeftList.add(Constant.ASSETS_IMG + "audio_animation_list_right_3.png");
-
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Container(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
       child: widget.mMessage.isSend
-          ? getSentMessageLayout()
-          : getReceivedMessageLayout(),
+        ? getSentMessageLayout()
+        : getReceivedMessageLayout(),
     );
   }
 
@@ -55,7 +53,7 @@ class ChatMessageItemState extends State<ChatMessageItem> {
     Widget child;
     if (mMessgae.thumbPath != null && (!mMessgae.thumbPath.isEmpty)) {
       child =
-          Image.file(File('${(widget.mMessage as HrlImageMessage).thumbPath}'));
+        Image.file(File('${(widget.mMessage as HrlImageMessage).thumbPath}'));
     } else {
       child = Image.network(
         '${(widget.mMessage as HrlImageMessage).thumbUrl}',
@@ -87,7 +85,7 @@ class ChatMessageItemState extends State<ChatMessageItem> {
         break;
       case HrlMessageType.voice:
         bool isStop = true;
-         if (mUUid == widget.mMessage.uuid) {
+        if (mUUid == widget.mMessage.uuid) {
           if (!mIsPlayint) {
             isStop = true;
           } else {
@@ -104,7 +102,7 @@ class ChatMessageItemState extends State<ChatMessageItem> {
             widget.onAudioTap((widget.mMessage as HrlVoiceMessage).path);
           },
           child: VoiceAnimationImage(
-            mMessage.isSend?mAudioAssetRightList:mAudioAssetLeftList,
+            mMessage.isSend ? mAudioAssetRightList : mAudioAssetLeftList,
             width: 100,
             height: 30,
             isStop: isStop,
@@ -184,74 +182,82 @@ class ChatMessageItemState extends State<ChatMessageItem> {
 
   Widget getSentMessageLayout() {
     return Container(
-        alignment: Alignment.centerRight,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Visibility(
-              visible: widget.mMessage.msgType==HrlMessageType.voice,
-              child:  Container(
-                child:  widget.mMessage.msgType==HrlMessageType.voice?Text((widget.mMessage as HrlVoiceMessage).duration.toString()+"'",style: TextStyle(fontSize: 14,color: Colors.black),):new Container(),
-              ),
+      alignment: Alignment.centerRight,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Visibility(
+            visible: widget.mMessage.msgType == HrlMessageType.voice,
+            child: Container(
+              child: widget.mMessage.msgType == HrlMessageType.voice ? Text(
+                (widget.mMessage as HrlVoiceMessage).duration.toString() + "'",
+                style: TextStyle(fontSize: 14, color: Colors.black),) : Container(),
             ),
+          ),
 
 
-            Container(
-              constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.8,
-              ),
-              child: Bubble(
-                style: getItemBundleStyle(widget.mMessage),
-                // child:    Text(  '${(widget.mMessage as HrlTextMessage).text  }',  softWrap: true,style: TextStyle(fontSize: 14.0,color: Colors.black),),
-                child: getItemContent(widget.mMessage),
-              ),
-              margin: EdgeInsets.only(
-                bottom: 5.0,
-              ),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery
+                .of(context)
+                .size
+                .width * 0.8,
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0, left: 5),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg"),
-                radius: 16.0,
-              ),
+            child: Bubble(
+              style: getItemBundleStyle(widget.mMessage),
+              // child:    Text(  '${(widget.mMessage as HrlTextMessage).text  }',  softWrap: true,style: TextStyle(fontSize: 14.0,color: Colors.black),),
+              child: getItemContent(widget.mMessage),
             ),
-          ],
-        ));
+            margin: EdgeInsets.only(
+              bottom: 5.0,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0, left: 5),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                "https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg"),
+              radius: 16.0,
+            ),
+          ),
+        ],
+      ));
   }
 
   Widget getReceivedMessageLayout() {
     return Container(
-        alignment: Alignment.centerLeft,
-        child: Row(
-          //  mainAxisAlignment:MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 5.0, left: 10),
-              child: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg"),
-                radius: 16.0,
-              ),
+      alignment: Alignment.centerLeft,
+      child: Row(
+        //  mainAxisAlignment:MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(right: 5.0, left: 10),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                "https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg"),
+              radius: 16.0,
             ),
-            Container(
-               constraints: BoxConstraints(
-                maxWidth: MediaQuery.of(context).size.width * 0.8,
-              ),
-              child:  Bubble(
-                  style: getItemBundleStyle(widget.mMessage),
-                  child: getItemContent(widget.mMessage),
-                ),
+          ),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery
+                .of(context)
+                .size
+                .width * 0.8,
+            ),
+            child: Bubble(
+              style: getItemBundleStyle(widget.mMessage),
+              child: getItemContent(widget.mMessage),
+            ),
 
-              margin: EdgeInsets.only(
-                bottom: 5.0,
-              ),
+            margin: EdgeInsets.only(
+              bottom: 5.0,
             ),
-          ],
-        ));
+          ),
+        ],
+      ));
   }
 }
 

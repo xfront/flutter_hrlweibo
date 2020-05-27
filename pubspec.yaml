@@ -14,7 +14,7 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -44,7 +44,7 @@ dependencies:
   url_launcher: 5.3.0
   # https://github: com/fluttercandies/extended_nested_scroll_view:
   extended_nested_scroll_view: ^0.4.0
-
+  dio: ^3.0.0
 
 
 
@@ -52,7 +52,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_screenutil: ^0.5.2
-  dio: 2.1.0
+  dio: ^3.0.0
   fluttertoast: ^3.1.0
   shared_preferences: ^0.5.3
   synchronized: ^2.1.0

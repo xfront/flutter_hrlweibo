@@ -9,15 +9,15 @@ class CommentList {
 
   CommentList.fromJson(Map<String, dynamic> json) {
     if (json['list'] != null) {
-      list = new List<Comment>();
+      list = List<Comment>();
       json['list'].forEach((v) {
-        list.add(new Comment.fromJson(v));
+        list.add(Comment.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
 
     if (this.list != null) {
       data['list'] = this.list.map((v) => v.toJson()).toList();

@@ -1,5 +1,3 @@
-
-
 class WeiBoTopic {
   String topicid;
   String topictype;
@@ -10,15 +8,14 @@ class WeiBoTopic {
   String topicattitude;
   String topicimg;
 
-  WeiBoTopic(
-      {this.topicid,
-        this.topictype,
-        this.topicdesc,
-        this.topicread,
-        this.topicdiscuss,
-        this.topichost,
-        this.topicattitude,
-        this.topicimg});
+  WeiBoTopic({this.topicid,
+    this.topictype,
+    this.topicdesc,
+    this.topicread,
+    this.topicdiscuss,
+    this.topichost,
+    this.topicattitude,
+    this.topicimg});
 
   WeiBoTopic.fromJson(Map<String, dynamic> json) {
     topicid = json['topicid'];
@@ -32,7 +29,7 @@ class WeiBoTopic {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['topicid'] = this.topicid;
     data['topictype'] = this.topictype;
     data['topicdesc'] = this.topicdesc;

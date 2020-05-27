@@ -43,14 +43,15 @@ class CirclePageIndicator extends StatefulWidget {
     Color dotColor,
     Color selectedDotColor,
     this.selectedSize = _defaultSelectedSize,
-  })  : this.dotColor = dotColor ??
-      ((selectedDotColor?.withAlpha(150)) ?? _defaultDotColor),
-        this.selectedDotColor = selectedDotColor ?? _defaultSelectedDotColor,
-        super(key: key);
+  })
+    : this.dotColor = dotColor ??
+    ((selectedDotColor?.withAlpha(150)) ?? _defaultDotColor),
+      this.selectedDotColor = selectedDotColor ?? _defaultSelectedDotColor,
+      super(key: key);
 
   @override
   CirclePageIndicatorState createState() {
-    return new CirclePageIndicatorState();
+    return CirclePageIndicatorState();
   }
 }
 
@@ -73,32 +74,33 @@ class CirclePageIndicatorState extends State<CirclePageIndicator> {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-        alignment: WrapAlignment.center,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: List<Widget>.generate(widget.itemCount, (int index) {
-          double size = widget.size;
-          Color color = widget.dotColor;
-          if (isSelected(index)) {
-            size = widget.selectedSize;
-            color = widget.selectedDotColor;
-          }
-          return GestureDetector(
-            onTap: () => widget.onPageSelected == null
-                ? null
-                : widget.onPageSelected(index),
-            child: Container(
-              width: size + widget.dotSpacing,
-              child: Material(
-                color: color,
-                type: MaterialType.circle,
-                child: Container(
-                  width: size,
-                  height: size,
-                ),
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: List<Widget>.generate(widget.itemCount, (int index) {
+        double size = widget.size;
+        Color color = widget.dotColor;
+        if (isSelected(index)) {
+          size = widget.selectedSize;
+          color = widget.selectedDotColor;
+        }
+        return GestureDetector(
+          onTap: () =>
+          widget.onPageSelected == null
+            ? null
+            : widget.onPageSelected(index),
+          child: Container(
+            width: size + widget.dotSpacing,
+            child: Material(
+              color: color,
+              type: MaterialType.circle,
+              child: Container(
+                width: size,
+                height: size,
               ),
             ),
-          );
-        }));
+          ),
+        );
+      }));
   }
 
   bool isSelected(int dotIndex) => _currentPageIndex == dotIndex;

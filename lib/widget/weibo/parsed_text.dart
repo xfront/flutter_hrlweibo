@@ -91,22 +91,21 @@ class ParsedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Seperate each word and create a new Array
+    // Seperate each word and create a Array
     String newString = text;
 
     // Parse the whole text and adds "%%%%" before and after the
     // each matched text this will be used to split the text affectively
     parse.forEach((e) {
-         RegExp regExp = RegExp(e.pattern);
-        newString = newString.splitMapJoin(regExp,
-            onMatch: (m) => "%%%%${m.group(0)}%%%%", onNonMatch: (m) => "$m");
-
+      RegExp regExp = RegExp(e.pattern);
+      newString = newString.splitMapJoin(regExp,
+        onMatch: (m) => "%%%%${m.group(0)}%%%%", onNonMatch: (m) => "$m");
     });
 
     // splits the modified text at "%%%%"
     List<String> splits = newString.split("%%%%");
 
-    // Map over the splits array to get a new Array with its elements as Widgets
+    // Map over the splits array to get a Array with its elements as Widgets
     // checks if each word matches either a predefined type of custom defined patterns
     // if a match is found creates a link Text with its function or return a
     // default Text
@@ -126,13 +125,13 @@ class ParsedText extends StatelessWidget {
           if (matched) {
             if (e.renderText != null) {
               Map<String, String> result =
-                  e.renderText(str: element, pattern: e.pattern);
+              e.renderText(str: element, pattern: e.pattern);
 
               widget = TextSpan(
                 style: e.style != null ? e.style : style,
                 text: "${result['display']}",
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () => e.onTap(result['display'],result['value']),
+                  ..onTap = () => e.onTap(result['display'], result['value']),
               );
             } else {
               widget = TextSpan(

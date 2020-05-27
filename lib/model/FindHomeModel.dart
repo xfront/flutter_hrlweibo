@@ -1,60 +1,60 @@
 import 'WeiBoModel.dart';
 
 
-
 class FindHomeModel {
   List<Findkind> findkind;
   List<Findhottop> findhottop;
   Findhotcenter findhotcenter;
   Findtopic findtopic;
-   List<WeiBoModel> findhot;
+  List<WeiBoModel> findhot;
   List<WeiBoModel> findlocal;
   List<WeiBoModel> findsupertopic;
 
 
-  FindHomeModel({this.findkind, this.findhottop, this.findhotcenter, this.findtopic, this.findhot, this.findlocal,this.findsupertopic});
+  FindHomeModel(
+    {this.findkind, this.findhottop, this.findhotcenter, this.findtopic, this.findhot, this.findlocal, this.findsupertopic});
 
   FindHomeModel.fromJson(Map<String, dynamic> json) {
     if (json['findkind'] != null) {
-      findkind = new List<Findkind>();
+      findkind = List<Findkind>();
       json['findkind'].forEach((v) {
-        findkind.add(new Findkind.fromJson(v));
+        findkind.add(Findkind.fromJson(v));
       });
     }
     if (json['findhottop'] != null) {
-      findhottop = new List<Findhottop>();
+      findhottop = List<Findhottop>();
       json['findhottop'].forEach((v) {
-        findhottop.add(new Findhottop.fromJson(v));
+        findhottop.add(Findhottop.fromJson(v));
       });
     }
     findhotcenter = json['findhotcenter'] != null
-        ? new Findhotcenter.fromJson(json['findhotcenter'])
-        : null;
+      ? Findhotcenter.fromJson(json['findhotcenter'])
+      : null;
     findtopic = json['findtopic'] != null
-        ? new Findtopic.fromJson(json['findtopic'])
-        : null;
+      ? Findtopic.fromJson(json['findtopic'])
+      : null;
     if (json['findhot'] != null) {
-      findhot = new List<WeiBoModel>();
+      findhot = List<WeiBoModel>();
       json['findhot'].forEach((v) {
-        findhot.add(new WeiBoModel.fromJson(v));
+        findhot.add(WeiBoModel.fromJson(v));
       });
     }
     if (json['findlocal'] != null) {
-      findlocal = new List<WeiBoModel>();
+      findlocal = List<WeiBoModel>();
       json['findlocal'].forEach((v) {
-        findlocal.add(new WeiBoModel.fromJson(v));
+        findlocal.add(WeiBoModel.fromJson(v));
       });
     }
     if (json['findsupertopic'] != null) {
-      findsupertopic = new List<WeiBoModel>();
+      findsupertopic = List<WeiBoModel>();
       json['findsupertopic'].forEach((v) {
-        findsupertopic.add(new WeiBoModel.fromJson(v));
+        findsupertopic.add(WeiBoModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.findkind != null) {
       data['findkind'] = this.findkind.map((v) => v.toJson()).toList();
     }
@@ -94,7 +94,7 @@ class Findkind {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
     data['img'] = this.img;
@@ -112,15 +112,14 @@ class Findhottop {
   String hothost;
   String recommendcoverimg;
 
-  Findhottop(
-      {this.hotid,
-        this.hotdesc,
-        this.hottype,
-        this.hotread,
-        this.hotattitude,
-        this.hotdiscuss,
-        this.hothost,
-        this.recommendcoverimg});
+  Findhottop({this.hotid,
+    this.hotdesc,
+    this.hottype,
+    this.hotread,
+    this.hotattitude,
+    this.hotdiscuss,
+    this.hothost,
+    this.recommendcoverimg});
 
   Findhottop.fromJson(Map<String, dynamic> json) {
     hotid = json['hotid'];
@@ -134,7 +133,7 @@ class Findhottop {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['hotid'] = this.hotid;
     data['hotdesc'] = this.hotdesc;
     data['hottype'] = this.hottype;
@@ -158,39 +157,39 @@ class Findhotcenter {
 
   Findhotcenter.fromJson(Map<String, dynamic> json) {
     if (json['page1'] != null) {
-      page1 = new List<Findhottop>();
+      page1 = List<Findhottop>();
       json['page1'].forEach((v) {
-        page1.add(new Findhottop.fromJson(v));
+        page1.add(Findhottop.fromJson(v));
       });
     }
     if (json['page2'] != null) {
-      page2 = new List<Findhottop>();
+      page2 = List<Findhottop>();
       json['page2'].forEach((v) {
-        page2.add(new Findhottop.fromJson(v));
+        page2.add(Findhottop.fromJson(v));
       });
     }
     if (json['page3'] != null) {
-      page3 = new List<Findhottop>();
+      page3 = List<Findhottop>();
       json['page3'].forEach((v) {
-        page3.add(new Findhottop.fromJson(v));
+        page3.add(Findhottop.fromJson(v));
       });
     }
     if (json['page4'] != null) {
-      page4 = new List<Findhottop>();
+      page4 = List<Findhottop>();
       json['page4'].forEach((v) {
-        page4.add(new Findhottop.fromJson(v));
+        page4.add(Findhottop.fromJson(v));
       });
     }
     if (json['page5'] != null) {
-      page5 = new List<Findhottop>();
+      page5 = List<Findhottop>();
       json['page5'].forEach((v) {
-        page5.add(new Findhottop.fromJson(v));
+        page5.add(Findhottop.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.page1 != null) {
       data['page1'] = this.page1.map((v) => v.toJson()).toList();
     }
@@ -220,33 +219,33 @@ class Findtopic {
 
   Findtopic.fromJson(Map<String, dynamic> json) {
     if (json['topic1'] != null) {
-      topic1 = new List<Topic1>();
+      topic1 = List<Topic1>();
       json['topic1'].forEach((v) {
-        topic1.add(new Topic1.fromJson(v));
+        topic1.add(Topic1.fromJson(v));
       });
     }
     if (json['topic2'] != null) {
-      topic2 = new List<Topic1>();
+      topic2 = List<Topic1>();
       json['topic2'].forEach((v) {
-        topic2.add(new Topic1.fromJson(v));
+        topic2.add(Topic1.fromJson(v));
       });
     }
     if (json['topic3'] != null) {
-      topic3 = new List<Topic1>();
+      topic3 = List<Topic1>();
       json['topic3'].forEach((v) {
-        topic3.add(new Topic1.fromJson(v));
+        topic3.add(Topic1.fromJson(v));
       });
     }
     if (json['topiclist'] != null) {
-      topiclist = new List<WeiBoModel>();
+      topiclist = List<WeiBoModel>();
       json['topiclist'].forEach((v) {
-        topiclist.add(new WeiBoModel.fromJson(v));
+        topiclist.add(WeiBoModel.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.topic1 != null) {
       data['topic1'] = this.topic1.map((v) => v.toJson()).toList();
     }
@@ -274,16 +273,15 @@ class Topic1 {
   String topicimg;
   String topicintro;
 
-  Topic1(
-      {this.topicid,
-        this.topictype,
-        this.topicdesc,
-        this.topicread,
-        this.topicdiscuss,
-        this.topichost,
-        this.topicattitude,
-        this.topicimg,
-        this.topicintro});
+  Topic1({this.topicid,
+    this.topictype,
+    this.topicdesc,
+    this.topicread,
+    this.topicdiscuss,
+    this.topichost,
+    this.topicattitude,
+    this.topicimg,
+    this.topicintro});
 
   Topic1.fromJson(Map<String, dynamic> json) {
     topicid = json['topicid'];
@@ -294,11 +292,11 @@ class Topic1 {
     topichost = json['topichost'];
     topicattitude = json['topicattitude'];
     topicimg = json['topicimg'];
-    topicintro= json['topicintro'];
+    topicintro = json['topicintro'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['topicid'] = this.topicid;
     data['topictype'] = this.topictype;
     data['topicdesc'] = this.topicdesc;

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 
@@ -12,7 +11,7 @@ class VoiceAnimationImage extends StatefulWidget {
   VoiceAnimationImageState voiceAnimationImageState;
 
   VoiceAnimationImage(this._assetList,
-      {this.width, this.height, this.isStop, this.interval});
+    {this.width, this.height, this.isStop, this.interval});
 
   @override
   State<StatefulWidget> createState() {
@@ -30,7 +29,7 @@ class VoiceAnimationImage extends StatefulWidget {
 }
 
 class VoiceAnimationImageState extends State<VoiceAnimationImage>
-    with SingleTickerProviderStateMixin {
+  with SingleTickerProviderStateMixin {
   // 动画控制
   Animation<double> _animation;
   AnimationController _controller;
@@ -47,16 +46,16 @@ class VoiceAnimationImageState extends State<VoiceAnimationImage>
     final int maxTime = interval * imageCount;
 
     // 启动动画controller
-    _controller = new AnimationController(
-        duration: Duration(milliseconds: maxTime), vsync: this);
+    _controller = AnimationController(
+      duration: Duration(milliseconds: maxTime), vsync: this);
     _controller.addStatusListener((AnimationStatus status) {
       if (status == AnimationStatus.completed) {
         _controller.forward(from: 0.0); // 完成后重新开始
       }
     });
 
-    _animation = new Tween<double>(begin: 0, end: imageCount.toDouble())
-        .animate(_controller)
+    _animation = Tween<double>(begin: 0, end: imageCount.toDouble())
+      .animate(_controller)
       ..addListener(() {
         setState(() {});
       });
@@ -119,7 +118,7 @@ class VoiceAnimationImageState extends State<VoiceAnimationImage>
     }
 
     return Container(
-     // color: Colors.red,
+      // color: Colors.red,
       width: 80,
       height: 20,
       alignment: Alignment.centerRight,

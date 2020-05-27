@@ -8,6 +8,6 @@ class PageInfoWeiBo extends StatefulWidget {
 class _PageInfoWeiBoState extends State<PageInfoWeiBo> {
   @override
   Widget build(BuildContext context) {
-    return Container(margin: EdgeInsets.only(top: 50), child: new Text("暂无数据"));
+    return Container(margin: EdgeInsets.only(top: 50), child: Text("暂无数据"));
   }
 }

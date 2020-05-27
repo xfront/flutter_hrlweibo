@@ -1,5 +1,3 @@
-
-
 class ComZanListModel {
   int pageNum;
   int pageSize;
@@ -20,26 +18,25 @@ class ComZanListModel {
   bool hasNextPage;
   int navigatePages;
 
-  ComZanListModel(
-      {this.pageNum,
-        this.pageSize,
-        this.size,
-        this.orderBy,
-        this.startRow,
-        this.endRow,
-        this.total,
-        this.pages,
-        this.list,
-        this.firstPage,
-        this.prePage,
-        this.nextPage,
-        this.lastPage,
-        this.isFirstPage,
-        this.isLastPage,
-        this.hasPreviousPage,
-        this.hasNextPage,
-        this.navigatePages,
-      });
+  ComZanListModel({this.pageNum,
+    this.pageSize,
+    this.size,
+    this.orderBy,
+    this.startRow,
+    this.endRow,
+    this.total,
+    this.pages,
+    this.list,
+    this.firstPage,
+    this.prePage,
+    this.nextPage,
+    this.lastPage,
+    this.isFirstPage,
+    this.isLastPage,
+    this.hasPreviousPage,
+    this.hasNextPage,
+    this.navigatePages,
+  });
 
   ComZanListModel.fromJson(Map<String, dynamic> json) {
     pageNum = json['pageNum'];
@@ -51,9 +48,9 @@ class ComZanListModel {
     total = json['total'];
     pages = json['pages'];
     if (json['list'] != null) {
-      list = new List<ComZanModel>();
+      list = List<ComZanModel>();
       json['list'].forEach((v) {
-        list.add(new ComZanModel.fromJson(v));
+        list.add(ComZanModel.fromJson(v));
       });
     }
     firstPage = json['firstPage'];
@@ -65,10 +62,10 @@ class ComZanListModel {
     hasPreviousPage = json['hasPreviousPage'];
     hasNextPage = json['hasNextPage'];
     navigatePages = json['navigatePages'];
-   }
+  }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['pageNum'] = this.pageNum;
     data['pageSize'] = this.pageSize;
     data['size'] = this.size;
@@ -89,7 +86,7 @@ class ComZanListModel {
     data['hasPreviousPage'] = this.hasPreviousPage;
     data['hasNextPage'] = this.hasNextPage;
     data['navigatePages'] = this.navigatePages;
-     return data;
+    return data;
   }
 }
 
@@ -107,19 +104,18 @@ class ComZanModel {
   int ismember;
   int isvertify;
 
-  ComZanModel(
-      {this.userid,
-        this.username,
-        this.userheadurl,
-        this.createtime,
-        this.content,
-        this.tail,
-        this.weiboid,
-        this.weibcontent,
-        this.weibousername,
-        this.weibopicurl,
-        this.ismember,
-        this.isvertify});
+  ComZanModel({this.userid,
+    this.username,
+    this.userheadurl,
+    this.createtime,
+    this.content,
+    this.tail,
+    this.weiboid,
+    this.weibcontent,
+    this.weibousername,
+    this.weibopicurl,
+    this.ismember,
+    this.isvertify});
 
   ComZanModel.fromJson(Map<String, dynamic> json) {
     userid = json['userid'];
@@ -137,7 +133,7 @@ class ComZanModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['userid'] = this.userid;
     data['username'] = this.username;
     data['userheadurl'] = this.userheadurl;

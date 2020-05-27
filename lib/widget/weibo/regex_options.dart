@@ -1,4 +1,3 @@
-
 /// RegexOptions
 class RegexOptions {
   /// Creates a RegexOptions object

@@ -12,10 +12,10 @@ class FeedBackPage extends StatefulWidget {
 }
 
 class _FeedBackPageState extends State<FeedBackPage> {
-  TextEditingController _mEtController = new TextEditingController();
+  TextEditingController _mEtController = TextEditingController();
   List<File> mFileList = List();
   File mSelectedImageFile;
-  List<UploadFileInfo> mSubmitFileList = List();
+  List<MultipartFile> mSubmitFileList = List();
 
   @override
   Widget build(BuildContext context) {
@@ -48,19 +48,19 @@ class _FeedBackPageState extends State<FeedBackPage> {
     //弹出底部选择图片方式弹出框
     Widget _bottomSheetBuilder(BuildContext context) {
       return Container(
-          height: 182.0,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 30.0),
-            child: Column(
-              children: <Widget>[
-                _renderBottomMenuItem("相机拍照", ImageSource.camera),
-                Divider(
-                  height: 2.0,
-                ),
-                _renderBottomMenuItem("图库选择照片", ImageSource.gallery)
-              ],
-            ),
-          ));
+        height: 182.0,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 30.0),
+          child: Column(
+            children: <Widget>[
+              _renderBottomMenuItem("相机拍照", ImageSource.camera),
+              Divider(
+                height: 2.0,
+              ),
+              _renderBottomMenuItem("图库选择照片", ImageSource.gallery)
+            ],
+          ),
+        ));
     }
 
     // 选择弹出相机拍照或者从图库选择图片
@@ -74,20 +74,20 @@ class _FeedBackPageState extends State<FeedBackPage> {
         return;
       }
       showModalBottomSheet<void>(
-          context: context, builder: _bottomSheetBuilder);
+        context: context, builder: _bottomSheetBuilder);
     }
 
     //底部布局
     Widget mFootView() {
-      return new Container(
+      return Container(
         color: Color(0xFFF9F9F9),
-        //alignment:new Alignment(x, y)
-        child: new Align(
+        //alignment:Alignment(x, y)
+        child: Align(
           alignment: FractionalOffset.bottomCenter,
-          child: new Padding(
+          child: Padding(
             padding: EdgeInsets.all(10),
-            child: new Row(children: <Widget>[
-              new Expanded(
+            child: Row(children: <Widget>[
+              Expanded(
                 child: InkWell(
                   child: Image.asset(
                     Constant.ASSETS_IMG + 'icon_picture.png',
@@ -98,7 +98,7 @@ class _FeedBackPageState extends State<FeedBackPage> {
                 ),
                 flex: 1,
               ),
-              new Expanded(
+              Expanded(
                 child: InkWell(
                   child: Image.asset(
                     Constant.ASSETS_IMG + 'icon_mention.png',
@@ -109,7 +109,7 @@ class _FeedBackPageState extends State<FeedBackPage> {
                 ),
                 flex: 1,
               ),
-              new Expanded(
+              Expanded(
                 child: InkWell(
                   child: Image.asset(
                     Constant.ASSETS_IMG + 'icon_gif.png',
@@ -120,7 +120,7 @@ class _FeedBackPageState extends State<FeedBackPage> {
                 ),
                 flex: 1,
               ),
-              new Expanded(
+              Expanded(
                 child: InkWell(
                   child: Image.asset(
                     Constant.ASSETS_IMG + 'icon_emotion.png',
@@ -131,7 +131,7 @@ class _FeedBackPageState extends State<FeedBackPage> {
                 ),
                 flex: 1,
               ),
-              new Expanded(
+              Expanded(
                 child: InkWell(
                   child: Image.asset(
                     Constant.ASSETS_IMG + 'icon_add.png',
@@ -158,25 +158,23 @@ class _FeedBackPageState extends State<FeedBackPage> {
             children: <Widget>[
               Text('取消', style: TextStyle(fontSize: 16, color: Colors.black)),
               Expanded(
-                  child: Center(
-                child: Text('意见反馈',
+                child: Center(
+                  child: Text('意见反馈',
                     style: TextStyle(fontSize: 16, color: Colors.black)),
-              )),
-              new InkWell(
+                )),
+              InkWell(
                 child: Text('发送',
-                    style: TextStyle(fontSize: 16, color: Colors.black)),
+                  style: TextStyle(fontSize: 16, color: Colors.black)),
                 onTap: () {
                   mSubmitFileList.clear();
                   for (int i = 0; i < mFileList.length; i++) {
-                    mSubmitFileList.add(new UploadFileInfo(
-                        mFileList.elementAt(i),
-                        basename(mFileList.elementAt(i).path)));
+                    mSubmitFileList.add(MultipartFile.fromFileSync(mFileList[i].path));
                   }
-                  FormData formData = FormData.from({
+                  var formData = {
                     "description": _mEtController.text,
                     "files": mSubmitFileList
-                  });
-                  request(ServiceUrl.feedback, formData: formData).then((val) {
+                  };
+                  request(ServiceUrl.feedback, formData: FormData.fromMap(formData)).then((val) {
                     int code = val['status'];
                     String msg = val['msg'];
                     if (code == 200) {
@@ -233,11 +231,11 @@ class _FeedBackPageState extends State<FeedBackPage> {
                 if (index == mFileList.length) {
                   // 添加图片按钮
                   var addCell = Center(
-                      child: Image.asset(
-                    Constant.ASSETS_IMG + 'mine_feedback_add_image.png',
-                    width: double.infinity,
-                    height: double.infinity,
-                  ));
+                    child: Image.asset(
+                      Constant.ASSETS_IMG + 'mine_feedback_add_image.png',
+                      width: double.infinity,
+                      height: double.infinity,
+                    ));
                   content = GestureDetector(
                     onTap: () {
                       // 添加图片
@@ -290,17 +288,17 @@ class _FeedBackPageState extends State<FeedBackPage> {
     }
 
     return SafeArea(
-        child: Scaffold(
-      body: Container(
+      child: Scaffold(
+        body: Container(
           color: Colors.white,
           height: double.maxFinite,
-          child: new Column(
+          child: Column(
             children: <Widget>[
               mHeadView(),
               mBodyView(),
               mFootView(),
             ],
           )),
-    ));
+      ));
   }
 }

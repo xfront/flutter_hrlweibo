@@ -21,7 +21,7 @@ class _MessageDynamicPageState extends State<MessageDynamicPage> {
             fit: BoxFit.fill,
           ),
           Text("你暂时还没有动态",
-              style: TextStyle(color: Color(0xff333333), fontSize: 14)),
+            style: TextStyle(color: Color(0xff333333), fontSize: 14)),
         ],
       ),
     );

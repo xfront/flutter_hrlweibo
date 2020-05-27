@@ -8,18 +8,15 @@ import 'package:flutter_hrlweibo/public.dart';
 class DioManager {
   //写一个单例
   //在 Dart 里，带下划线开头的变量是私有变量
-  static DioManager _instance;
+  static final DioManager _instance = DioManager._internal();
 
-  static DioManager getInstance() {
-    if (_instance == null) {
-      _instance = DioManager();
-    }
+  factory DioManager() {
     return _instance;
   }
 
-  Dio dio = new Dio();
+  Dio dio = Dio();
 
-  DioManager() {
+  DioManager._internal() {
     dio.options.baseUrl = Constant.baseUrl;
     dio.options.connectTimeout = 5000;
     dio.options.receiveTimeout = 3000;
@@ -28,25 +25,24 @@ class DioManager {
   }
 
 //get请求
-  get(String url, FormData params, Function successCallBack,
-      Function errorCallBack) async {
+  get(String url, Map params, Function successCallBack,
+    Function errorCallBack) async {
     _requstHttp(url, successCallBack, 'get', params, errorCallBack);
   }
 
   //post请求
-  post(String url, params, Function successCallBack,
-      Function errorCallBack) async {
+  post(String url, Map params, Function successCallBack,
+    Function errorCallBack) async {
     _requstHttp(url, successCallBack, "post", params, errorCallBack);
   }
 
   //post请求
-  postNoParams(
-      String url, Function successCallBack, Function errorCallBack) async {
+  postNoParams(String url, Function successCallBack, Function errorCallBack) async {
     _requstHttp(url, successCallBack, "post", null, errorCallBack);
   }
 
   _requstHttp(String url, Function successCallBack,
-      [String method, FormData params, Function errorCallBack]) async {
+    [String method, Map params, Function errorCallBack]) async {
     Response response;
     try {
       if (method == 'get') {
@@ -57,7 +53,7 @@ class DioManager {
         }
       } else if (method == 'post') {
         if (params != null && params.isNotEmpty) {
-          response = await dio.post(url, data: params);
+          response = await dio.post(url, data: FormData.fromMap(params));
         } else {
           response = await dio.post(url);
         }
@@ -68,7 +64,7 @@ class DioManager {
       if (error.response != null) {
         errorResponse = error.response;
       } else {
-        errorResponse = new Response(statusCode: 201);
+        errorResponse = Response(statusCode: 201);
       }
       // debug模式才打印
       if (Constant.ISDEBUG) {
@@ -107,8 +103,8 @@ class DioManager {
 
 Future request(url, {formData}) async {
   Response response;
-  Dio dio = new Dio();
-  dio.options.contentType = ContentType.parse("application/json;charset=UTF-8");
+  Dio dio = Dio();
+  dio.options.contentType = ("application/json;charset=UTF-8");
   if (formData == null) {
     response = await dio.post(url);
   } else {
@@ -124,7 +120,7 @@ Future request(url, {formData}) async {
 
   if (response.statusCode == 200) {
     print('响应数据：' + response.toString());
-    /*  var  obj=new Map<String, dynamic>.from(response.data);
+    /*  var  obj=Map<String, dynamic>.from(response.data);
         int code=obj['status'];
         String msg=obj['msg'];
         if (code== 200) {

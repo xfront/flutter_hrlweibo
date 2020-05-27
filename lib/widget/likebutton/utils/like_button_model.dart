@@ -18,15 +18,16 @@ class BubblesColor {
   });
 
   Color get dotThirdColorReal =>
-      dotThirdColor == null ? dotPrimaryColor : dotThirdColor;
+    dotThirdColor == null ? dotPrimaryColor : dotThirdColor;
 
   Color get dotLastColorReal =>
-      dotLastColor == null ? dotSecondaryColor : dotLastColor;
+    dotLastColor == null ? dotSecondaryColor : dotLastColor;
 }
 
 class CircleColor {
   final Color start;
   final Color end;
+
   const CircleColor({
     @required this.start,
     @required this.end,

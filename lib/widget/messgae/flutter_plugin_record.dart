@@ -8,7 +8,7 @@ class FlutterPluginRecord {
 
   static final _uuid = "123456";
   String id;
-  static final alis = new Map<String, FlutterPluginRecord>();
+  static final alis = Map<String, FlutterPluginRecord>();
 
   FlutterPluginRecord() {
     id = _uuid;
@@ -18,7 +18,7 @@ class FlutterPluginRecord {
 
   ///Flutter  调用原生初始化
   Future<dynamic> _invokeMethod(String method,
-      [Map<String, dynamic> arguments = const {}]) {
+    [Map<String, dynamic> arguments = const {}]) {
     Map<String, dynamic> withId = Map.of(arguments);
     withId['id'] = id;
     _channel.setMethodCallHandler(_handler);
@@ -27,22 +27,22 @@ class FlutterPluginRecord {
 
   ///初始化init的回调
   StreamController<bool> _responseInitController =
-      new StreamController.broadcast();
+  StreamController.broadcast();
 
   Stream<bool> get responseFromInit => _responseInitController.stream;
 
   ///开始录制 停止录制的回调监听
   StreamController<RecordResponse> _responseController =
-      new StreamController.broadcast();
+  StreamController.broadcast();
 
   Stream<RecordResponse> get response => _responseController.stream;
 
   ///音量高低的回调
   StreamController<RecordResponse> _responseAmplitudeController =
-      new StreamController.broadcast();
+  StreamController.broadcast();
 
   Stream<RecordResponse> get responseFromAmplitude =>
-      _responseAmplitudeController.stream;
+    _responseAmplitudeController.stream;
 
   ///原生回调
   static Future<dynamic> _handler(MethodCall methodCall) {
@@ -60,7 +60,7 @@ class FlutterPluginRecord {
         break;
       case "onStart":
         if ("success" == methodCall.arguments["result"]) {
-          RecordResponse res = new RecordResponse(
+          RecordResponse res = RecordResponse(
             success: true,
             path: "",
             msg: "onStart",
@@ -72,11 +72,11 @@ class FlutterPluginRecord {
         break;
       case "onStop":
         if ("success" == methodCall.arguments["result"]) {
-          RecordResponse res = new RecordResponse(
+          RecordResponse res = RecordResponse(
             success: true,
             path: methodCall.arguments["voicePath"].toString(),
             audioTimeLength:
-                double.parse(methodCall.arguments["audioTimeLength"]),
+            double.parse(methodCall.arguments["audioTimeLength"]),
             msg: "onStop",
             key: methodCall.arguments["key"].toString(),
           );
@@ -85,7 +85,7 @@ class FlutterPluginRecord {
 
         break;
       case "onPlay":
-        RecordResponse res = new RecordResponse(
+        RecordResponse res = RecordResponse(
           success: true,
           path: "",
           msg: "播放成功",
@@ -95,7 +95,7 @@ class FlutterPluginRecord {
         break;
       case "onAmplitude":
         if ("success" == methodCall.arguments["result"]) {
-          RecordResponse res = new RecordResponse(
+          RecordResponse res = RecordResponse(
             success: true,
             path: "",
             msg: methodCall.arguments["amplitude"].toString(),

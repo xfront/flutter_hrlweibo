@@ -10,13 +10,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin {
+  with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          new Expanded(child: new TabBarWidget()),
+          Expanded(child: TabBarWidget()),
         ],
       ),
     );
@@ -59,59 +59,59 @@ class _TabBarWidgetState extends State<TabBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      child: Column(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Container(
-                height: 50,
-                color: Color(0xffF9F9F9),
-                //  color:Colors.red,
-                alignment: Alignment.center,
-                child: TabBar(
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Stack(
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  color: Color(0xffF9F9F9),
+                  //  color:Colors.red,
+                  alignment: Alignment.center,
+                  child: TabBar(
                     isScrollable: true,
                     indicatorColor: Color(0xffFF3700),
                     indicator: UnderlineTabIndicator(
-                        borderSide:
-                            BorderSide(color: Color(0xffFF3700), width: 2),
-                        insets: EdgeInsets.only(bottom: 7)),
+                      borderSide:
+                      BorderSide(color: Color(0xffFF3700), width: 2),
+                      insets: EdgeInsets.only(bottom: 7)),
                     labelColor: Color(0xff333333),
                     unselectedLabelColor: Color(0xff666666),
                     labelStyle:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
+                    TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
                     unselectedLabelStyle: TextStyle(fontSize: 16.0),
                     indicatorSize: TabBarIndicatorSize.label,
                     controller: _controller,
                     tabs: [
-                      new Tab(
+                      Tab(
                         text: _tabValues[0],
                       ),
-                      new Tab(
+                      Tab(
                         text: _tabValues[1],
                       ),
                     ]),
-              ),
-              new Align(
-                alignment: Alignment.topRight,
-                child: new IconButton(
-                  icon: new Image.asset("assets/images/ic_main_add.png",
-                      width: 40.0, height: 40.0),
-                  onPressed: () {
-                    Routes.navigateTo(context, '${Routes.weiboPublishPage}');
-                  },
                 ),
-              ),
-            ],
-          ),
-          new Expanded(
-            child: TabBarView(
-              controller: _controller,
-              children: <Widget>[new WeiBoFollowPage(), new WeiBoHotPage()],
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    icon: Image.asset("assets/images/ic_main_add.png",
+                      width: 40.0, height: 40.0),
+                    onPressed: () {
+                      Routes.navigateTo(context, '${Routes.weiboPublishPage}');
+                    },
+                  ),
+                ),
+              ],
             ),
-          )
-        ],
-      ),
-    ));
+            Expanded(
+              child: TabBarView(
+                controller: _controller,
+                children: <Widget>[WeiBoFollowPage(), WeiBoHotPage()],
+              ),
+            )
+          ],
+        ),
+      ));
   }
 }

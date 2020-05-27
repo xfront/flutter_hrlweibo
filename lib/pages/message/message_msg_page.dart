@@ -17,40 +17,43 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
           SliverToBoxAdapter(
             child: Container(
               child: Center(
-                  child: Container(
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(left: 15, top: 8, right: 15),
-                padding: EdgeInsets.only(top: 6, bottom: 6),
-                decoration: BoxDecoration(
-                  color: Color(0xffE4E2E8),
-                  borderRadius: BorderRadius.all(
-                    //圆角
-                    Radius.circular(10.0),
+                child: Container(
+                  width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                  margin: EdgeInsets.only(left: 15, top: 8, right: 15),
+                  padding: EdgeInsets.only(top: 6, bottom: 6),
+                  decoration: BoxDecoration(
+                    color: Color(0xffE4E2E8),
+                    borderRadius: BorderRadius.all(
+                      //圆角
+                      Radius.circular(10.0),
+                    ),
                   ),
-                ),
-                child: Center(
+                  child: Center(
                     child: Container(
-                        child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 5, top: 2),
-                      child: Image.asset(
-                        Constant.ASSETS_IMG + 'find_top_search.png',
-                        width: 12.0,
-                        height: 15.0,
-                      ),
-                    ),
-                    Text(
-                      "搜索",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          TextStyle(fontSize: 14, color: Color(0xffee565656)),
-                    ),
-                  ],
-                ))),
-              )),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            margin: EdgeInsets.only(right: 5, top: 2),
+                            child: Image.asset(
+                              Constant.ASSETS_IMG + 'find_top_search.png',
+                              width: 12.0,
+                              height: 15.0,
+                            ),
+                          ),
+                          Text(
+                            "搜索",
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style:
+                            TextStyle(fontSize: 14, color: Color(0xffee565656)),
+                          ),
+                        ],
+                      ))),
+                )),
             ),
           ),
           SliverToBoxAdapter(
@@ -75,7 +78,7 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                               Text(
                                 "@我的",
                                 style: TextStyle(
-                                    fontSize: 15, color: Colors.black),
+                                  fontSize: 15, color: Colors.black),
                               ),
                               Spacer(),
                               Container(
@@ -106,7 +109,7 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
             child: InkWell(
               onTap: () {
                 Routes.navigateTo(context, Routes.msgCommentPage,
-                    transition: TransitionType.fadeIn);
+                  transition: TransitionType.fadeIn);
               },
               child: Container(
                 //  margin: EdgeInsets.only( bottom: 10),
@@ -130,13 +133,13 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                                 Text(
                                   "评论",
                                   style: TextStyle(
-                                      fontSize: 15, color: Colors.black),
+                                    fontSize: 15, color: Colors.black),
                                 ),
                                 Spacer(),
                                 Container(
                                   child: Image.asset(
                                     Constant.ASSETS_IMG +
-                                        'icon_right_arrow.png',
+                                      'icon_right_arrow.png',
                                     width: 12.0,
                                     height: 15.0,
                                   ),
@@ -163,7 +166,7 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
             child: InkWell(
               onTap: () {
                 Routes.navigateTo(context, Routes.msgZanPage,
-                    transition: TransitionType.fadeIn);
+                  transition: TransitionType.fadeIn);
               },
               child: Container(
                 //  margin: EdgeInsets.only( bottom: 10),
@@ -186,13 +189,13 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                                 Text(
                                   "赞",
                                   style: TextStyle(
-                                      fontSize: 15, color: Colors.black),
+                                    fontSize: 15, color: Colors.black),
                                 ),
                                 Spacer(),
                                 Container(
                                   child: Image.asset(
                                     Constant.ASSETS_IMG +
-                                        'icon_right_arrow.png',
+                                      'icon_right_arrow.png',
                                     width: 12.0,
                                     height: 15.0,
                                   ),
@@ -221,7 +224,7 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
             child: InkWell(
               onTap: () {
                 Routes.navigateTo(context, Routes.chatPage,
-                    transition: TransitionType.fadeIn);
+                  transition: TransitionType.fadeIn);
               },
               child: Container(
                 height: 65,
@@ -233,7 +236,7 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                       margin: EdgeInsets.only(left: 15, right: 15),
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(
-                            "https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg"),
+                          "https://c-ssl.duitang.com/uploads/item/201208/30/20120830173930_PBfJE.thumb.700_0.jpeg"),
                         radius: 20.0,
                       ),
                     ),
@@ -246,14 +249,14 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                               Text(
                                 "测试号001",
                                 style: TextStyle(
-                                    fontSize: 15, color: Colors.black),
+                                  fontSize: 15, color: Colors.black),
                               ),
                               Spacer(),
                               Container(
                                 child: Text(
                                   "19:22",
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                    fontSize: 12, color: Colors.grey),
                                 ),
                                 margin: EdgeInsets.only(right: 15),
                               )
@@ -266,28 +269,28 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                                 Text(
                                   "明天几点吃完饭?",
                                   style: TextStyle(
-                                      fontSize: 14, color: Colors.grey),
+                                    fontSize: 14, color: Colors.grey),
                                 ),
                                 Spacer(),
                                 Container(
                                   margin: EdgeInsets.only(right: 15),
                                   width: 15,
                                   height: 15,
-                                  decoration: new BoxDecoration(
-                                    border: new Border.all(
-                                        color: Colors.red, width: 0.5),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.red, width: 0.5),
                                     // 边色与边宽度
                                     color: Colors.red,
                                     // 底色
                                     //        shape: BoxShape.circle, // 圆形，使用圆形时不可以使用borderRadius
                                     shape: BoxShape.circle, // 默认值也是矩形
-                                    //    borderRadius: new BorderRadius.circular((20.0)), // 圆角度
+                                    //    borderRadius: BorderRadius.circular((20.0)), // 圆角度
                                   ),
                                   child: Center(
                                     child: Text(
                                       "2",
                                       style: TextStyle(
-                                          color: Colors.white, fontSize: 12),
+                                        color: Colors.white, fontSize: 12),
                                     ),
                                   ),
                                 )
@@ -316,7 +319,7 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
             child: InkWell(
               onTap: () {
                 Routes.navigateTo(context, Routes.chatPage,
-                    transition: TransitionType.fadeIn);
+                  transition: TransitionType.fadeIn);
               },
               child: Container(
                 height: 65,
@@ -328,7 +331,7 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                       margin: EdgeInsets.only(left: 15, right: 15),
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(
-                            "https://uploadfile.huiyi8.com/up/a2/e3/83/a2e3832e52216b846c80313049591938.jpg"),
+                          "https://uploadfile.huiyi8.com/up/a2/e3/83/a2e3832e52216b846c80313049591938.jpg"),
                         radius: 20.0,
                       ),
                     ),
@@ -341,14 +344,14 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                               Text(
                                 "测试号002",
                                 style: TextStyle(
-                                    fontSize: 15, color: Colors.black),
+                                  fontSize: 15, color: Colors.black),
                               ),
                               Spacer(),
                               Container(
                                 child: Text(
                                   "10:26",
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                    fontSize: 12, color: Colors.grey),
                                 ),
                                 margin: EdgeInsets.only(right: 15),
                               )
@@ -361,7 +364,7 @@ class _MessageMsgPageState extends State<MessageMsgPage> {
                                 Text(
                                   "可以啊,做的太好了",
                                   style: TextStyle(
-                                      fontSize: 14, color: Colors.grey),
+                                    fontSize: 14, color: Colors.grey),
                                 ),
                                 Spacer(),
                               ],

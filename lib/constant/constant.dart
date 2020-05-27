@@ -14,5 +14,5 @@ class Constant {
 
   static const int PAGE_SIZE = 10;
 
-  static final EventBus eventBus = new EventBus();
+  static final EventBus eventBus = EventBus();
 }

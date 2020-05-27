@@ -8,15 +8,14 @@ import 'package:path/path.dart' as p;
 class AudioRecorder {
   static const MethodChannel _channel = const MethodChannel('audio_recorder');
 
-   static LocalFileSystem fs = LocalFileSystem();
+  static LocalFileSystem fs = LocalFileSystem();
 
-  static Future start(
-      {String path, AudioOutputFormat audioOutputFormat}) async {
+  static Future start({String path, AudioOutputFormat audioOutputFormat}) async {
     String extension;
     if (path != null) {
       if (audioOutputFormat != null) {
         if (_convertStringInAudioOutputFormat(p.extension(path)) !=
-            audioOutputFormat) {
+          audioOutputFormat) {
           extension = _convertAudioOutputFormatInString(audioOutputFormat);
           path += extension;
         } else {
@@ -32,26 +31,26 @@ class AudioRecorder {
       }
       File file = fs.file(path);
       if (await file.exists()) {
-        throw new Exception("A file already exists at the path :" + path);
+        throw Exception("A file already exists at the path :" + path);
       } else if (!await file.parent.exists()) {
-        throw new Exception("The specified parent directory does not exist");
+        throw Exception("The specified parent directory does not exist");
       }
     } else {
       extension = ".m4a"; // default value
     }
     return _channel
-        .invokeMethod('start', {"path": path, "extension": extension});
+      .invokeMethod('start', {"path": path, "extension": extension});
   }
 
   static Future<Recording> stop() async {
     Map<String, Object> response =
-        Map.from(await _channel.invokeMethod('stop'));
-    Recording recording = new Recording(
-        duration: new Duration(milliseconds: response['duration']),
-        path: response['path'],
-        audioOutputFormat:
-            _convertStringInAudioOutputFormat(response['audioOutputFormat']),
-        extension: response['audioOutputFormat']);
+    Map.from(await _channel.invokeMethod('stop'));
+    Recording recording = Recording(
+      duration: Duration(milliseconds: response['duration']),
+      path: response['path'],
+      audioOutputFormat:
+      _convertStringInAudioOutputFormat(response['audioOutputFormat']),
+      extension: response['audioOutputFormat']);
     return recording;
   }
 
@@ -90,8 +89,7 @@ class AudioRecorder {
     }
   }
 
-  static String _convertAudioOutputFormatInString(
-      AudioOutputFormat outputFormat) {
+  static String _convertAudioOutputFormatInString(AudioOutputFormat outputFormat) {
     switch (outputFormat) {
       case AudioOutputFormat.WAV:
         return ".wav";
@@ -108,10 +106,13 @@ enum AudioOutputFormat { AAC, WAV }
 class Recording {
   // File path
   String path;
+
   // File extension
   String extension;
+
   // Audio duration in milliseconds
   Duration duration;
+
   // Audio output format
   AudioOutputFormat audioOutputFormat;
 

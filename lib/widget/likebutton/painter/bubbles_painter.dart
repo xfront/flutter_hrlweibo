@@ -44,7 +44,8 @@ class BubblesPainter extends CustomPainter {
   }) {
     outerBubblesPositionAngle = 360.0 / bubblesCount;
     for (int i = 0; i < circlePaints.length; i++) {
-      circlePaints[i] = new Paint()..style = PaintingStyle.fill;
+      circlePaints[i] = Paint()
+        ..style = PaintingStyle.fill;
     }
   }
 
@@ -69,38 +70,38 @@ class BubblesPainter extends CustomPainter {
     var start = outerBubblesPositionAngle / 4.0 * 3.0;
     for (int i = 0; i < bubblesCount; i++) {
       double cX = centerX +
-          currentRadius1 *
-              math.cos((degToRad(start + outerBubblesPositionAngle * i)));
+        currentRadius1 *
+          math.cos((degToRad(start + outerBubblesPositionAngle * i)));
       double cY = centerY +
-          currentRadius1 *
-              math.sin((degToRad(start + outerBubblesPositionAngle * i)));
+        currentRadius1 *
+          math.sin((degToRad(start + outerBubblesPositionAngle * i)));
       canvas.drawCircle(Offset(cX, cY), currentDotSize1,
-          circlePaints[(i) % circlePaints.length]);
+        circlePaints[(i) % circlePaints.length]);
     }
   }
 
   void _drawInnerBubblesFrame(Canvas canvas) {
     var start =
-        outerBubblesPositionAngle / 4.0 * 3.0 - outerBubblesPositionAngle / 2.0;
+      outerBubblesPositionAngle / 4.0 * 3.0 - outerBubblesPositionAngle / 2.0;
     for (int i = 0; i < bubblesCount; i++) {
       double cX = centerX +
-          currentRadius2 *
-              math.cos((degToRad(start + outerBubblesPositionAngle * i)));
+        currentRadius2 *
+          math.cos((degToRad(start + outerBubblesPositionAngle * i)));
       double cY = centerY +
-          currentRadius2 *
-              math.sin((degToRad(start + outerBubblesPositionAngle * i)));
+        currentRadius2 *
+          math.sin((degToRad(start + outerBubblesPositionAngle * i)));
       canvas.drawCircle(Offset(cX, cY), currentDotSize2,
-          circlePaints[(i + 1) % circlePaints.length]);
+        circlePaints[(i + 1) % circlePaints.length]);
     }
   }
 
   void _updateOuterBubblesPosition() {
     if (currentProgress < 0.3) {
       currentRadius1 = mapValueFromRangeToRange(
-          currentProgress, 0.0, 0.3, 0.0, maxOuterDotsRadius * 0.8);
+        currentProgress, 0.0, 0.3, 0.0, maxOuterDotsRadius * 0.8);
     } else {
       currentRadius1 = mapValueFromRangeToRange(currentProgress, 0.3, 1.0,
-          0.8 * maxOuterDotsRadius, maxOuterDotsRadius);
+        0.8 * maxOuterDotsRadius, maxOuterDotsRadius);
     }
     if (currentProgress == 0) {
       currentDotSize1 = 0;
@@ -108,14 +109,14 @@ class BubblesPainter extends CustomPainter {
       currentDotSize1 = maxDotSize;
     } else {
       currentDotSize1 =
-          mapValueFromRangeToRange(currentProgress, 0.7, 1.0, maxDotSize, 0.0);
+        mapValueFromRangeToRange(currentProgress, 0.7, 1.0, maxDotSize, 0.0);
     }
   }
 
   void _updateInnerBubblesPosition() {
     if (currentProgress < 0.3) {
       currentRadius2 = mapValueFromRangeToRange(
-          currentProgress, 0.0, 0.3, 0.0, maxInnerDotsRadius);
+        currentProgress, 0.0, 0.3, 0.0, maxInnerDotsRadius);
     } else {
       currentRadius2 = maxInnerDotsRadius;
     }
@@ -125,20 +126,20 @@ class BubblesPainter extends CustomPainter {
       currentDotSize2 = maxDotSize;
     } else if (currentProgress < 0.5) {
       currentDotSize2 = mapValueFromRangeToRange(
-          currentProgress, 0.2, 0.5, maxDotSize, 0.3 * maxDotSize);
+        currentProgress, 0.2, 0.5, maxDotSize, 0.3 * maxDotSize);
     } else {
       currentDotSize2 = mapValueFromRangeToRange(
-          currentProgress, 0.5, 1.0, maxDotSize * 0.3, 0.0);
+        currentProgress, 0.5, 1.0, maxDotSize * 0.3, 0.0);
     }
   }
 
   void _updateBubblesPaints() {
     double progress = clamp(currentProgress, 0.6, 1.0);
     int alpha =
-        mapValueFromRangeToRange(progress, 0.6, 1.0, 255.0, 0.0).toInt();
+    mapValueFromRangeToRange(progress, 0.6, 1.0, 255.0, 0.0).toInt();
     if (currentProgress < 0.5) {
       double progress =
-          mapValueFromRangeToRange(currentProgress, 0.0, 0.5, 0.0, 1.0);
+      mapValueFromRangeToRange(currentProgress, 0.0, 0.5, 0.0, 1.0);
       circlePaints[0]
         ..color = Color.lerp(color1, color2, progress).withAlpha(alpha);
       circlePaints[1]
@@ -149,7 +150,7 @@ class BubblesPainter extends CustomPainter {
         ..color = Color.lerp(color4, color1, progress).withAlpha(alpha);
     } else {
       double progress =
-          mapValueFromRangeToRange(currentProgress, 0.5, 1.0, 0.0, 1.0);
+      mapValueFromRangeToRange(currentProgress, 0.5, 1.0, 0.0, 1.0);
       circlePaints[0]
         ..color = Color.lerp(color2, color3, progress).withAlpha(alpha);
       circlePaints[1]

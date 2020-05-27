@@ -21,7 +21,7 @@ class MyNoticeVecAnimation extends StatefulWidget {
 }
 
 class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
-    with TickerProviderStateMixin {
+  with TickerProviderStateMixin {
   AnimationController _controller;
 
   int _nextMassage = 0;
@@ -50,7 +50,7 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right:5,top: 2),
+                  margin: EdgeInsets.only(right: 5, top: 2),
                   child: Image.asset(
                     Constant.ASSETS_IMG + 'find_top_search.png',
                     width: 12.0,
@@ -62,7 +62,7 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                      fontSize: 14, color: Color(0xffee565656)),
+                    fontSize: 14, color: Color(0xffee565656)),
                 ),
               ],
             ),
@@ -82,19 +82,19 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
 
   //纵向滚动
   void _startVerticalAni() {
-    if(_controller!=null)
+    if (_controller != null)
       return;
     // TODO: implement initState
     _controller = AnimationController(duration: widget.duration, vsync: this);
 
     _opacityAni1 = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
-          parent: _controller, curve: Interval(0.0, 0.1, curve: Curves.linear)),
+        parent: _controller, curve: Interval(0.0, 0.1, curve: Curves.linear)),
     );
 
     _opacityAni2 = Tween<double>(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
-          parent: _controller, curve: Interval(0.9, 1.0, curve: Curves.linear)),
+        parent: _controller, curve: Interval(0.9, 1.0, curve: Curves.linear)),
     );
 
     _positionAni1 = Tween<Offset>(
@@ -102,7 +102,7 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
       end: const Offset(0.0, 0.0),
     ).animate(
       CurvedAnimation(
-          parent: _controller, curve: Interval(0.0, 0.1, curve: Curves.linear)),
+        parent: _controller, curve: Interval(0.0, 0.1, curve: Curves.linear)),
     );
 
     _positionAni2 = Tween<Offset>(
@@ -110,7 +110,7 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
       end: const Offset(0.0, -0.3),
     ).animate(
       CurvedAnimation(
-          parent: _controller, curve: Interval(0.9, 1.0, curve: Curves.linear)),
+        parent: _controller, curve: Interval(0.9, 1.0, curve: Curves.linear)),
     );
 
     _controller
@@ -135,13 +135,10 @@ class _MyNoticeVecAnimationState extends State<MyNoticeVecAnimation>
   //释放
   @override
   void dispose() {
-
     _controller.dispose();
-    _controller=null;
-     super.dispose();
+    _controller = null;
+    super.dispose();
   }
-
-
 
 
 }

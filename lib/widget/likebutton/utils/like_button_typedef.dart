@@ -15,7 +15,7 @@ typedef LikeWidgetBuilder = Widget Function(bool isLiked);
 
 ///build widget when likeCount is changing
 typedef LikeCountWidgetBuilder = Widget Function(
-    int likeCount, bool isLiked, String text);
+  int likeCount, bool isLiked, String text);
 
 enum LikeCountAnimationType {
   //no animation

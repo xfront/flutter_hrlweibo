@@ -24,32 +24,32 @@ bool _isShowDelete = false;
 class _PwdEditTextState extends State<PwdEditText> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controller = new TextEditingController.fromValue(
-        TextEditingValue(
-            text: _inputAccount,
-            selection: new TextSelection.fromPosition(TextPosition(
-                affinity: TextAffinity.downstream,
-                offset: _inputAccount.length))));
-    return new Container(
-      child: new TextField(
+    TextEditingController _controller = TextEditingController.fromValue(
+      TextEditingValue(
+        text: _inputAccount,
+        selection: TextSelection.fromPosition(TextPosition(
+          affinity: TextAffinity.downstream,
+          offset: _inputAccount.length))));
+    return Container(
+      child: TextField(
         controller: _controller,
-        style: TextStyle(color: Color(0xff333333),fontSize: 14),
+        style: TextStyle(color: Color(0xff333333), fontSize: 14),
         decoration: InputDecoration(
           counterText: "",
           hintText: "请输入密码",
-          contentPadding: EdgeInsets.only(left: 0,top: 14 ,bottom: 14),
-          hintStyle: TextStyle(color: Color(0xff8C8C8C),fontSize: 14),
+          contentPadding: EdgeInsets.only(left: 0, top: 14, bottom: 14),
+          hintStyle: TextStyle(color: Color(0xff8C8C8C), fontSize: 14),
           focusedBorder: UnderlineInputBorder(
-              borderSide:  BorderSide(color: Colors.orange)),
+            borderSide: BorderSide(color: Colors.orange)),
           enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Color(0xffDADADA))),
+            borderSide: BorderSide(color: Color(0xffDADADA))),
           fillColor: Colors.transparent,
           filled: true,
-           suffixIcon: _isShowDelete
-              ? new Container(
-            width:14.0,
+          suffixIcon: _isShowDelete
+            ? Container(
+            width: 14.0,
             height: 14.0,
-            child: new IconButton(
+            child: IconButton(
               padding: const EdgeInsets.all(0.0),
               iconSize: 14.0,
               icon: Image.asset(
@@ -66,7 +66,7 @@ class _PwdEditTextState extends State<PwdEditText> {
               },
             ),
           )
-              : Text(''),
+            : Text(''),
 
         ),
         onChanged: (str) {

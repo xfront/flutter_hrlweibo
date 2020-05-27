@@ -10,46 +10,46 @@ class AtText extends SpecialText {
   final bool showAtBackground;
 
   AtText(TextStyle textStyle, SpecialTextGestureTapCallback onTap,
-      {this.showAtBackground = false, this.start})
-      : super(flag, ']', textStyle, onTap: onTap);
+    {this.showAtBackground = false, this.start})
+    : super(flag, ']', textStyle, onTap: onTap);
 
   @override
   InlineSpan finishText() {
     final textStyle =
-        this.textStyle?.copyWith(color: Colors.blue, fontSize: 16.0);
+    this.textStyle?.copyWith(color: Colors.blue, fontSize: 16.0);
 
     final atText = toString();
-    Pattern  pattern= r"\[(@[^:]+):([^\]]+)\]";
+    Pattern pattern = r"\[(@[^:]+):([^\]]+)\]";
 
     Map<String, String> map = Map<String, String>();
     RegExp customRegExp = RegExp(pattern);
     Match match = customRegExp.firstMatch(atText);
 
 
-
     return showAtBackground
-        ? BackgroundTextSpan(
-            background: Paint()..color = Colors.blue.withOpacity(0.15),
-            text:  match.group(1),
-            actualText:atText,
-            start: start,
+      ? BackgroundTextSpan(
+      background: Paint()
+        ..color = Colors.blue.withOpacity(0.15),
+      text: match.group(1),
+      actualText: atText,
+      start: start,
 
-            ///caret can move into special text
-            deleteAll: true,
-            style: textStyle,
-            recognizer: (TapGestureRecognizer()
-              ..onTap = () {
-                if (onTap != null) onTap(atText);
-              }))
-        : SpecialTextSpan(
-        text:   match.group(1),
-        actualText:atText,
-            start: start,
-            style: textStyle,
-            recognizer: (TapGestureRecognizer()
-              ..onTap = () {
-                if (onTap != null) onTap(atText);
-              }));
+      ///caret can move into special text
+      deleteAll: true,
+      style: textStyle,
+      recognizer: (TapGestureRecognizer()
+        ..onTap = () {
+          if (onTap != null) onTap(atText);
+        }))
+      : SpecialTextSpan(
+      text: match.group(1),
+      actualText: atText,
+      start: start,
+      style: textStyle,
+      recognizer: (TapGestureRecognizer()
+        ..onTap = () {
+          if (onTap != null) onTap(atText);
+        }));
   }
 }
 

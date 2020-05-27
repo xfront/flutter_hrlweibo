@@ -38,7 +38,7 @@ class ChatBottomInputWidget extends StatefulWidget {
 }
 
 class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
-    with WidgetsBindingObserver, TickerProviderStateMixin {
+  with WidgetsBindingObserver, TickerProviderStateMixin {
   String mCurrentType = _initType;
 
   FocusNode focusNode = FocusNode();
@@ -48,7 +48,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
   TextEditingController mEditController = TextEditingController();
 
   StreamController<String> inputContentStreamController =
-      StreamController.broadcast();
+  StreamController.broadcast();
 
   Stream<String> get inputContentStream => inputContentStreamController.stream;
 
@@ -63,7 +63,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
   bool mEmojiLayoutShow = false;
 
   KeyboardVisibilityNotification _keyboardVisibility =
-      new KeyboardVisibilityNotification();
+  KeyboardVisibilityNotification();
 
   StreamSubscription streamSubscription;
 
@@ -89,7 +89,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
     if (widget.shouldTriggerChange != old.shouldTriggerChange) {
       streamSubscription.cancel();
       streamSubscription =
-          widget.shouldTriggerChange.listen((_) => hideBottomLayout());
+        widget.shouldTriggerChange.listen((_) => hideBottomLayout());
     }
   }
 
@@ -112,8 +112,8 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
   void initState() {
     super.initState();
     streamSubscription =
-        widget.shouldTriggerChange.listen((_) => hideBottomLayout());
-     WidgetsBinding.instance.addObserver(this);
+      widget.shouldTriggerChange.listen((_) => hideBottomLayout());
+    WidgetsBinding.instance.addObserver(this);
     //   focusNode.addListener(onFocus);
 //    widget.controller.addListener(_onInputChange);
     mEditController.addListener(() {
@@ -129,11 +129,11 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
     _keyboardVisibility.addNewListener(
       onChange: (bool visible) {
         print("mBottomLayoutShow:" +
-            mBottomLayoutShow.toString() +
-            "mEmojiLayoutShow:" +
-            mEmojiLayoutShow.toString() +
-            "mAddLayoutShow:" +
-            mAddLayoutShow.toString());
+          mBottomLayoutShow.toString() +
+          "mEmojiLayoutShow:" +
+          mEmojiLayoutShow.toString() +
+          "mAddLayoutShow:" +
+          mAddLayoutShow.toString());
         if (visible) {
           mBottomLayoutShow = true;
 
@@ -146,8 +146,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
           }
         } else {
           if (mBottomLayoutShow) {
-            if (mAddLayoutShow) {
-            } else {
+            if (mAddLayoutShow) {} else {
               if (!mEmojiLayoutShow) {
                 mBottomLayoutShow = false;
                 setState(() {});
@@ -163,13 +162,13 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
     // 申请权限
 
     Map<PermissionGroup, PermissionStatus> permissions =
-        await PermissionHandler().requestPermissions(
-            [PermissionGroup.storage, PermissionGroup.microphone]);
+    await PermissionHandler().requestPermissions(
+      [PermissionGroup.storage, PermissionGroup.microphone]);
 
     // 申请结果
 
     PermissionStatus permission = await PermissionHandler()
-        .checkPermissionStatus(PermissionGroup.storage);
+      .checkPermissionStatus(PermissionGroup.storage);
 
     if (permission == PermissionStatus.granted) {
       //  Fluttertoast.showToast(msg: "权限申请通过");
@@ -209,7 +208,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
   }
 
   Widget mRecordButton() {
-    return new ImageButton(
+    return ImageButton(
       onPressed: () {
         this.mCurrentType = "voice";
         hideSoftKey();
@@ -217,18 +216,18 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
         mEmojiLayoutShow = false;
         setState(() {});
       },
-      image: new AssetImage(Constant.ASSETS_IMG + "ic_audio.png"),
+      image: AssetImage(Constant.ASSETS_IMG + "ic_audio.png"),
     );
   }
 
   Widget mKeyBoardButton() {
-    return new ImageButton(
+    return ImageButton(
       onPressed: () {
         this.mCurrentType = "text";
         showSoftKey();
         setState(() {});
       },
-      image: new AssetImage(Constant.ASSETS_IMG + "ic_keyboard.png"),
+      image: AssetImage(Constant.ASSETS_IMG + "ic_keyboard.png"),
     );
   }
 
@@ -262,7 +261,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
           filled: true,
           fillColor: Colors.white,
           contentPadding:
-              EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+          EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
           enabledBorder: const OutlineInputBorder(
             borderSide: const BorderSide(color: Colors.white, width: 0.0),
             borderRadius: const BorderRadius.all(const Radius.circular(5.0)),
@@ -306,7 +305,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
   }
 
   Widget mEmojiButton() {
-    return new ImageButton(
+    return ImageButton(
       onPressed: () {
         this.mCurrentType = "emoji";
         _getWH();
@@ -318,12 +317,12 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
 
         _getWH();
       },
-      image: new AssetImage(Constant.ASSETS_IMG + "ic_emoji.png"),
+      image: AssetImage(Constant.ASSETS_IMG + "ic_emoji.png"),
     );
   }
 
   Widget mEmojiKeyBoardButton() {
-    return new ImageButton(
+    return ImageButton(
       onPressed: () {
         _getWH();
         this.mCurrentType = "text2";
@@ -332,7 +331,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
         setState(() {});
         showSoftKey();
       },
-      image: new AssetImage(Constant.ASSETS_IMG + "ic_keyboard.png"),
+      image: AssetImage(Constant.ASSETS_IMG + "ic_keyboard.png"),
     );
   }
 
@@ -342,41 +341,41 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
       builder: (context, snapshot) {
         final sendButton = buildSend();
         final extraButton = ImageButton(
-            image: new AssetImage(Constant.ASSETS_IMG + "ic_add.png"),
-            onPressed: () {
-              this.mCurrentType = "extra";
-              if (mBottomLayoutShow) {
-                if (mAddLayoutShow) {
-                  showSoftKey();
-                  mBottomLayoutShow = true;
-                  mAddLayoutShow = false;
-                  setState(() {});
-                } else {
-                  mBottomLayoutShow = true;
-                  mAddLayoutShow = true;
-                  hideSoftKey();
-                  setState(() {});
-                }
+          image: AssetImage(Constant.ASSETS_IMG + "ic_add.png"),
+          onPressed: () {
+            this.mCurrentType = "extra";
+            if (mBottomLayoutShow) {
+              if (mAddLayoutShow) {
+                showSoftKey();
+                mBottomLayoutShow = true;
+                mAddLayoutShow = false;
+                setState(() {});
               } else {
-                if (focusNode.hasFocus) {
-                  hideSoftKey();
-                  Future.delayed(const Duration(milliseconds: 50), () {
-                    setState(() {
-                      mBottomLayoutShow = true;
-                      mAddLayoutShow = true;
-                    });
-                  });
-                } else {
-                  mBottomLayoutShow = true;
-                  mAddLayoutShow = true;
-                  setState(() {});
-                }
+                mBottomLayoutShow = true;
+                mAddLayoutShow = true;
+                hideSoftKey();
+                setState(() {});
               }
-            });
+            } else {
+              if (focusNode.hasFocus) {
+                hideSoftKey();
+                Future.delayed(const Duration(milliseconds: 50), () {
+                  setState(() {
+                    mBottomLayoutShow = true;
+                    mAddLayoutShow = true;
+                  });
+                });
+              } else {
+                mBottomLayoutShow = true;
+                mAddLayoutShow = true;
+                setState(() {});
+              }
+            }
+          });
         CrossFadeState crossFadeState =
-            checkShowSendButton(mEditController.text)
-                ? CrossFadeState.showFirst
-                : CrossFadeState.showSecond;
+        checkShowSendButton(mEditController.text)
+          ? CrossFadeState.showFirst
+          : CrossFadeState.showSecond;
         return AnimatedCrossFade(
           duration: const Duration(milliseconds: 0),
           crossFadeState: crossFadeState,
@@ -391,7 +390,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
     return Container(
       width: 60,
       height: 30,
-      child: new RaisedButton(
+      child: RaisedButton(
         padding: EdgeInsets.all(0),
         color: Color(0xffFF8200),
         textColor: Colors.white,
@@ -404,9 +403,9 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
           widget.onSendCallBack?.call(mEditController.text.trim());
           mEditController.clear();
         },
-        child: new Text(
+        child: Text(
           "发送",
-          style: new TextStyle(fontSize: 16.0),
+          style: TextStyle(fontSize: 16.0),
         ),
       ),
     );
@@ -416,7 +415,9 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
     if (mCurrentType == "voice") {
       return false;
     }
-    if (text.trim().isNotEmpty) {
+    if (text
+      .trim()
+      .isNotEmpty) {
       return true;
     }
     return false;
@@ -452,19 +453,19 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
   Widget _buildBottomItems() {
     if (this.mCurrentType == "extra") {
       return Visibility(
-          visible: mAddLayoutShow,
-          child: new DefaultExtraWidget(onImageSelectBack: (value) {
-            widget.onImageSelectCallBack?.call(value);
-          }));
+        visible: mAddLayoutShow,
+        child: DefaultExtraWidget(onImageSelectBack: (value) {
+          widget.onImageSelectCallBack?.call(value);
+        }));
     } else if (mCurrentType == "emoji") {
       return Visibility(
         visible: mEmojiLayoutShow,
         child: EmojiWidget(onEmojiClockBack: (value) {
-           if (0 == value) {
+          if (0 == value) {
             mEditController.clear();
           } else {
             mEditController.text =
-                mEditController.text + String.fromCharCode(value);
+              mEditController.text + String.fromCharCode(value);
           }
         }),
       );

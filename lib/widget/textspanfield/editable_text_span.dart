@@ -67,54 +67,54 @@ class EditableTextSpan extends EditableText {
       selectAll: true,
     ),
   }) : super(
-          key: key,
-          controller: controller,
-          focusNode: focusNode,
-          readOnly: readOnly,
-          obscureText: obscureText,
-          autocorrect: autocorrect,
-          enableSuggestions: enableSuggestions,
-          style: style,
-          strutStyle: strutStyle,
-          cursorColor: cursorColor,
-          backgroundCursorColor: backgroundCursorColor,
-          textAlign: textAlign,
-          textDirection: textDirection,
-          locale: locale,
-          textScaleFactor: textScaleFactor,
-          maxLines: maxLines,
-          minLines: minLines,
-          expands: expands,
-          forceLine: forceLine,
-          textWidthBasis: textWidthBasis,
-          autofocus: autofocus,
-          showCursor: showCursor,
-          showSelectionHandles: showSelectionHandles,
-          selectionColor: selectionColor,
-          selectionControls: selectionControls,
-          keyboardType: keyboardType,
-          textInputAction: textInputAction,
-          textCapitalization: textCapitalization,
-          onChanged: onChanged,
-          onEditingComplete: onEditingComplete,
-          onSubmitted: onSubmitted,
-          onSelectionChanged: onSelectionChanged,
-          onSelectionHandleTapped: onSelectionHandleTapped,
-          inputFormatters: inputFormatters,
-          rendererIgnoresPointer: rendererIgnoresPointer,
-          cursorWidth: cursorWidth,
-          cursorRadius: cursorRadius,
-          cursorOpacityAnimates: cursorOpacityAnimates,
-          cursorOffset: cursorOffset,
-          paintCursorAboveText: paintCursorAboveText,
-          scrollPadding: scrollPadding,
-          keyboardAppearance: keyboardAppearance,
-          dragStartBehavior: dragStartBehavior,
-          enableInteractiveSelection: enableInteractiveSelection,
-          scrollController: scrollController,
-          scrollPhysics: scrollPhysics,
-          toolbarOptions: toolbarOptions,
-        );
+    key: key,
+    controller: controller,
+    focusNode: focusNode,
+    readOnly: readOnly,
+    obscureText: obscureText,
+    autocorrect: autocorrect,
+    enableSuggestions: enableSuggestions,
+    style: style,
+    strutStyle: strutStyle,
+    cursorColor: cursorColor,
+    backgroundCursorColor: backgroundCursorColor,
+    textAlign: textAlign,
+    textDirection: textDirection,
+    locale: locale,
+    textScaleFactor: textScaleFactor,
+    maxLines: maxLines,
+    minLines: minLines,
+    expands: expands,
+    forceLine: forceLine,
+    textWidthBasis: textWidthBasis,
+    autofocus: autofocus,
+    showCursor: showCursor,
+    showSelectionHandles: showSelectionHandles,
+    selectionColor: selectionColor,
+    selectionControls: selectionControls,
+    keyboardType: keyboardType,
+    textInputAction: textInputAction,
+    textCapitalization: textCapitalization,
+    onChanged: onChanged,
+    onEditingComplete: onEditingComplete,
+    onSubmitted: onSubmitted,
+    onSelectionChanged: onSelectionChanged,
+    onSelectionHandleTapped: onSelectionHandleTapped,
+    inputFormatters: inputFormatters,
+    rendererIgnoresPointer: rendererIgnoresPointer,
+    cursorWidth: cursorWidth,
+    cursorRadius: cursorRadius,
+    cursorOpacityAnimates: cursorOpacityAnimates,
+    cursorOffset: cursorOffset,
+    paintCursorAboveText: paintCursorAboveText,
+    scrollPadding: scrollPadding,
+    keyboardAppearance: keyboardAppearance,
+    dragStartBehavior: dragStartBehavior,
+    enableInteractiveSelection: enableInteractiveSelection,
+    scrollController: scrollController,
+    scrollPhysics: scrollPhysics,
+    toolbarOptions: toolbarOptions,
+  );
 
   @override
   createState() => _EditableTextSpan();
@@ -138,22 +138,22 @@ class _EditableTextSpan extends EditableTextState {
           );
         }
       }
-      return new TextSpan(style: widget.style, children: children);
+      return TextSpan(style: widget.style, children: children);
     }
-    return new TextSpan(style: widget.style, text: text);
+    return TextSpan(style: widget.style, text: text);
   }
 
   /// 根据范围获得样式
   List<RangeStyle> getRanges() {
     var source = widget.rangeStyles;
     source.sort();
-    var result = new List<RangeStyle>();
+    var result = List<RangeStyle>();
     RangeStyle prev;
     for (var item in source) {
       if (prev == null) {
         // First item, check if we need one before it.
         if (item.range.start > 0) {
-          result.add(new RangeStyle(
+          result.add(RangeStyle(
             range: TextRange(start: 0, end: item.range.start),
           ));
         }
@@ -162,11 +162,11 @@ class _EditableTextSpan extends EditableTextState {
         continue;
       } else {
         // Consequent item, check if there is a gap between.
-        print("prev.range.end :"+prev.range.end.toString()+" item.range.start:"+ item.range.start.toString() );
+        print("prev.range.end :" + prev.range.end.toString() + " item.range.start:" + item.range.start.toString());
         if (prev.range.end > item.range.start) {
           // Invalid ranges
-          throw new StateError(
-              'Invalid (intersecting) ranges for annotated field');
+          throw StateError(
+            'Invalid (intersecting) ranges for annotated field');
         } else if (prev.range.end < item.range.start) {
           result.add(RangeStyle(
             range: TextRange(start: prev.range.end, end: item.range.start),

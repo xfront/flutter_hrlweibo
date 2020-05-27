@@ -1,5 +1,3 @@
-
-
 class WeiBoDetail {
   List<Comment> comment;
   List<Forward> forward;
@@ -8,21 +6,21 @@ class WeiBoDetail {
 
   WeiBoDetail.fromJson(Map<String, dynamic> json) {
     if (json['comment'] != null) {
-      comment = new List<Comment>();
+      comment = List<Comment>();
       json['comment'].forEach((v) {
-        comment.add(new Comment.fromJson(v));
+        comment.add(Comment.fromJson(v));
       });
     }
     if (json['forward'] != null) {
-      forward = new List<Forward>();
+      forward = List<Forward>();
       json['forward'].forEach((v) {
-        forward.add(new Forward.fromJson(v));
+        forward.add(Forward.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     if (this.comment != null) {
       data['comment'] = this.comment.map((v) => v.toJson()).toList();
     }
@@ -46,18 +44,17 @@ class Comment {
   List<Commentreply> commentreply;
   int commentreplynum;
 
-  Comment(
-      {this.commentid,
-        this.weiboid,
-        this.fromuid,
-        this.fromuname,
-        this.fromhead,
-        this.fromuserismember,
-        this.fromuserisvertify,
-        this.content,
-        this.createtime,
-        this.commentreply,
-        this.commentreplynum});
+  Comment({this.commentid,
+    this.weiboid,
+    this.fromuid,
+    this.fromuname,
+    this.fromhead,
+    this.fromuserismember,
+    this.fromuserisvertify,
+    this.content,
+    this.createtime,
+    this.commentreply,
+    this.commentreplynum});
 
   Comment.fromJson(Map<String, dynamic> json) {
     commentid = json['commentid'];
@@ -70,16 +67,16 @@ class Comment {
     content = json['content'];
     createtime = json['createtime'];
     if (json['commentreply'] != null) {
-      commentreply = new List<Commentreply>();
+      commentreply = List<Commentreply>();
       json['commentreply'].forEach((v) {
-        commentreply.add(new Commentreply.fromJson(v));
+        commentreply.add(Commentreply.fromJson(v));
       });
     }
     commentreplynum = json['commentreplynum'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['commentid'] = this.commentid;
     data['weiboid'] = this.weiboid;
     data['fromuid'] = this.fromuid;
@@ -108,16 +105,15 @@ class Commentreply {
   String content;
   int createtime;
 
-  Commentreply(
-      {this.commentid,
-        this.crid,
-        this.fromuid,
-        this.fromuname,
-        this.fromhead,
-        this.fromuserismember,
-        this.fromuserisvertify,
-        this.content,
-        this.createtime});
+  Commentreply({this.commentid,
+    this.crid,
+    this.fromuid,
+    this.fromuname,
+    this.fromhead,
+    this.fromuserismember,
+    this.fromuserisvertify,
+    this.content,
+    this.createtime});
 
   Commentreply.fromJson(Map<String, dynamic> json) {
     commentid = json['commentid'];
@@ -132,7 +128,7 @@ class Commentreply {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['commentid'] = this.commentid;
     data['crid'] = this.crid;
     data['fromuid'] = this.fromuid;
@@ -156,15 +152,14 @@ class Forward {
   String content;
   int createtime;
 
-  Forward(
-      {this.zfid,
-        this.fromuid,
-        this.fromuname,
-        this.fromhead,
-        this.fromuserismember,
-        this.fromuserisvertify,
-        this.content,
-        this.createtime});
+  Forward({this.zfid,
+    this.fromuid,
+    this.fromuname,
+    this.fromhead,
+    this.fromuserismember,
+    this.fromuserisvertify,
+    this.content,
+    this.createtime});
 
   Forward.fromJson(Map<String, dynamic> json) {
     zfid = json['zfid'];
@@ -178,7 +173,7 @@ class Forward {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['zfid'] = this.zfid;
     data['fromuid'] = this.fromuid;
     data['fromuname'] = this.fromuname;

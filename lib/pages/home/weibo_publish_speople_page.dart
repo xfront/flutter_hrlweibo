@@ -8,7 +8,7 @@ import 'package:lpinyin/lpinyin.dart';
 class WeiBoPublishAtUserPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return new _WeiBoPublishAtUserPageState();
+    return _WeiBoPublishAtUserPageState();
   }
 }
 
@@ -27,7 +27,7 @@ class _WeiBoPublishAtUserPageState extends State<WeiBoPublishAtUserPage> {
   }
 
   void loadData() async {
-    DioManager.getInstance().post(ServiceUrl.getWeiBoAtUser, null, (data) {
+    DioManager().post(ServiceUrl.getWeiBoAtUser, null, (data) {
       // List<WeiboAtUser> listRecommend = List();
       //  List<WeiboAtUser> listNormal= List();
 
@@ -104,18 +104,18 @@ class _WeiBoPublishAtUserPageState extends State<WeiBoPublishAtUserPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                    margin: EdgeInsets.only(right: 15),
-                    child: CircleAvatar(
-                      //头像半径
-                      radius: 15,
-                      //头像图片 -> NetworkImage网络图片，AssetImage项目资源包图片, FileImage本地存储图片
-                      backgroundImage: NetworkImage('${mModel.headurl}'),
-                    )),
+                  margin: EdgeInsets.only(right: 15),
+                  child: CircleAvatar(
+                    //头像半径
+                    radius: 15,
+                    //头像图片 -> NetworkImage网络图片，AssetImage项目资源包图片, FileImage本地存储图片
+                    backgroundImage: NetworkImage('${mModel.headurl}'),
+                  )),
                 Container(
                   child: Text(
                     '${mModel.nick}',
                     style: TextStyle(
-                        letterSpacing: 0, color: Colors.black, fontSize: 14),
+                      letterSpacing: 0, color: Colors.black, fontSize: 14),
                   ),
                 ),
               ],
@@ -133,20 +133,20 @@ class _WeiBoPublishAtUserPageState extends State<WeiBoPublishAtUserPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-      appBar: PreferredSize(
+      child: Scaffold(
+        appBar: PreferredSize(
           child: AppBar(
             backgroundColor: Color(0xffffffff),
             leading: IconButton(
-                iconSize: 30,
-                icon: Image.asset(
-                  Constant.ASSETS_IMG + 'icon_back.png',
-                  width: 23.0,
-                  height: 23.0,
-                ),
-                onPressed: () {
-                  Navigator.pop(context);
-                }),
+              iconSize: 30,
+              icon: Image.asset(
+                Constant.ASSETS_IMG + 'icon_back.png',
+                width: 23.0,
+                height: 23.0,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
             title: Text(
               '联系人',
               style: TextStyle(fontSize: 16, color: Colors.black),
@@ -155,46 +155,49 @@ class _WeiBoPublishAtUserPageState extends State<WeiBoPublishAtUserPage> {
             centerTitle: true,
           ),
           preferredSize: Size.fromHeight(50)),
-      body: Column(
-        children: <Widget>[
-          Container(
+        body: Column(
+          children: <Widget>[
+            Container(
               child: Center(
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                margin:
-                    EdgeInsets.only(left: 10, top: 15, right: 10, bottom: 10),
-                padding: EdgeInsets.only(top: 8, bottom: 8),
-                decoration: BoxDecoration(
-                  color: Color(0xffE4E2E8),
-                  borderRadius: BorderRadius.all(
-                    //圆角
-                    Radius.circular(5.0),
+                child: Container(
+                  width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                  margin:
+                  EdgeInsets.only(left: 10, top: 15, right: 10, bottom: 10),
+                  padding: EdgeInsets.only(top: 8, bottom: 8),
+                  decoration: BoxDecoration(
+                    color: Color(0xffE4E2E8),
+                    borderRadius: BorderRadius.all(
+                      //圆角
+                      Radius.circular(5.0),
+                    ),
                   ),
-                ),
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(right: 5, top: 2),
-                        child: Image.asset(
-                          Constant.ASSETS_IMG + 'find_top_search.png',
-                          width: 12.0,
-                          height: 15.0,
+                  child: Center(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 5, top: 2),
+                          child: Image.asset(
+                            Constant.ASSETS_IMG + 'find_top_search.png',
+                            width: 12.0,
+                            height: 15.0,
+                          ),
                         ),
-                      ),
-                      Text(
-                        "搜索",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            TextStyle(fontSize: 14, color: Color(0xffee565656)),
-                      ),
-                    ],
-                  ),
-                )),
-          )),
-          Expanded(
+                        Text(
+                          "搜索",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                          TextStyle(fontSize: 14, color: Color(0xffee565656)),
+                        ),
+                      ],
+                    ),
+                  )),
+              )),
+            Expanded(
               flex: 1,
               child: AzListView(
                 data: mNormalList,
@@ -207,8 +210,8 @@ class _WeiBoPublishAtUserPageState extends State<WeiBoPublishAtUserPage> {
                 onSusTagChanged: _onSusTagChanged,
                 //showCenterTip: false,
               )),
-        ],
-      ),
-    ));
+          ],
+        ),
+      ));
   }
 }

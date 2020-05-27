@@ -15,7 +15,7 @@ class WeiBoModel {
 
   String vediourl;
   String tail;
-  int  createtime;
+  int createtime;
   int zanStatus;
 
   int zhuanfaNum;
@@ -23,37 +23,34 @@ class WeiBoModel {
   int commentNum;
 
 
-
-
-  WeiBoModel(
-      {this.weiboId,
-        this.categoryId,
-        this.content,
-        this.userInfo,
-        this.picurl,
-        this.zfContent,
-        this.zfNick,
-        this.zfUserId,
-        this.zfPicurl,
-        this.zfWeiBoId,
-        this.containZf,
-        this.vediourl,
-        this.zfVedioUrl,
-        this.tail,
-        this.createtime,
-        this.zanStatus,
-        this.zhuanfaNum,
-        this.likeNum,
-        this.commentNum
-       });
+  WeiBoModel({this.weiboId,
+    this.categoryId,
+    this.content,
+    this.userInfo,
+    this.picurl,
+    this.zfContent,
+    this.zfNick,
+    this.zfUserId,
+    this.zfPicurl,
+    this.zfWeiBoId,
+    this.containZf,
+    this.vediourl,
+    this.zfVedioUrl,
+    this.tail,
+    this.createtime,
+    this.zanStatus,
+    this.zhuanfaNum,
+    this.likeNum,
+    this.commentNum
+  });
 
   WeiBoModel.fromJson(Map<String, dynamic> json) {
     weiboId = json['weiboId'];
     categoryId = json['categoryId'];
     content = json['content'];
     userInfo = json['userInfo'] != null
-        ? new UserInfo.fromJson(json['userInfo'])
-        : null;
+      ? UserInfo.fromJson(json['userInfo'])
+      : null;
     picurl = json['picurl'].cast<String>();
     zfContent = json['zfContent'];
     zfNick = json['zfNick'];
@@ -73,13 +70,10 @@ class WeiBoModel {
     zhuanfaNum = json['zhuanfaNum'];
     likeNum = json['likeNum'];
     commentNum = json['commentNum'];
-
-
-
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['weiboId'] = this.weiboId;
     data['categoryId'] = this.categoryId;
     data['content'] = this.content;
@@ -95,7 +89,7 @@ class WeiBoModel {
     data['zfWeiBoId'] = this.zfWeiBoId;
     data['containZf'] = this.containZf;
     data['vediourl'] = this.vediourl;
-    data['zfVedioUrl']= this.zfVedioUrl;
+    data['zfVedioUrl'] = this.zfVedioUrl;
     data['tail'] = this.tail;
     data['createtime'] = this.createtime;
     data['zanStatus'] = this.zanStatus;
@@ -108,14 +102,14 @@ class WeiBoModel {
   }
 }
 
-class UserInfo  {
+class UserInfo {
   int id;
   String nick;
   String headurl;
   String decs;
-  int ismember ;
-  int isvertify ;
+  int ismember;
 
+  int isvertify;
 
 
   UserInfo({this.id, this.nick, this.headurl, this.decs, this.ismember, this.isvertify});
@@ -127,18 +121,16 @@ class UserInfo  {
     decs = json['decs'];
     ismember = json['ismember'];
     isvertify = json['isvertify'];
-
-
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['nick'] = this.nick;
     data['headurl'] = this.headurl;
     data['decs'] = this.decs;
     data['ismember'] = this.decs;
-     data['isvertify'] = this.decs;
+    data['isvertify'] = this.decs;
 
     return data;
   }

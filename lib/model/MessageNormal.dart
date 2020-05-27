@@ -22,12 +22,12 @@ class HrlMessage {
   }
 
   HrlMessage.fromJson(Map<dynamic, dynamic> json)
-      : uuid = json['uuid'],
-        createTime = json['createTime'],
-        isSend = json['isSend'],
-        from = HrlUserInfo.fromJson(json['from']),
-        target = HrlUserInfo.fromJson(json['target']),
-        msgType = json['msgType'];
+    : uuid = json['uuid'],
+      createTime = json['createTime'],
+      isSend = json['isSend'],
+      from = HrlUserInfo.fromJson(json['from']),
+      target = HrlUserInfo.fromJson(json['target']),
+      msgType = json['msgType'];
 
   static dynamic generateMessageFromJson(Map<dynamic, dynamic> json) {
     if (json == null) {
@@ -35,7 +35,7 @@ class HrlMessage {
     }
 
     HrlMessageType type =
-        getEnumFromString(HrlMessageType.values, json['type']);
+    getEnumFromString(HrlMessageType.values, json['type']);
     switch (type) {
       case HrlMessageType.text:
         return HrlTextMessage.fromJson(json);
@@ -74,17 +74,18 @@ class HrlUserInfo {
   }
 
   HrlUserInfo.fromJson(Map<dynamic, dynamic> json)
-      : username = json['username'],
-        id = json['id'],
-        headurl = json['headurl'],
-        nick = json['nick'];
+    : username = json['username'],
+      id = json['id'],
+      headurl = json['headurl'],
+      nick = json['nick'];
 }
 
 class HrlImageMessage extends HrlMessage {
   String thumbPath;
   String thumbUrl;
 
-  HrlImageMessage({this.thumbPath,this.thumbUrl });
+  HrlImageMessage({this.thumbPath, this.thumbUrl });
+
   Map toJson() {
     var json = super.toJson();
     json['thumbPath'] = thumbPath;
@@ -94,17 +95,16 @@ class HrlImageMessage extends HrlMessage {
   }
 
   HrlImageMessage.fromJson(Map<dynamic, dynamic> json)
-      : thumbPath = json['thumbPath'],
+    : thumbPath = json['thumbPath'],
 
-  super.fromJson(json);
+      super.fromJson(json);
 }
 
 class HrlTextMessage extends HrlMessage {
-     String text;
+  String text;
 
 
   HrlTextMessage({this.text });
-
 
 
   Map toJson() {
@@ -114,8 +114,8 @@ class HrlTextMessage extends HrlMessage {
   }
 
   HrlTextMessage.fromJson(Map<dynamic, dynamic> json)
-      : text = json['text'],
-        super.fromJson(json);
+    : text = json['text'],
+      super.fromJson(json);
 }
 
 class HrlVoiceMessage extends HrlMessage {
@@ -125,8 +125,7 @@ class HrlVoiceMessage extends HrlMessage {
   int duration; // 语音时长，单位秒
 
 
-
-  HrlVoiceMessage( );
+  HrlVoiceMessage();
 
   Map toJson() {
     var json = super.toJson();
@@ -138,21 +137,28 @@ class HrlVoiceMessage extends HrlMessage {
   }
 
   HrlVoiceMessage.fromJson(Map<dynamic, dynamic> json)
-      : path = json['path'],
-        duration = json['duration'],
-        remoteUrl = json['remoteUrl'],
+    : path = json['path'],
+      duration = json['duration'],
+      remoteUrl = json['remoteUrl'],
 
       super.fromJson(json);
 }
 
 T getEnumFromString<T>(Iterable<T> values, String str) {
-  return values.firstWhere((f) => f.toString().split('.').last == str,
-      orElse: () => null);
+  return values.firstWhere((f) =>
+  f
+    .toString()
+    .split('.')
+    .last == str,
+    orElse: () => null);
 }
 
 String getStringFromEnum<T>(T) {
   if (T == null) {
     return null;
   }
-  return T.toString().split('.').last;
+  return T
+    .toString()
+    .split('.')
+    .last;
 }

@@ -117,7 +117,7 @@ class SpUtil {
   }
 
   /// get double.
-  static double getDouble(String key,  double defValue  ) {
+  static double getDouble(String key, double defValue) {
     if (_prefs == null) return defValue;
     return _prefs.getDouble(key) ?? defValue;
   }
@@ -130,7 +130,7 @@ class SpUtil {
 
   /// get string list.
   static List<String> getStringList(String key,
-      {List<String> defValue = const []}) {
+    {List<String> defValue = const []}) {
     if (_prefs == null) return defValue;
     return _prefs.getStringList(key) ?? defValue;
   }
@@ -175,15 +175,6 @@ class SpUtil {
   static bool isInitialized() {
     return _prefs != null;
   }
-
-
-
-
-
-
-
-
-
 
 
 }

@@ -12,14 +12,15 @@ class SelectUser extends ISuspensionBean {
   });
 
   SelectUser.fromJson(Map<String, dynamic> json)
-      : name = json['name'] == null ? "" : json['name'];
+    : name = json['name'] == null ? "" : json['name'];
 
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'tagIndex': tagIndex,
-    'namePinyin': namePinyin,
-    'isShowSuspension': isShowSuspension
-  };
+  Map<String, dynamic> toJson() =>
+    {
+      'name': name,
+      'tagIndex': tagIndex,
+      'namePinyin': namePinyin,
+      'isShowSuspension': isShowSuspension
+    };
 
   @override
   String getSuspensionTag() => tagIndex;

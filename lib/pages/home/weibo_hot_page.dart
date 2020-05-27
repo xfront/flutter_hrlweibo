@@ -39,38 +39,38 @@ class _WeiBoHotPageState extends State<WeiBoHotPage> {
                 //  color:Colors.red,
                 alignment: Alignment.center,
                 child: TabBar(
-                    isScrollable: true,
-                    indicatorColor: Color(0xffffffff),
-                    labelColor: Color(0xffFF3700),
-                    unselectedLabelColor: Color(0xff666666),
-                    labelStyle:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
-                    unselectedLabelStyle: TextStyle(fontSize: 16.0),
-                    indicatorSize: TabBarIndicatorSize.label,
-                    controller: _controller,
-                    tabs: [
-                      new Tab(
-                        text: _tabValues[0],
-                      ),
-                      new Tab(
-                        text: _tabValues[1],
-                      ),
-                      new Tab(
-                        text: _tabValues[2],
-                      ),
-                      new Tab(
-                        text: _tabValues[3],
-                      ),
-                      new Tab(
-                        text: _tabValues[4],
-                      ),
-                      new Tab(
-                        text: _tabValues[5],
-                      ),
-                      new Tab(
-                        text: _tabValues[6],
-                      ),
-                    ]),
+                  isScrollable: true,
+                  indicatorColor: Color(0xffffffff),
+                  labelColor: Color(0xffFF3700),
+                  unselectedLabelColor: Color(0xff666666),
+                  labelStyle:
+                  TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  unselectedLabelStyle: TextStyle(fontSize: 16.0),
+                  indicatorSize: TabBarIndicatorSize.label,
+                  controller: _controller,
+                  tabs: [
+                    Tab(
+                      text: _tabValues[0],
+                    ),
+                    Tab(
+                      text: _tabValues[1],
+                    ),
+                    Tab(
+                      text: _tabValues[2],
+                    ),
+                    Tab(
+                      text: _tabValues[3],
+                    ),
+                    Tab(
+                      text: _tabValues[4],
+                    ),
+                    Tab(
+                      text: _tabValues[5],
+                    ),
+                    Tab(
+                      text: _tabValues[6],
+                    ),
+                  ]),
               ),
             ],
           ),
@@ -78,20 +78,20 @@ class _WeiBoHotPageState extends State<WeiBoHotPage> {
             height: 0.5,
             color: Color(0xffBECBC2),
           ),
-          new Expanded(
+          Expanded(
             child: TabBarView(
               controller: _controller,
               children: <Widget>[
-                new WeiBoHomeListPager(mCatId: "1"),
-                new WeiBoHomeListPager(mCatId: "2"),
-                new WeiBoHomeListPager(mCatId: "3"),
-                new WeiBoHomeListPager(mCatId: "4"),
-                new WeiBoHomeListPager(mCatId: "5"),
+                WeiBoHomeListPager(mCatId: "1"),
+                WeiBoHomeListPager(mCatId: "2"),
+                WeiBoHomeListPager(mCatId: "3"),
+                WeiBoHomeListPager(mCatId: "4"),
+                WeiBoHomeListPager(mCatId: "5"),
                 Center(
                   child: Text("暂无数据"),
                 ),
-                new WeiBoHomeListPager(mCatId: "10"),
-                //  new WeiBoHomeListPager(),
+                WeiBoHomeListPager(mCatId: "10"),
+                //  WeiBoHomeListPager(),
               ],
             ),
           )

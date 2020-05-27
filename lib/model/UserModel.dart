@@ -7,21 +7,21 @@ class User {
   String gender;
   String followCount;
   String fanCount;
-  int ismember ;
-  int isvertify ;
+  int ismember;
+
+  int isvertify;
 
 
-  User(
-      {this.id,
-        this.username,
-        this.nick,
-        this.headurl,
-        this.decs,
-        this.gender,
-        this.followCount,
-        this.fanCount,
-        this.ismember,
-        this.isvertify});
+  User({this.id,
+    this.username,
+    this.nick,
+    this.headurl,
+    this.decs,
+    this.gender,
+    this.followCount,
+    this.fanCount,
+    this.ismember,
+    this.isvertify});
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -33,12 +33,11 @@ class User {
     followCount = json['followCount'];
     fanCount = json['fanCount'];
     ismember = json['ismember'];
-     isvertify = json['isvertify'];
-
+    isvertify = json['isvertify'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['username'] = this.username;
     data['nick'] = this.nick;
@@ -48,7 +47,7 @@ class User {
     data['followCount'] = this.followCount;
     data['fanCount'] = this.fanCount;
     data['ismember'] = this.ismember;
-     data['isvertify'] = this.isvertify;
+    data['isvertify'] = this.isvertify;
 
     return data;
   }

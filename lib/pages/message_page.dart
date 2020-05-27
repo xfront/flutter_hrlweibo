@@ -9,13 +9,13 @@ class MessagePage extends StatefulWidget {
 }
 
 class _MessagePageState extends State<MessagePage>
-    with AutomaticKeepAliveClientMixin {
+  with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          new Expanded(child: new TabBarWidget()),
+          Expanded(child: TabBarWidget()),
         ],
       ),
     );
@@ -64,76 +64,76 @@ class _TabBarWidgetState extends State<TabBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-      color: Color(0xffffffff),
-      child: Column(
-        children: <Widget>[
-          Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Container(
-                height: 50,
-                color: Color(0xffF9F9F9),
-                //  color:Colors.red,
-                alignment: Alignment.center,
-                child: TabBar(
+      body: Container(
+        color: Color(0xffffffff),
+        child: Column(
+          children: <Widget>[
+            Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Container(
+                  height: 50,
+                  color: Color(0xffF9F9F9),
+                  //  color:Colors.red,
+                  alignment: Alignment.center,
+                  child: TabBar(
                     isScrollable: true,
                     indicatorColor: Color(0xffFF3700),
                     indicator: UnderlineTabIndicator(
-                        borderSide:
-                            BorderSide(color: Color(0xffFF3700), width: 2),
-                        insets: EdgeInsets.only(bottom: 7)),
+                      borderSide:
+                      BorderSide(color: Color(0xffFF3700), width: 2),
+                      insets: EdgeInsets.only(bottom: 7)),
                     labelColor: Color(0xff333333),
                     unselectedLabelColor: Color(0xff666666),
                     labelStyle:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
+                    TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
                     unselectedLabelStyle: TextStyle(fontSize: 16.0),
                     indicatorSize: TabBarIndicatorSize.label,
                     controller: _tabController,
                     tabs: [
-                      new Tab(
+                      Tab(
                         text: _tabValues[0],
                       ),
-                      new Tab(
+                      Tab(
                         text: _tabValues[1],
                       ),
                     ]),
-              ),
-              new Align(
-                alignment: Alignment.centerLeft,
-                child: new Container(
-                  margin: EdgeInsets.only(left: 15),
-                  child: (_tabController.index == 1)
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 15),
+                    child: (_tabController.index == 1)
                       ? Text(
-                          "发现群",
-                          style: TextStyle(fontSize: 16, color: Colors.black),
-                        )
-                      : new Container(),
+                      "发现群",
+                      style: TextStyle(fontSize: 16, color: Colors.black),
+                    )
+                      : Container(),
+                  ),
                 ),
-              ),
-              new Align(
-                alignment: Alignment.centerRight,
-                child: new IconButton(
-                  icon: new Image.asset("assets/images/message_setting.webp",
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: IconButton(
+                    icon: Image.asset("assets/images/message_setting.webp",
                       width: 30.0, height: 30.0),
-                  onPressed: () {
-                    // Routes .navigateTo(context, '${Routes.weiboPublishPage}');
-                  },
+                    onPressed: () {
+                      // Routes .navigateTo(context, '${Routes.weiboPublishPage}');
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
-          new Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: <Widget>[
-                new MessageDynamicPage(),
-                new MessageMsgPage()
               ],
             ),
-          )
-        ],
-      ),
-    ));
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: <Widget>[
+                  MessageDynamicPage(),
+                  MessageMsgPage()
+                ],
+              ),
+            )
+          ],
+        ),
+      ));
   }
 }

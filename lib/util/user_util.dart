@@ -44,14 +44,14 @@ class UserUtil {
       SpUtil.putInt(SP_USER_ISVERTIFY, isvertify);
 
       User userInfo = User(
-          id: id,
-          username: username,
-          nick: nick,
-          headurl: headurl,
-          gender: gender,
-          decs: decs,
-          fanCount: fanCount,
-          followCount: followCount);
+        id: id,
+        username: username,
+        nick: nick,
+        headurl: headurl,
+        gender: gender,
+        decs: decs,
+        fanCount: fanCount,
+        followCount: followCount);
       return userInfo;
     }
     return null;

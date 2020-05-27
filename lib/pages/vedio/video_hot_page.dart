@@ -15,7 +15,7 @@ class _VideoHotPageState extends State<VideoHotPage> {
   bool isloadingMore = false; //是否显示加载中
   bool ishasMore = true; //是否还有更多
   num mCurPage = 1;
-  ScrollController mScrollController = new ScrollController();
+  ScrollController mScrollController = ScrollController();
   List<VideoModel> mVideoList = [];
   List<String> mBannerAdList = [];
 
@@ -26,9 +26,8 @@ class _VideoHotPageState extends State<VideoHotPage> {
       isloadingMore = false;
       ishasMore = true;
       mCurPage = 1;
-      FormData params =
-          FormData.from({'pageNum': "$mCurPage", 'pageSize': "10"});
-      DioManager.getInstance().post(ServiceUrl.getVideoHotList, params, (data) {
+      Map<String, dynamic> params = {'pageNum': "$mCurPage", 'pageSize': "10"};
+      DioManager().post(ServiceUrl.getVideoHotList, params, (data) {
         List<VideoModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(VideoModel.fromJson(data));
@@ -38,20 +37,19 @@ class _VideoHotPageState extends State<VideoHotPage> {
         setState(() {});
       }, (error) {});
 
-      DioManager.getInstance().post(ServiceUrl.getVideoHotBannerAdList, params,
+      DioManager().post(ServiceUrl.getVideoHotBannerAdList, params,
           (data) {
-        List<String> list = List();
-        data['data'].forEach((data) {
-          list.add(data.toString());
-        });
-        mBannerAdList = [];
-        mBannerAdList = list;
-        setState(() {});
-      }, (error) {});
+          List<String> list = List();
+          data['data'].forEach((data) {
+            list.add(data.toString());
+          });
+          mBannerAdList = [];
+          mBannerAdList = list;
+          setState(() {});
+        }, (error) {});
     } else {
-      FormData params =
-          FormData.from({'pageNum': "$mCurPage", 'pageSize': "10"});
-      DioManager.getInstance().post(ServiceUrl.getVideoHotList, params, (data) {
+      var params = {'pageNum': "$mCurPage", 'pageSize': "10"};
+      DioManager().post(ServiceUrl.getVideoHotList, params, (data) {
         List<VideoModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(VideoModel.fromJson(data));
@@ -71,38 +69,38 @@ class _VideoHotPageState extends State<VideoHotPage> {
 
   Widget _buildLoadMore() {
     return isloadingMore
-        ? Container(
-            child: Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5),
-            child: Center(
-                child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: SizedBox(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-                    height: 12.0,
-                    width: 12.0,
+      ? Container(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 5, bottom: 5),
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                child: SizedBox(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
                   ),
+                  height: 12.0,
+                  width: 12.0,
                 ),
-                Text("加载中..."),
-              ],
-            )),
-          ))
-        : new Container(
-            child: ishasMore
-                ? new Container()
-                : Center(
-                    child: Container(
-                        margin: EdgeInsets.only(top: 5, bottom: 5),
-                        child: Text(
-                          "没有更多数据",
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ))),
-          );
+              ),
+              Text("加载中..."),
+            ],
+          )),
+      ))
+      : Container(
+      child: ishasMore
+        ? Container()
+        : Center(
+        child: Container(
+          margin: EdgeInsets.only(top: 5, bottom: 5),
+          child: Text(
+            "没有更多数据",
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ))),
+    );
   }
 
   Widget getContentItem(BuildContext context, VideoModel mModel) {
@@ -115,18 +113,24 @@ class _VideoHotPageState extends State<VideoHotPage> {
           Container(
             margin: EdgeInsets.only(right: 10),
             height: 100,
-            width: MediaQuery.of(context).size.width * 3 / 8,
+            width: MediaQuery
+              .of(context)
+              .size
+              .width * 3 / 8,
             child: Stack(
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 3 / 8,
+                  width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 3 / 8,
                   height: 100,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(5),
                     child: FadeInImage(
                       fit: BoxFit.cover,
                       placeholder:
-                          AssetImage(Constant.ASSETS_IMG + 'img_default.png'),
+                      AssetImage(Constant.ASSETS_IMG + 'img_default.png'),
                       image: NetworkImage(
                         mModel.coverimg,
                       ),
@@ -134,29 +138,29 @@ class _VideoHotPageState extends State<VideoHotPage> {
                   ),
                 ),
                 Positioned(
-                    child: new Align(
-                  alignment: FractionalOffset.bottomCenter,
-                  child: Container(
-                    padding: EdgeInsets.only(bottom: 5),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      //     mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
+                  child: Align(
+                    alignment: FractionalOffset.bottomCenter,
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
 
-                      children: <Widget>[
-                        Spacer(),
-                        Container(
-                          margin: EdgeInsets.only(right: 5),
-                          child: Text(
+                        children: <Widget>[
+                          Spacer(),
+                          Container(
+                            margin: EdgeInsets.only(right: 5),
+                            child: Text(
                               DateUtil.getFormatTime4(mModel.videotime)
-                                  .toString(),
+                                .toString(),
                               style: TextStyle(
-                                  fontSize: 14.0, color: Colors.white)),
-                        ),
-                      ],
+                                fontSize: 14.0, color: Colors.white)),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ))
+                  ))
               ],
             ),
           ),
@@ -167,9 +171,9 @@ class _VideoHotPageState extends State<VideoHotPage> {
                 Container(
                   height: 40,
                   child: Text(mModel.introduce,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(fontSize: 14.0, color: Colors.black)),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 14.0, color: Colors.black)),
                   //  margin: EdgeInsets.only(left: 60),
                 ),
                 Container(
@@ -190,11 +194,11 @@ class _VideoHotPageState extends State<VideoHotPage> {
                 ),
                 Container(
                   child: Container(
-                      margin: EdgeInsets.only(top: 2),
-                      child: Text(
-                        "@" + mModel.username,
-                        style: TextStyle(fontSize: 11, color: Colors.grey),
-                      )),
+                    margin: EdgeInsets.only(top: 2),
+                    child: Text(
+                      "@" + mModel.username,
+                      style: TextStyle(fontSize: 11, color: Colors.grey),
+                    )),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 2),
@@ -203,27 +207,27 @@ class _VideoHotPageState extends State<VideoHotPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Container(
-                          child: Text(
-                        mModel.playnum.toString(),
-                        style: TextStyle(fontSize: 13, color: Colors.grey),
-                      )),
+                        child: Text(
+                          mModel.playnum.toString(),
+                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                        )),
                       Container(
-                          child: Text(
-                        "次观看 · ",
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      )),
+                        child: Text(
+                          "次观看 · ",
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        )),
                       Container(
-                          margin: EdgeInsets.only(left: 5),
-                          child: Center(
-                            child: Text(
-                              DateUtil.getFormatTime(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          mModel.createtime))
-                                  .toString(),
-                              style:
-                                  TextStyle(fontSize: 13, color: Colors.grey),
-                            ),
-                          ))
+                        margin: EdgeInsets.only(left: 5),
+                        child: Center(
+                          child: Text(
+                            DateUtil.getFormatTime(
+                              DateTime.fromMillisecondsSinceEpoch(
+                                mModel.createtime))
+                              .toString(),
+                            style:
+                            TextStyle(fontSize: 13, color: Colors.grey),
+                          ),
+                        ))
                     ],
                   ),
                 )
@@ -285,12 +289,12 @@ class _VideoHotPageState extends State<VideoHotPage> {
       padding: EdgeInsets.only(top: 15),
       child: RefreshIndicator(
         onRefresh: pullToRefresh,
-        child: new CustomScrollView(controller: mScrollController, slivers: <
-            Widget>[
-          new SliverToBoxAdapter(
+        child: CustomScrollView(controller: mScrollController, slivers: <
+          Widget>[
+          SliverToBoxAdapter(
             child: Row(
               children: <Widget>[
-                new Expanded(
+                Expanded(
                   child: InkWell(
                     child: Column(
                       children: <Widget>[
@@ -308,7 +312,7 @@ class _VideoHotPageState extends State<VideoHotPage> {
                   ),
                   flex: 1,
                 ),
-                new Expanded(
+                Expanded(
                   child: InkWell(
                     child: Column(
                       children: <Widget>[
@@ -326,7 +330,7 @@ class _VideoHotPageState extends State<VideoHotPage> {
                   ),
                   flex: 1,
                 ),
-                new Expanded(
+                Expanded(
                   child: InkWell(
                     child: Column(
                       children: <Widget>[
@@ -344,7 +348,7 @@ class _VideoHotPageState extends State<VideoHotPage> {
                   ),
                   flex: 1,
                 ),
-                new Expanded(
+                Expanded(
                   child: InkWell(
                     child: Column(
                       children: <Widget>[
@@ -367,33 +371,33 @@ class _VideoHotPageState extends State<VideoHotPage> {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
+                (BuildContext context, int index) {
                 if (index == mVideoList.length + 1) {
                   return _buildLoadMore();
                 } else if (index == 0 || index == 1 || index == 2) {
                   if (mVideoList.length != 0) {
                     return getContentItem(context, mVideoList[index]);
                   } else {
-                    return new Container();
+                    return Container();
                   }
                 } else if (index == 3) {
-                  return new Container(
+                  return Container(
                     margin: EdgeInsets.only(top: 10),
                     child: Container(
                       height: 120,
-                      child: new Swiper(
+                      child: Swiper(
                         outer: false,
-                        pagination: new SwiperPagination(
-                            builder: DotSwiperPaginationBuilder(
-                              size: 7,
-                              space: 5,
-                              activeSize: 7,
-                              /*   color: Color(0xF0F0F0),
+                        pagination: SwiperPagination(
+                          builder: DotSwiperPaginationBuilder(
+                            size: 7,
+                            space: 5,
+                            activeSize: 7,
+                            /*   color: Color(0xF0F0F0),
                             activeColor:  Color(0xD8D8D8),*/
-                              color: Color(0xffF0F0F0),
-                              activeColor: Color(0xffD8D8D8),
-                            ),
-                            margin: EdgeInsets.all(0)),
+                            color: Color(0xffF0F0F0),
+                            activeColor: Color(0xffD8D8D8),
+                          ),
+                          margin: EdgeInsets.all(0)),
                         itemBuilder: (c, i) {
                           return mCenterBannerItemWidegt(mBannerAdList[i]);
                         },

@@ -13,30 +13,33 @@ import 'package:flutter/gestures.dart';
 import 'editable_text_span.dart';
 import 'range_style.dart';
 export 'package:flutter/services.dart'
-    show TextInputType, TextInputAction, TextCapitalization;
+  show TextInputType, TextInputAction, TextCapitalization;
 
 /// Signature for the [TextSpanField.buildCounter] callback.
-typedef InputCounterWidgetBuilder = Widget Function(
+typedef InputCounterWidgetBuilder = Widget
+
+Function(
+
   /// The build context for the TextSpanField
   BuildContext context, {
 
-  /// The length of the string currently in the input.
-  @required int currentLength,
+    /// The length of the string currently in the input.
+    @required int currentLength,
 
-  /// The maximum string length that can be entered into the TextSpanField.
-  @required int maxLength,
+    /// The maximum string length that can be entered into the TextSpanField.
+    @required int maxLength,
 
-  /// Whether or not the TextSpanField is currently focused.  Mainly provided for
-  /// the [liveRegion] parameter in the [Semantics] widget for accessibility.
-  @required bool isFocused,
-});
+    /// Whether or not the TextSpanField is currently focused.  Mainly provided for
+    /// the [liveRegion] parameter in the [Semantics] widget for accessibility.
+    @required bool isFocused,
+  });
 
-class _TextSpanFieldSelectionGestureDetectorBuilder
-    extends TextSelectionGestureDetectorBuilder {
+class _TextSpanFieldSelectionGestureDetectorBuilder extends TextSelectionGestureDetectorBuilder {
   _TextSpanFieldSelectionGestureDetectorBuilder({
     @required _TextSpanFieldState state,
-  })  : _state = state,
-        super(delegate: state);
+  })
+    : _state = state,
+      super(delegate: state);
 
   final _TextSpanFieldState _state;
 
@@ -56,7 +59,9 @@ class _TextSpanFieldSelectionGestureDetectorBuilder
   @override
   void onSingleLongTapMoveUpdate(LongPressMoveUpdateDetails details) {
     if (delegate.selectionEnabled) {
-      switch (Theme.of(_state.context).platform) {
+      switch (Theme
+        .of(_state.context)
+        .platform) {
         case TargetPlatform.iOS:
           renderEditable.selectPositionAt(
             from: details.globalPosition,
@@ -79,7 +84,9 @@ class _TextSpanFieldSelectionGestureDetectorBuilder
   void onSingleTapUp(TapUpDetails details) {
     editableText.hideToolbar();
     if (delegate.selectionEnabled) {
-      switch (Theme.of(_state.context).platform) {
+      switch (Theme
+        .of(_state.context)
+        .platform) {
         case TargetPlatform.iOS:
           renderEditable.selectWordEdge(cause: SelectionChangedCause.tap);
           break;
@@ -96,7 +103,9 @@ class _TextSpanFieldSelectionGestureDetectorBuilder
   @override
   void onSingleLongTapStart(LongPressStartDetails details) {
     if (delegate.selectionEnabled) {
-      switch (Theme.of(_state.context).platform) {
+      switch (Theme
+        .of(_state.context)
+        .platform) {
         case TargetPlatform.iOS:
           renderEditable.selectPositionAt(
             from: details.globalPosition,
@@ -324,47 +333,48 @@ class TextSpanField extends StatefulWidget {
     this.scrollController,
     this.scrollPhysics,
     this.rangeStyles,
-  })  : assert(textAlign != null),
-        assert(readOnly != null),
-        assert(autofocus != null),
-        assert(obscureText != null),
-        assert(autocorrect != null),
-        assert(enableSuggestions != null),
-        assert(enableInteractiveSelection != null),
-        assert(maxLengthEnforced != null),
-        assert(scrollPadding != null),
-        assert(dragStartBehavior != null),
-        assert(maxLines == null || maxLines > 0),
-        assert(minLines == null || minLines > 0),
-        assert(
-          (maxLines == null) || (minLines == null) || (maxLines >= minLines),
-          'minLines can\'t be greater than maxLines',
-        ),
-        assert(expands != null),
-        assert(
-          !expands || (maxLines == null && minLines == null),
-          'minLines and maxLines must be null when expands is true.',
-        ),
-        assert(!obscureText || maxLines == 1,
-            'Obscured fields cannot be multiline.'),
-        assert(maxLength == null ||
-            maxLength == TextSpanField.noMaxLength ||
-            maxLength > 0),
-        keyboardType = keyboardType ??
-            (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
-        toolbarOptions = toolbarOptions ??
-            (obscureText
-                ? const ToolbarOptions(
-                    selectAll: true,
-                    paste: true,
-                  )
-                : const ToolbarOptions(
-                    copy: true,
-                    cut: true,
-                    selectAll: true,
-                    paste: true,
-                  )),
-        super(key: key);
+  })
+    : assert(textAlign != null),
+      assert(readOnly != null),
+      assert(autofocus != null),
+      assert(obscureText != null),
+      assert(autocorrect != null),
+      assert(enableSuggestions != null),
+      assert(enableInteractiveSelection != null),
+      assert(maxLengthEnforced != null),
+      assert(scrollPadding != null),
+      assert(dragStartBehavior != null),
+      assert(maxLines == null || maxLines > 0),
+      assert(minLines == null || minLines > 0),
+      assert(
+      (maxLines == null) || (minLines == null) || (maxLines >= minLines),
+      'minLines can\'t be greater than maxLines',
+      ),
+      assert(expands != null),
+      assert(
+      !expands || (maxLines == null && minLines == null),
+      'minLines and maxLines must be null when expands is true.',
+      ),
+      assert(!obscureText || maxLines == 1,
+      'Obscured fields cannot be multiline.'),
+      assert(maxLength == null ||
+        maxLength == TextSpanField.noMaxLength ||
+        maxLength > 0),
+      keyboardType = keyboardType ??
+        (maxLines == 1 ? TextInputType.text : TextInputType.multiline),
+      toolbarOptions = toolbarOptions ??
+        (obscureText
+          ? const ToolbarOptions(
+          selectAll: true,
+          paste: true,
+        )
+          : const ToolbarOptions(
+          copy: true,
+          cut: true,
+          selectAll: true,
+          paste: true,
+        )),
+      super(key: key);
 
   /// Custom Styles
   final List<RangeStyle> rangeStyles;
@@ -680,99 +690,99 @@ class TextSpanField extends StatefulWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<TextEditingController>(
-        'controller', controller,
-        defaultValue: null));
+      'controller', controller,
+      defaultValue: null));
     properties.add(DiagnosticsProperty<FocusNode>('focusNode', focusNode,
-        defaultValue: null));
+      defaultValue: null));
     properties
-        .add(DiagnosticsProperty<bool>('enabled', enabled, defaultValue: null));
+      .add(DiagnosticsProperty<bool>('enabled', enabled, defaultValue: null));
     properties.add(DiagnosticsProperty<InputDecoration>(
-        'decoration', decoration,
-        defaultValue: const InputDecoration()));
+      'decoration', decoration,
+      defaultValue: const InputDecoration()));
     properties.add(DiagnosticsProperty<TextInputType>(
-        'keyboardType', keyboardType,
-        defaultValue: TextInputType.text));
+      'keyboardType', keyboardType,
+      defaultValue: TextInputType.text));
     properties.add(
-        DiagnosticsProperty<TextStyle>('style', style, defaultValue: null));
+      DiagnosticsProperty<TextStyle>('style', style, defaultValue: null));
     properties.add(
-        DiagnosticsProperty<bool>('autofocus', autofocus, defaultValue: false));
+      DiagnosticsProperty<bool>('autofocus', autofocus, defaultValue: false));
     properties.add(DiagnosticsProperty<bool>('obscureText', obscureText,
-        defaultValue: false));
+      defaultValue: false));
     properties.add(DiagnosticsProperty<bool>('autocorrect', autocorrect,
-        defaultValue: true));
+      defaultValue: true));
     properties.add(DiagnosticsProperty<bool>(
-        'enableSuggestions', enableSuggestions,
-        defaultValue: true));
+      'enableSuggestions', enableSuggestions,
+      defaultValue: true));
     properties.add(IntProperty('maxLines', maxLines, defaultValue: 1));
     properties.add(IntProperty('minLines', minLines, defaultValue: null));
     properties.add(
-        DiagnosticsProperty<bool>('expands', expands, defaultValue: false));
+      DiagnosticsProperty<bool>('expands', expands, defaultValue: false));
     properties.add(IntProperty('maxLength', maxLength, defaultValue: null));
     properties.add(FlagProperty('maxLengthEnforced',
-        value: maxLengthEnforced,
-        defaultValue: true,
-        ifFalse: 'maxLength not enforced'));
+      value: maxLengthEnforced,
+      defaultValue: true,
+      ifFalse: 'maxLength not enforced'));
     properties.add(EnumProperty<TextInputAction>(
-        'textInputAction', textInputAction,
-        defaultValue: null));
+      'textInputAction', textInputAction,
+      defaultValue: null));
     properties.add(EnumProperty<TextCapitalization>(
-        'textCapitalization', textCapitalization,
-        defaultValue: TextCapitalization.none));
+      'textCapitalization', textCapitalization,
+      defaultValue: TextCapitalization.none));
     properties.add(EnumProperty<TextAlign>('textAlign', textAlign,
-        defaultValue: TextAlign.start));
+      defaultValue: TextAlign.start));
     properties.add(DiagnosticsProperty<TextAlignVertical>(
-        'textAlignVertical', textAlignVertical,
-        defaultValue: null));
+      'textAlignVertical', textAlignVertical,
+      defaultValue: null));
     properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
-        defaultValue: null));
+      defaultValue: null));
     properties
-        .add(DoubleProperty('cursorWidth', cursorWidth, defaultValue: 2.0));
+      .add(DoubleProperty('cursorWidth', cursorWidth, defaultValue: 2.0));
     properties.add(DiagnosticsProperty<Radius>('cursorRadius', cursorRadius,
-        defaultValue: null));
+      defaultValue: null));
     properties
-        .add(ColorProperty('cursorColor', cursorColor, defaultValue: null));
+      .add(ColorProperty('cursorColor', cursorColor, defaultValue: null));
     properties.add(DiagnosticsProperty<Brightness>(
-        'keyboardAppearance', keyboardAppearance,
-        defaultValue: null));
+      'keyboardAppearance', keyboardAppearance,
+      defaultValue: null));
     properties.add(DiagnosticsProperty<EdgeInsetsGeometry>(
-        'scrollPadding', scrollPadding,
-        defaultValue: const EdgeInsets.all(20.0)));
+      'scrollPadding', scrollPadding,
+      defaultValue: const EdgeInsets.all(20.0)));
     properties.add(FlagProperty('selectionEnabled',
-        value: selectionEnabled,
-        defaultValue: true,
-        ifFalse: 'selection disabled'));
+      value: selectionEnabled,
+      defaultValue: true,
+      ifFalse: 'selection disabled'));
     properties.add(DiagnosticsProperty<ScrollController>(
-        'scrollController', scrollController,
-        defaultValue: null));
+      'scrollController', scrollController,
+      defaultValue: null));
     properties.add(DiagnosticsProperty<ScrollPhysics>(
-        'scrollPhysics', scrollPhysics,
-        defaultValue: null));
+      'scrollPhysics', scrollPhysics,
+      defaultValue: null));
   }
 }
 
 class _TextSpanFieldState extends State<TextSpanField>
-    implements TextSelectionGestureDetectorBuilderDelegate {
+  implements TextSelectionGestureDetectorBuilderDelegate {
   TextEditingController _controller;
 
   TextEditingController get _effectiveController =>
-      widget.controller ?? _controller;
+    widget.controller ?? _controller;
 
   FocusNode _focusNode;
 
   FocusNode get _effectiveFocusNode =>
-      widget.focusNode ?? (_focusNode ??= FocusNode());
+    widget.focusNode ?? (_focusNode ??= FocusNode());
 
   bool _isHovering = false;
 
   bool get needsCounter =>
-      widget.maxLength != null &&
+    widget.maxLength != null &&
       widget.decoration != null &&
       widget.decoration.counterText == null;
 
   bool _showSelectionHandles = false;
 
   _TextSpanFieldSelectionGestureDetectorBuilder
-      _selectionGestureDetectorBuilder;
+  _selectionGestureDetectorBuilder;
 
   // API for TextSelectionGestureDetectorBuilderDelegate.
   @override
@@ -780,7 +790,7 @@ class _TextSpanFieldState extends State<TextSpanField>
 
   @override
   final GlobalKey<EditableTextState> editableTextKey =
-      GlobalKey<EditableTextState>();
+  GlobalKey<EditableTextState>();
 
   @override
   bool get selectionEnabled => widget.selectionEnabled;
@@ -793,26 +803,26 @@ class _TextSpanFieldState extends State<TextSpanField>
 
   InputDecoration _getEffectiveDecoration() {
     final MaterialLocalizations localizations =
-        MaterialLocalizations.of(context);
+    MaterialLocalizations.of(context);
     final ThemeData themeData = Theme.of(context);
     final InputDecoration effectiveDecoration =
-        (widget.decoration ?? const InputDecoration())
-            .applyDefaults(themeData.inputDecorationTheme)
-            .copyWith(
-              enabled: widget.enabled,
-              hintMaxLines: widget.decoration?.hintMaxLines ?? widget.maxLines,
-            );
+    (widget.decoration ?? const InputDecoration())
+      .applyDefaults(themeData.inputDecorationTheme)
+      .copyWith(
+      enabled: widget.enabled,
+      hintMaxLines: widget.decoration?.hintMaxLines ?? widget.maxLines,
+    );
 
     // No need to build anything if counter or counterText were given directly.
     if (effectiveDecoration.counter != null ||
-        effectiveDecoration.counterText != null) return effectiveDecoration;
+      effectiveDecoration.counterText != null) return effectiveDecoration;
 
     // If buildCounter was provided, use it to generate a counter widget.
     Widget counter;
     final int currentLength = _currentLength;
     if (effectiveDecoration.counter == null &&
-        effectiveDecoration.counterText == null &&
-        widget.buildCounter != null) {
+      effectiveDecoration.counterText == null &&
+      widget.buildCounter != null) {
       final bool isFocused = _effectiveFocusNode.hasFocus;
       counter = Semantics(
         container: true,
@@ -838,16 +848,16 @@ class _TextSpanFieldState extends State<TextSpanField>
       // Show the maxLength in the counter
       counterText += '/${widget.maxLength}';
       final int remaining =
-          (widget.maxLength - currentLength).clamp(0, widget.maxLength);
+      (widget.maxLength - currentLength).clamp(0, widget.maxLength);
       semanticCounterText =
-          localizations.remainingTextFieldCharacterCount(remaining);
+        localizations.remainingTextFieldCharacterCount(remaining);
 
       // Handle length exceeds maxLength
       if (_effectiveController.value.text.runes.length > widget.maxLength) {
         return effectiveDecoration.copyWith(
           errorText: effectiveDecoration.errorText ?? '',
           counterStyle: effectiveDecoration.errorStyle ??
-              themeData.textTheme.caption.copyWith(color: themeData.errorColor),
+            themeData.textTheme.caption.copyWith(color: themeData.errorColor),
           counterText: counterText,
           semanticCounterText: semanticCounterText,
         );
@@ -864,7 +874,7 @@ class _TextSpanFieldState extends State<TextSpanField>
   void initState() {
     super.initState();
     _selectionGestureDetectorBuilder =
-        _TextSpanFieldSelectionGestureDetectorBuilder(state: this);
+      _TextSpanFieldSelectionGestureDetectorBuilder(state: this);
     if (widget.controller == null) {
       _controller = TextEditingController();
     }
@@ -916,8 +926,7 @@ class _TextSpanFieldState extends State<TextSpanField>
     return false;
   }
 
-  void _handleSelectionChanged(
-      TextSelection selection, SelectionChangedCause cause) {
+  void _handleSelectionChanged(TextSelection selection, SelectionChangedCause cause) {
     final bool willShowSelectionHandles = _shouldShowSelectionHandles(cause);
     if (willShowSelectionHandles != _showSelectionHandles) {
       setState(() {
@@ -925,7 +934,9 @@ class _TextSpanFieldState extends State<TextSpanField>
       });
     }
 
-    switch (Theme.of(context).platform) {
+    switch (Theme
+      .of(context)
+      .platform) {
       case TargetPlatform.iOS:
         if (cause == SelectionChangedCause.longPress) {
           _editableText?.bringIntoView(selection.base);
@@ -959,20 +970,20 @@ class _TextSpanFieldState extends State<TextSpanField>
     // assert(debugCheckHasMaterialLocalizations(context));
     assert(debugCheckHasDirectionality(context));
     assert(
-      !(widget.style != null &&
-          widget.style.inherit == false &&
-          (widget.style.fontSize == null || widget.style.textBaseline == null)),
-      'inherit false style must supply fontSize and textBaseline',
+    !(widget.style != null &&
+      widget.style.inherit == false &&
+      (widget.style.fontSize == null || widget.style.textBaseline == null)),
+    'inherit false style must supply fontSize and textBaseline',
     );
 
     final ThemeData themeData = Theme.of(context);
     final TextStyle style = themeData.textTheme.subhead.merge(widget.style);
     final Brightness keyboardAppearance =
-        widget.keyboardAppearance ?? themeData.primaryColorBrightness;
+      widget.keyboardAppearance ?? themeData.primaryColorBrightness;
     final TextEditingController controller = _effectiveController;
     final FocusNode focusNode = _effectiveFocusNode;
     final List<TextInputFormatter> formatters =
-        widget.inputFormatters ?? <TextInputFormatter>[];
+      widget.inputFormatters ?? <TextInputFormatter>[];
     if (widget.maxLength != null && widget.maxLengthEnforced)
       formatters.add(LengthLimitingTextInputFormatter(widget.maxLength));
 
@@ -989,10 +1000,14 @@ class _TextSpanFieldState extends State<TextSpanField>
         textSelectionControls = cupertinoTextSelectionControls;
         paintCursorAboveText = true;
         cursorOpacityAnimates = true;
-        cursorColor ??= CupertinoTheme.of(context).primaryColor;
+        cursorColor ??= CupertinoTheme
+          .of(context)
+          .primaryColor;
         cursorRadius ??= const Radius.circular(2.0);
         cursorOffset = Offset(
-            iOSHorizontalOffset / MediaQuery.of(context).devicePixelRatio, 0);
+          iOSHorizontalOffset / MediaQuery
+            .of(context)
+            .devicePixelRatio, 0);
         break;
 
       case TargetPlatform.android:
@@ -1031,7 +1046,7 @@ class _TextSpanFieldState extends State<TextSpanField>
         expands: widget.expands,
         selectionColor: themeData.textSelectionColor,
         selectionControls:
-            widget.selectionEnabled ? textSelectionControls : null,
+        widget.selectionEnabled ? textSelectionControls : null,
         onChanged: widget.onChanged,
         onSelectionChanged: _handleSelectionChanged,
         onEditingComplete: widget.onEditingComplete,
@@ -1084,15 +1099,15 @@ class _TextSpanFieldState extends State<TextSpanField>
           builder: (BuildContext context, Widget child) {
             return Semantics(
               maxValueLength: widget.maxLengthEnforced &&
-                      widget.maxLength != null &&
-                      widget.maxLength > 0
-                  ? widget.maxLength
-                  : null,
+                widget.maxLength != null &&
+                widget.maxLength > 0
+                ? widget.maxLength
+                : null,
               currentValueLength: _currentLength,
               onTap: () {
                 if (!_effectiveController.selection.isValid)
                   _effectiveController.selection = TextSelection.collapsed(
-                      offset: _effectiveController.text.length);
+                    offset: _effectiveController.text.length);
                 _requestKeyboard();
               },
               child: child,

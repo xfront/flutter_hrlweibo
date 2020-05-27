@@ -1,4 +1,3 @@
-
 class WeiBoTopicType {
   int id;
   String name;
@@ -11,7 +10,7 @@ class WeiBoTopicType {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
     return data;

@@ -20,7 +20,7 @@ class WeiBoPublishPage extends StatefulWidget {
 class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
   _WeiBoPublishPageState({Key key});
 
-  TextEditingController _mEtController = new TextEditingController();
+  TextEditingController _mEtController = TextEditingController();
   String mWeiBoSubmitText = "";
 
   bool mEmojiLayoutShow = false;
@@ -30,13 +30,13 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
   final GlobalKey globalKey = GlobalKey();
   double _softKeyHeight = SpUtil.getDouble(Constant.SP_KEYBOARD_HEGIHT, 200);
   KeyboardVisibilityNotification _keyboardVisibility =
-      new KeyboardVisibilityNotification();
+  KeyboardVisibilityNotification();
   List<File> mFileList = List();
   File mSelectedImageFile;
-  List<UploadFileInfo> mSubmitFileList = List();
+  List<MultipartFile> mSubmitFileList = List();
 
   MySpecialTextSpanBuilder _mySpecialTextSpanBuilder =
-      MySpecialTextSpanBuilder();
+  MySpecialTextSpanBuilder();
 
   @override
   void initState() {
@@ -84,31 +84,31 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
     mSelectedImageFile = null;
 
     return SafeArea(
-        child: WillPopScope(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            _retweettitle(),
-            _retweettosay(),
-            buildBottom(),
-          ],
+      child: WillPopScope(
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          body: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              _retweettitle(),
+              _retweettosay(),
+              buildBottom(),
+            ],
+          ),
         ),
-      ),
-      onWillPop: () {
-        print("点击返回键");
-        if (mBottomLayoutShow) {
-          setState(() {
-            mBottomLayoutShow = false;
-            mEmojiLayoutShow = false;
-          });
-        } else {
-          Navigator.pop(context);
-        }
-      },
-    ));
+        onWillPop: () {
+          print("点击返回键");
+          if (mBottomLayoutShow) {
+            setState(() {
+              mBottomLayoutShow = false;
+              mEmojiLayoutShow = false;
+            });
+          } else {
+            Navigator.pop(context);
+          }
+        },
+      ));
   }
 
   Widget _retweettitle() {
@@ -118,16 +118,16 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
       child: Stack(
         children: <Widget>[
           Align(
-              alignment: Alignment.centerLeft,
-              child: Container(
-                  margin: EdgeInsets.only(left: 15.0),
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('取消',
-                        style: TextStyle(fontSize: 15, color: Colors.black)),
-                  ))),
+            alignment: Alignment.centerLeft,
+            child: Container(
+              margin: EdgeInsets.only(left: 15.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text('取消',
+                  style: TextStyle(fontSize: 15, color: Colors.black)),
+              ))),
           Align(
             alignment: Alignment.center,
             child: Container(
@@ -135,55 +135,55 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
               child: Column(
                 children: <Widget>[
                   Text('发微博',
-                      style: TextStyle(fontSize: 16, color: Colors.black)),
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
                   Text(UserUtil.getUserInfo().nick,
-                      style: TextStyle(fontSize: 12, color: Colors.grey))
+                    style: TextStyle(fontSize: 12, color: Colors.grey))
                 ],
               ),
             ),
           ),
           Align(
-              alignment: Alignment.centerRight,
-              child: InkWell(
-                onTap: () {
-                  if (_mEtController.text.isEmpty) {
-                    ToastUtil.show("内容不能为空!");
-                    return;
-                  }
-                  mSubmitFileList.clear();
-                  for (int i = 0; i < mFileList.length; i++) {
-                    mSubmitFileList.add(new UploadFileInfo(
-                        mFileList.elementAt(i),
-                        path.basename(mFileList.elementAt(i).path)));
-                  }
-                  FormData formData = FormData.from({
-                    "userId": "1",
-                    "content": _mEtController.text,
-                    "files": mSubmitFileList
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              onTap: () {
+                if (_mEtController.text.isEmpty) {
+                  ToastUtil.show("内容不能为空!");
+                  return;
+                }
+                mSubmitFileList.clear();
+                for (int i = 0; i < mFileList.length; i++) {
+                  mSubmitFileList.add(MultipartFile.fromFileSync(mFileList
+                    .elementAt(i)
+                    .path));
+                }
+                var formData = {
+                  "userId": "1",
+                  "content": _mEtController.text,
+                  "files": mSubmitFileList
+                };
+                DioManager()
+                  .post(ServiceUrl.publishWeiBo, formData, (data) {
+                  ToastUtil.show('提交成功!');
+                  setState(() {
+                    mFileList.clear();
+                    mSubmitFileList.clear();
+                    _mEtController.clear();
                   });
-                  DioManager.getInstance()
-                      .post(ServiceUrl.publishWeiBo, formData, (data) {
-                    ToastUtil.show('提交成功!');
-                    setState(() {
-                      mFileList.clear();
-                      mSubmitFileList.clear();
-                      _mEtController.clear();
-                    });
-                  }, (error) {
-                    ToastUtil.show(error);
-                  });
-                },
-                child: Container(
-                  margin: EdgeInsets.only(right: 15.0),
-                  padding: EdgeInsets.only(
-                      left: 8.0, right: 8.0, top: 3.0, bottom: 3.0),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                      color: Color(0xFFFF8200)),
-                  child: Text('发送',
-                      style: TextStyle(fontSize: 15, color: Colors.white)),
-                ),
-              )),
+                }, (error) {
+                  ToastUtil.show(error);
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(right: 15.0),
+                padding: EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 3.0, bottom: 3.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  color: Color(0xFFFF8200)),
+                child: Text('发送',
+                  style: TextStyle(fontSize: 15, color: Colors.white)),
+              ),
+            )),
         ],
       ),
     );
@@ -204,10 +204,10 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
         children: <Widget>[
           Container(
             padding:
-                EdgeInsets.only(top: 10.0, left: 10.0, right: 10, bottom: 20),
-            constraints: new BoxConstraints(minHeight: 50.0),
+            EdgeInsets.only(top: 10.0, left: 10.0, right: 10, bottom: 20),
+            constraints: BoxConstraints(minHeight: 50.0),
             child:
-                /*TextSpanField(
+            /*TextSpanField(
              // onChanged: (value) => this.setState(() => mWeiBoSubmitText = value),
 
               controller: _mEtController,
@@ -219,7 +219,7 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
                   hintText: "分享新鲜事",
                   hintStyle: TextStyle(color: Color(0xff919191), fontSize: 15)),
             ),*/
-                ExtendedTextField(
+            ExtendedTextField(
               //    textSelectionControls: _myExtendedMaterialTextSelectionControls,
               specialTextSpanBuilder: _mySpecialTextSpanBuilder,
               controller: _mEtController,
@@ -227,8 +227,8 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
               focusNode: focusNode,
               style: TextStyle(color: Colors.black, fontSize: 15),
               decoration: InputDecoration.collapsed(
-                  hintText: "分享新鲜事",
-                  hintStyle: TextStyle(color: Color(0xff919191), fontSize: 15)),
+                hintText: "分享新鲜事",
+                hintStyle: TextStyle(color: Color(0xff919191), fontSize: 15)),
             ),
           ),
           GridView.count(
@@ -241,11 +241,11 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
               if (index == mFileList.length) {
                 // 添加图片按钮
                 var addCell = Center(
-                    child: Image.asset(
-                  Constant.ASSETS_IMG + 'mine_feedback_add_image.png',
-                  width: double.infinity,
-                  height: double.infinity,
-                ));
+                  child: Image.asset(
+                    Constant.ASSETS_IMG + 'mine_feedback_add_image.png',
+                    width: double.infinity,
+                    height: double.infinity,
+                  ));
                 content = GestureDetector(
                   onTap: () {
                     // 如果已添加了9张图片，则提示不允许添加更多
@@ -257,7 +257,7 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
                       return;
                     }
                     ImagePicker.pickImage(source: ImageSource.gallery)
-                        .then((result) {
+                      .then((result) {
                       setState(() {
                         mSelectedImageFile = result;
                       });
@@ -331,146 +331,146 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
     return Column(
       children: <Widget>[
         Container(
-            color: Color(0xffF9F9F9),
-            padding: EdgeInsets.only(left: 15, right: 5, top: 10, bottom: 10),
-            child: Row(
-              /* mainAxisSize: MainAxisSize.max,
+          color: Color(0xffF9F9F9),
+          padding: EdgeInsets.only(left: 15, right: 5, top: 10, bottom: 10),
+          child: Row(
+            /* mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.center,*/
-              children: <Widget>[
-                new Expanded(
-                  child: InkWell(
-                    child: Image.asset(
-                      Constant.ASSETS_IMG + 'icon_image.webp',
-                      width: 25.0,
-                      height: 25.0,
-                    ),
-                    onTap: () {
-                      ImagePicker.pickImage(source: ImageSource.gallery)
-                          .then((result) {
-                        setState(() {
-                          mSelectedImageFile = result;
-                        });
-                      });
-                    },
+            children: <Widget>[
+              Expanded(
+                child: InkWell(
+                  child: Image.asset(
+                    Constant.ASSETS_IMG + 'icon_image.webp',
+                    width: 25.0,
+                    height: 25.0,
                   ),
-                  flex: 1,
-                ),
-                new Expanded(
-                  child: InkWell(
-                    child: Image.asset(
-                      Constant.ASSETS_IMG + 'icon_mention.png',
-                      width: 25.0,
-                      height: 25.0,
-                    ),
-                    onTap: () {
-                      Routes.navigateTo(
-                              context, '${Routes.weiboPublishAtUsrPage}')
-                          .then((result) {
-                        WeiboAtUser mAtUser = result as WeiboAtUser;
-                        if (mAtUser != null) {
-                          mWeiBoSubmitText = mWeiBoSubmitText +
-                              "[@" +
-                              mAtUser.nick +
-                              ":" +
-                              mAtUser.id +
-                              "]";
-                          //   _mEtController.text = _mEtController.text + "@" + mAtUser.nick+" ";
-                          //   print("_mEtControllerfield的值:" + mWeiBoSubmitText);
-
-                          _mEtController.text = _mEtController.text +
-                              "[@" +
-                              mAtUser.nick +
-                              ":" +
-                              mAtUser.id +
-                              "]";
-                          //   _mEtController.buildTextSpan()
-                          // _mEtController.text=_mEtController.text+"#aaaa#" ;
-                        }
-                      });
-                    },
-                  ),
-                  flex: 1,
-                ),
-                new Expanded(
-                  child: InkWell(
-                    child: Image.asset(
-                      Constant.ASSETS_IMG + 'icon_topic.png',
-                      width: 25.0,
-                      height: 25.0,
-                    ),
-                    onTap: () {
-                      Routes.navigateTo(
-                              context, '${Routes.weiboPublishTopicPage}')
-                          .then((result) {
-                        WeiBoTopic mTopic = result;
-
-                        if (mTopic != null) {
-                          // _mEtController.text = _mEtController.text +  "#" +   mTopic.topicdesc +  "#"+"";
-
-                          _mEtController.text = _mEtController.text +
-                              "#" +
-                              mTopic.topicdesc +
-                              ":" +
-                              mTopic.topicid +
-                              "#";
-
-                          //   _mEtController.buildTextSpan()
-                          // _mEtController.text=_mEtController.text+"#aaaa#" ;
-                        }
-                      });
-                    },
-                  ),
-                  flex: 1,
-                ),
-                new Expanded(
-                  child: InkWell(
-                    child: Image.asset(
-                      Constant.ASSETS_IMG + 'icon_gif.png',
-                      width: 25.0,
-                      height: 25.0,
-                    ),
-                    onTap: () {},
-                  ),
-                  flex: 1,
-                ),
-                new Expanded(
-                  child: InkWell(
-                    child: Image.asset(
-                      Constant.ASSETS_IMG + 'icon_emotion.png',
-                      width: 25.0,
-                      height: 25.0,
-                    ),
-                    onTap: () {
-                      _getWH();
+                  onTap: () {
+                    ImagePicker.pickImage(source: ImageSource.gallery)
+                      .then((result) {
                       setState(() {
-                        if (mEmojiLayoutShow) {
-                          mBottomLayoutShow = true;
-                          mEmojiLayoutShow = false;
-                          showSoftKey();
-                        } else {
-                          mBottomLayoutShow = true;
-                          mEmojiLayoutShow = true;
-                          hideSoftKey();
-                        }
+                        mSelectedImageFile = result;
                       });
+                    });
+                  },
+                ),
+                flex: 1,
+              ),
+              Expanded(
+                child: InkWell(
+                  child: Image.asset(
+                    Constant.ASSETS_IMG + 'icon_mention.png',
+                    width: 25.0,
+                    height: 25.0,
+                  ),
+                  onTap: () {
+                    Routes.navigateTo(
+                      context, '${Routes.weiboPublishAtUsrPage}')
+                      .then((result) {
+                      WeiboAtUser mAtUser = result as WeiboAtUser;
+                      if (mAtUser != null) {
+                        mWeiBoSubmitText = mWeiBoSubmitText +
+                          "[@" +
+                          mAtUser.nick +
+                          ":" +
+                          mAtUser.id +
+                          "]";
+                        //   _mEtController.text = _mEtController.text + "@" + mAtUser.nick+" ";
+                        //   print("_mEtControllerfield的值:" + mWeiBoSubmitText);
 
-                      _getWH();
-                    },
-                  ),
-                  flex: 1,
+                        _mEtController.text = _mEtController.text +
+                          "[@" +
+                          mAtUser.nick +
+                          ":" +
+                          mAtUser.id +
+                          "]";
+                        //   _mEtController.buildTextSpan()
+                        // _mEtController.text=_mEtController.text+"#aaaa#" ;
+                      }
+                    });
+                  },
                 ),
-                new Expanded(
-                  child: InkWell(
-                    child: Image.asset(
-                      Constant.ASSETS_IMG + 'icon_add.png',
-                      width: 25.0,
-                      height: 25.0,
-                    ),
-                    onTap: () {},
+                flex: 1,
+              ),
+              Expanded(
+                child: InkWell(
+                  child: Image.asset(
+                    Constant.ASSETS_IMG + 'icon_topic.png',
+                    width: 25.0,
+                    height: 25.0,
                   ),
+                  onTap: () {
+                    Routes.navigateTo(
+                      context, '${Routes.weiboPublishTopicPage}')
+                      .then((result) {
+                      WeiBoTopic mTopic = result;
+
+                      if (mTopic != null) {
+                        // _mEtController.text = _mEtController.text +  "#" +   mTopic.topicdesc +  "#"+"";
+
+                        _mEtController.text = _mEtController.text +
+                          "#" +
+                          mTopic.topicdesc +
+                          ":" +
+                          mTopic.topicid +
+                          "#";
+
+                        //   _mEtController.buildTextSpan()
+                        // _mEtController.text=_mEtController.text+"#aaaa#" ;
+                      }
+                    });
+                  },
                 ),
-              ],
-            )),
+                flex: 1,
+              ),
+              Expanded(
+                child: InkWell(
+                  child: Image.asset(
+                    Constant.ASSETS_IMG + 'icon_gif.png',
+                    width: 25.0,
+                    height: 25.0,
+                  ),
+                  onTap: () {},
+                ),
+                flex: 1,
+              ),
+              Expanded(
+                child: InkWell(
+                  child: Image.asset(
+                    Constant.ASSETS_IMG + 'icon_emotion.png',
+                    width: 25.0,
+                    height: 25.0,
+                  ),
+                  onTap: () {
+                    _getWH();
+                    setState(() {
+                      if (mEmojiLayoutShow) {
+                        mBottomLayoutShow = true;
+                        mEmojiLayoutShow = false;
+                        showSoftKey();
+                      } else {
+                        mBottomLayoutShow = true;
+                        mEmojiLayoutShow = true;
+                        hideSoftKey();
+                      }
+                    });
+
+                    _getWH();
+                  },
+                ),
+                flex: 1,
+              ),
+              Expanded(
+                child: InkWell(
+                  child: Image.asset(
+                    Constant.ASSETS_IMG + 'icon_add.png',
+                    width: 25.0,
+                    height: 25.0,
+                  ),
+                  onTap: () {},
+                ),
+              ),
+            ],
+          )),
         Visibility(
           visible: mBottomLayoutShow,
           child: Container(
@@ -482,7 +482,7 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
                   _mEtController.clear();
                 } else {
                   _mEtController.text =
-                      _mEtController.text + "[/" + value.toString() + "]";
+                    _mEtController.text + "[/" + value.toString() + "]";
                 }
               }),
             ),

@@ -13,16 +13,16 @@ class HeadChooseWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: Column(
-      mainAxisSize: MainAxisSize.min, //wrap_content
-      children: <Widget>[
-        Material(
-          color: Colors.white,
-          child: InkWell(
+      child: Column(
+        mainAxisSize: MainAxisSize.min, //wrap_content
+        children: <Widget>[
+          Material(
+            color: Colors.white,
+            child: InkWell(
               onTap: () {
                 Navigator.pop(context);
                 Future<File> imageFile =
-                    ImagePicker.pickImage(source: ImageSource.camera);
+                ImagePicker.pickImage(source: ImageSource.camera);
                 imageFile.then((result) {
                   chooseImgCallBack(result);
                 });
@@ -34,22 +34,22 @@ class HeadChooseWidget extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text('立即拍照',
-                      style: TextStyle(fontSize: 16, color: Colors.black)),
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
               )),
-        ),
-        Container(
-          height: 1,
-          color: Color(0xffEFF1F0),
-          //  margin: EdgeInsets.only(left: 60),
-        ),
-        Material(
-          color: Colors.white,
-          child: InkWell(
+          ),
+          Container(
+            height: 1,
+            color: Color(0xffEFF1F0),
+            //  margin: EdgeInsets.only(left: 60),
+          ),
+          Material(
+            color: Colors.white,
+            child: InkWell(
               onTap: () {
                 Navigator.pop(context);
                 Future<File> imageFile =
-                    ImagePicker.pickImage(source: ImageSource.gallery);
+                ImagePicker.pickImage(source: ImageSource.gallery);
                 imageFile.then((result) {
                   chooseImgCallBack(result);
                 });
@@ -61,18 +61,18 @@ class HeadChooseWidget extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text('从相册选择',
-                      style: TextStyle(fontSize: 16, color: Colors.black)),
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
               )),
-        ),
-        Container(
-          height: 1,
-          color: Color(0xffEFF1F0),
-          //  margin: EdgeInsets.only(left: 60),
-        ),
-        Material(
-          color: Colors.white,
-          child: InkWell(
+          ),
+          Container(
+            height: 1,
+            color: Color(0xffEFF1F0),
+            //  margin: EdgeInsets.only(left: 60),
+          ),
+          Material(
+            color: Colors.white,
+            child: InkWell(
               onTap: () {},
               child: Container(
                 height: 50,
@@ -81,18 +81,18 @@ class HeadChooseWidget extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text('查看大图',
-                      style: TextStyle(fontSize: 16, color: Colors.black)),
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
               )),
-        ),
-        Container(
-          height: 10,
-          color: Color(0xffEFF1F0),
-          //  margin: EdgeInsets.only(left: 60),
-        ),
-        Material(
-          color: Colors.white,
-          child: InkWell(
+          ),
+          Container(
+            height: 10,
+            color: Color(0xffEFF1F0),
+            //  margin: EdgeInsets.only(left: 60),
+          ),
+          Material(
+            color: Colors.white,
+            child: InkWell(
               onTap: () {
                 Navigator.pop(context);
               },
@@ -103,11 +103,11 @@ class HeadChooseWidget extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text('取消',
-                      style: TextStyle(fontSize: 16, color: Colors.black)),
+                    style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
               )),
-        ),
-      ],
-    ));
+          ),
+        ],
+      ));
   }
 }

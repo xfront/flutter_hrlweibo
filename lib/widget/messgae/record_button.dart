@@ -14,7 +14,7 @@ OverlayEntry mOverlayEntry;
 
 String mButtonText = "按住发声";
 String mCenterTipText = "";
-final LocalFileSystem mLocalFileSystem = new LocalFileSystem();
+final LocalFileSystem mLocalFileSystem = LocalFileSystem();
 
 double startY = 0.0;
 double endY = 0.0;
@@ -29,7 +29,7 @@ int MIN_INTERVAL_TIME = 1000;
 
 String voiceIco = Constant.ASSETS_IMG + "ic_volume_1.png";
 
-List<String> _assetList = new List();
+List<String> _assetList = List();
 
 bool showAnim = true;
 
@@ -50,10 +50,16 @@ class RecordButton extends StatefulWidget {
 ///显示录音悬浮布局
 buildOverLayView(BuildContext context) {
   if (mOverlayEntry == null) {
-    mOverlayEntry = new OverlayEntry(builder: (content) {
+    mOverlayEntry = OverlayEntry(builder: (content) {
       return Positioned(
-        top: MediaQuery.of(context).size.height * 0.5 - 80,
-        left: MediaQuery.of(context).size.width * 0.5 - 80,
+        top: MediaQuery
+          .of(context)
+          .size
+          .height * 0.5 - 80,
+        left: MediaQuery
+          .of(context)
+          .size
+          .width * 0.5 - 80,
         child: Material(
           type: MaterialType.transparency,
           child: Center(
@@ -69,19 +75,19 @@ buildOverLayView(BuildContext context) {
                 child: Column(
                   children: <Widget>[
                     Container(
-                        margin: EdgeInsets.only(top: 10),
-                        child: showAnim
-                            ? VoiceAnimationImage(
-                                _assetList,
-                                width: 100,
-                                height: 100,
-                                isStop: true,
-                              )
-                            : new Image.asset(
-                                voiceIco,
-                                width: 100,
-                                height: 100,
-                              )),
+                      margin: EdgeInsets.only(top: 10),
+                      child: showAnim
+                        ? VoiceAnimationImage(
+                        _assetList,
+                        width: 100,
+                        height: 100,
+                        isStop: true,
+                      )
+                        : Image.asset(
+                        voiceIco,
+                        width: 100,
+                        height: 100,
+                      )),
                     Container(
 //                      padding: EdgeInsets.only(right: 20, left: 20, top: 0),
                       child: Text(
@@ -105,20 +111,23 @@ buildOverLayView(BuildContext context) {
   }
 }
 
-Map<int, Image> imageCaches = new Map();
+Map<int, Image> imageCaches = Map();
 
 class _RecordButtonState extends State<RecordButton> {
-//  Recording _recording = new Recording();
+//  Recording _recording = Recording();
 
   startRecord() async {
     print("开始录音");
     io.Directory appDocDirectory = await getApplicationDocumentsDirectory();
     String path = appDocDirectory.path +
-        '/' +
-        new DateTime.now().millisecondsSinceEpoch.toString();
+      '/' +
+      DateTime
+        .now()
+        .millisecondsSinceEpoch
+        .toString();
     print("开始录音路径: $path");
     await FlutterRecordPlugin.start(
-        path: path, audioOutputFormat: AudioOutputFormat.AAC);
+      path: path, audioOutputFormat: AudioOutputFormat.AAC);
     bool isRecording = await FlutterRecordPlugin.isRecording;
   }
 
@@ -140,7 +149,9 @@ class _RecordButtonState extends State<RecordButton> {
 
   completeRecord() async {
     int intervalTime =
-        new DateTime.now().millisecondsSinceEpoch - mSatrtRecordTime;
+      DateTime
+        .now()
+        .millisecondsSinceEpoch - mSatrtRecordTime;
     if (intervalTime < MIN_INTERVAL_TIME) {
       print("录音时间太短");
       mCenterTipText = "录音时间太短";
@@ -216,7 +227,9 @@ class _RecordButtonState extends State<RecordButton> {
             setState(() {});
             startRecord();
             startY = details.globalPosition.dy;
-            mSatrtRecordTime = new DateTime.now().millisecondsSinceEpoch;
+            mSatrtRecordTime = DateTime
+              .now()
+              .millisecondsSinceEpoch;
           }
         },
         onVerticalDragEnd: (details) {
@@ -245,7 +258,7 @@ class _RecordButtonState extends State<RecordButton> {
             });
             /* stopRecording();
                    recordDialog.dismiss();
-                   File file = new File(mFile);
+                   File file = File(mFile);
                    file.delete();*/
           } else {
             mCenterTipText = "手指上滑,取消发送";
@@ -256,13 +269,13 @@ class _RecordButtonState extends State<RecordButton> {
         },
         child: Container(
           height: 40,
-          decoration: new BoxDecoration(
+          decoration: BoxDecoration(
             //背景
             color: Colors.white,
             //设置四周圆角 角度
             borderRadius: BorderRadius.all(Radius.circular(4.0)),
             //设置四周边框
-            border: new Border.all(width: 1, color: Color(0xffD2D2D2)),
+            border: Border.all(width: 1, color: Color(0xffD2D2D2)),
           ),
           child: Center(
             child: Text(

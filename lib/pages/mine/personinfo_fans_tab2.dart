@@ -9,12 +9,12 @@ class FanListPage extends StatefulWidget {
 }
 
 class FanListPageState extends State<FanListPage> {
-  ScrollController mListController = new ScrollController();
+  ScrollController mListController = ScrollController();
   List<FanFollowModel> mFanList;
   num curPage = 1;
   bool isloadingMore = false; //是否显示加载中
   bool ishasMore = true; //是否还有更多
-  var mTextController = new TextEditingController();
+  var mTextController = TextEditingController();
 
   //下拉刷新
   Future _pullToRefresh() async {
@@ -47,17 +47,18 @@ class FanListPageState extends State<FanListPage> {
 
   //获取数据
   getFanList(bool isRefresh) {
+    var uid = UserUtil.getUserInfo().id;
     if (isRefresh) {
       isloadingMore = false;
       ishasMore = true;
       curPage = 1;
-      FormData params = FormData.from({
-        'mcurrentuserId': UserUtil.getUserInfo().id,
-        'mqueryuseid': UserUtil.getUserInfo().id,
+      var params = {
+        'mcurrentuserId': uid,
+        'mqueryuseid': uid,
         'pageNum': "$curPage",
         'pageSize': "10"
-      });
-      DioManager.getInstance().post(ServiceUrl.getFanList, params, (data) {
+      };
+      DioManager().post(ServiceUrl.getFanList, params, (data) {
         List<FanFollowModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(FanFollowModel.fromJson(data));
@@ -67,13 +68,13 @@ class FanListPageState extends State<FanListPage> {
         setState(() {});
       }, (error) {});
     } else {
-      FormData params = FormData.from({
-        'mcurrentuserId': UserUtil.getUserInfo().id,
-        'mqueryuseid': UserUtil.getUserInfo().id,
+      var params = {
+        'mcurrentuserId': uid,
+        'mqueryuseid': uid,
         'pageNum': "$curPage",
         'pageSize': "10"
-      });
-      DioManager.getInstance().post(ServiceUrl.getFanList, params, (data) {
+      };
+      DioManager().post(ServiceUrl.getFanList, params, (data) {
         List<FanFollowModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(FanFollowModel.fromJson(data));
@@ -106,50 +107,50 @@ class FanListPageState extends State<FanListPage> {
       );
     } else {
       return RefreshIndicator(
-          child: ListView.builder(
-            itemCount: mFanList.length + 2,
-            itemBuilder: (context, i) => mFollowItem(i),
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: mListController,
-          ),
-          onRefresh: _pullToRefresh);
+        child: ListView.builder(
+          itemCount: mFanList.length + 2,
+          itemBuilder: (context, i) => mFollowItem(i),
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: mListController,
+        ),
+        onRefresh: _pullToRefresh);
     }
   }
 
   Widget _buildLoadMore() {
     return isloadingMore
-        ? Container(
-            child: Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5),
-            child: Center(
-                child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: SizedBox(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-                    height: 12.0,
-                    width: 12.0,
+      ? Container(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 5, bottom: 5),
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                child: SizedBox(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
                   ),
+                  height: 12.0,
+                  width: 12.0,
                 ),
-                Text("加载中..."),
-              ],
-            )),
-          ))
-        : new Container(
-            child: ishasMore
-                ? new Container()
-                : Center(
-                    child: Container(
-                        margin: EdgeInsets.only(top: 5, bottom: 5),
-                        child: Text(
-                          "没有更多数据",
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ))),
-          );
+              ),
+              Text("加载中..."),
+            ],
+          )),
+      ))
+      : Container(
+      child: ishasMore
+        ? Container()
+        : Center(
+        child: Container(
+          margin: EdgeInsets.only(top: 5, bottom: 5),
+          child: Text(
+            "没有更多数据",
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ))),
+    );
   }
 
   Widget mFanTop() {
@@ -159,29 +160,29 @@ class FanListPageState extends State<FanListPage> {
           margin: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 10),
           child: InkWell(
             child: Container(
-                padding: new EdgeInsets.only(
-                    top: 7.0, bottom: 7.0, left: 5.0, right: 5.0),
-                decoration: new BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: new BorderRadius.circular(5.0),
-                ),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.only(right: 5),
-                      child: Image.asset(
-                        Constant.ASSETS_IMG + "ic_search.png",
-                        width: 20,
-                        height: 20,
-                      ),
+              padding: EdgeInsets.only(
+                top: 7.0, bottom: 7.0, left: 5.0, right: 5.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(right: 5),
+                    child: Image.asset(
+                      Constant.ASSETS_IMG + "ic_search.png",
+                      width: 20,
+                      height: 20,
                     ),
-                    Expanded(
-                        child: Text(
+                  ),
+                  Expanded(
+                    child: Text(
                       "搜索全部粉丝",
                       style: TextStyle(fontSize: 14, color: Color(0xff999999)),
                     ))
-                  ],
-                )),
+                ],
+              )),
             onTap: () {
               print("点击关注");
             },
@@ -215,17 +216,17 @@ class FanListPageState extends State<FanListPage> {
           Container(
             padding: EdgeInsets.only(top: 12, bottom: 12),
             color: Colors.white,
-            //child:new Text(    '${mModel.nick }'  ),
+            //child: Text(    '${mModel.nick }'  ),
             child: Row(
               children: <Widget>[
                 Container(
-                    margin: EdgeInsets.only(left: 15, right: 15),
-                    child: CircleAvatar(
-                      //头像半径
-                      radius: 25,
-                      //头像图片 -> NetworkImage网络图片，AssetImage项目资源包图片, FileImage本地存储图片
-                      backgroundImage: NetworkImage('${mModel.headurl}'),
-                    )),
+                  margin: EdgeInsets.only(left: 15, right: 15),
+                  child: CircleAvatar(
+                    //头像半径
+                    radius: 25,
+                    //头像图片 -> NetworkImage网络图片，AssetImage项目资源包图片, FileImage本地存储图片
+                    backgroundImage: NetworkImage('${mModel.headurl}'),
+                  )),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -233,9 +234,9 @@ class FanListPageState extends State<FanListPage> {
                       child: Text(
                         '${mModel.nick}',
                         style: TextStyle(
-                            letterSpacing: 0,
-                            color: Colors.black,
-                            fontSize: 14),
+                          letterSpacing: 0,
+                          color: Colors.black,
+                          fontSize: 14),
                       ),
                     ),
                     Container(
@@ -243,18 +244,18 @@ class FanListPageState extends State<FanListPage> {
                       child: Text(
                         '${mModel.decs}',
                         style: TextStyle(
-                            letterSpacing: 0,
-                            color: Color(0xff666666),
-                            fontSize: 12),
+                          letterSpacing: 0,
+                          color: Color(0xff666666),
+                          fontSize: 12),
                       ),
                     )
                   ],
                 ),
                 Expanded(
-                    child: new Align(
-                  alignment: FractionalOffset.centerRight,
-                  child: mFollowBtnWidget(mModel, i - 1),
-                ))
+                  child: Align(
+                    alignment: FractionalOffset.centerRight,
+                    child: mFollowBtnWidget(mModel, i - 1),
+                  ))
               ],
             ),
           ),
@@ -274,25 +275,25 @@ class FanListPageState extends State<FanListPage> {
         margin: EdgeInsets.only(right: 15),
         child: InkWell(
           child: Container(
-              padding: new EdgeInsets.only(
-                  top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Color(0xff999999)),
-                borderRadius: new BorderRadius.circular(5.0),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Image.asset(
-                    Constant.ASSETS_IMG + "ic_alfllow.png",
-                    width: 10,
-                    height: 10,
-                  ),
-                  Text("已关注",
-                      style: TextStyle(color: Color(0xff333333), fontSize: 12)),
-                ],
-              )),
+            padding: EdgeInsets.only(
+              top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Color(0xff999999)),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset(
+                  Constant.ASSETS_IMG + "ic_alfllow.png",
+                  width: 10,
+                  height: 10,
+                ),
+                Text("已关注",
+                  style: TextStyle(color: Color(0xff333333), fontSize: 12)),
+              ],
+            )),
           onTap: () {
             showCancelFollowDialog(mModel, position);
           },
@@ -303,29 +304,29 @@ class FanListPageState extends State<FanListPage> {
         margin: EdgeInsets.only(right: 15),
         child: InkWell(
           child: Container(
-            padding: new EdgeInsets.only(
-                top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
-            decoration: new BoxDecoration(
+            padding: EdgeInsets.only(
+              top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
+            decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: Colors.orange),
-              borderRadius: new BorderRadius.circular(5.0),
+              borderRadius: BorderRadius.circular(5.0),
             ),
             child: Text("+关注",
-                style: TextStyle(color: Colors.orange, fontSize: 12)),
+              style: TextStyle(color: Colors.orange, fontSize: 12)),
           ),
           onTap: () {
-            FormData params = FormData.from({
+            var params = {
               'userid': UserUtil.getUserInfo().id,
               'otheruserid': mModel.id,
-            });
-            DioManager.getInstance().post(ServiceUrl.followOther, params,
+            };
+            DioManager().post(ServiceUrl.followOther, params,
                 (data) {
-              int mRelation = data['data']['relation'];
-              (mFanList[position]).relation = mRelation;
-              setState(() {});
-            }, (error) {
-              ToastUtil.show(error);
-            });
+                int mRelation = data['data']['relation'];
+                (mFanList[position]).relation = mRelation;
+                setState(() {});
+              }, (error) {
+                ToastUtil.show(error);
+              });
           },
         ),
       );
@@ -334,25 +335,25 @@ class FanListPageState extends State<FanListPage> {
         margin: EdgeInsets.only(right: 15),
         child: InkWell(
           child: Container(
-              padding: new EdgeInsets.only(
-                  top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Color(0xff999999)),
-                borderRadius: new BorderRadius.circular(5.0),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Image.asset(
-                    Constant.ASSETS_IMG + "ic_huxiangfollow.png",
-                    width: 10,
-                    height: 10,
-                  ),
-                  Text("互相关注",
-                      style: TextStyle(color: Color(0xff333333), fontSize: 12)),
-                ],
-              )),
+            padding: EdgeInsets.only(
+              top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Color(0xff999999)),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset(
+                  Constant.ASSETS_IMG + "ic_huxiangfollow.png",
+                  width: 10,
+                  height: 10,
+                ),
+                Text("互相关注",
+                  style: TextStyle(color: Color(0xff333333), fontSize: 12)),
+              ],
+            )),
           onTap: () {
             showCancelFollowDialog(mModel, position);
           },
@@ -363,48 +364,48 @@ class FanListPageState extends State<FanListPage> {
 
   Widget showCancelFollowDialog(FanFollowModel mModel, int position) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            // title: Text('我是标题'),
-            content: Container(
-              margin: EdgeInsets.only(top: 10, bottom: 5),
-              child: Text('确定不再关注?'),
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          // title: Text('我是标题'),
+          content: Container(
+            margin: EdgeInsets.only(top: 10, bottom: 5),
+            child: Text('确定不再关注?'),
+          ),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text(
+                '取消',
+                style: TextStyle(fontSize: 12, color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text(
-                  '取消',
-                  style: TextStyle(fontSize: 12, color: Colors.black),
-                ),
-                onPressed: () {
+            CupertinoDialogAction(
+              child: Text(
+                '确定',
+                style: TextStyle(fontSize: 12, color: Colors.deepOrange),
+              ),
+              onPressed: () {
+                var params = {
+                  'userid': UserUtil.getUserInfo().id,
+                  'otheruserid': mModel.id,
+                };
+                DioManager()
+                  .post(ServiceUrl.followCancelOther, params, (data) {
                   Navigator.of(context).pop();
-                },
-              ),
-              CupertinoDialogAction(
-                child: Text(
-                  '确定',
-                  style: TextStyle(fontSize: 12, color: Colors.deepOrange),
-                ),
-                onPressed: () {
-                  FormData params = FormData.from({
-                    'userid': UserUtil.getUserInfo().id,
-                    'otheruserid': mModel.id,
-                  });
-                  DioManager.getInstance()
-                      .post(ServiceUrl.followCancelOther, params, (data) {
-                    Navigator.of(context).pop();
-                    int mRelation = data['data']['relation'];
-                    (mFanList[position]).relation = mRelation;
-                    setState(() {});
-                  }, (error) {
-                    ToastUtil.show(error);
-                  });
-                },
-              ),
-            ],
-          );
-        });
+                  int mRelation = data['data']['relation'];
+                  (mFanList[position]).relation = mRelation;
+                  setState(() {});
+                }, (error) {
+                  ToastUtil.show(error);
+                });
+              },
+            ),
+          ],
+        );
+      });
   }
 
   @override

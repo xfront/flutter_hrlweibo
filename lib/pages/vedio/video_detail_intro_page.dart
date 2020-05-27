@@ -18,14 +18,14 @@ class VideoDetailIntroPage extends StatefulWidget {
 
 class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
   bool mZiDongPlaySwitch = false;
-  List<VideoModel> mRecommendVideoList = new List();
+  List<VideoModel> mRecommendVideoList = List();
 
   Future getmRecommendVideoList() async {
-    FormData params = FormData.from({
+    var params = {
       'videoid': widget.mVideo.id,
-    });
-    DioManager.getInstance()
-        .post(ServiceUrl.getVideoDetailRecommendList, params, (data) {
+    };
+    DioManager()
+      .post(ServiceUrl.getVideoDetailRecommendList, params, (data) {
       mRecommendVideoList.clear();
       data['data'].forEach((data) {
         mRecommendVideoList.add(VideoModel.fromJson(data));
@@ -64,11 +64,11 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                   margin: EdgeInsets.only(left: 15, right: 15, top: 5),
                   child: Text(
                     DateUtil.getFormatTime(DateTime.fromMillisecondsSinceEpoch(
-                                widget.mVideo.createtime))
-                            .toString() +
-                        "   " +
-                        widget.mVideo.playnum.toString() +
-                        "次观看",
+                      widget.mVideo.createtime))
+                      .toString() +
+                      "   " +
+                      widget.mVideo.playnum.toString() +
+                      "次观看",
                     style: TextStyle(fontSize: 13, color: Colors.grey),
                   ),
                 ),
@@ -76,13 +76,13 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                   margin: EdgeInsets.only(left: 15, right: 15, top: 15),
                   child: Row(
                     children: <Widget>[
-                      new Expanded(
+                      Expanded(
                         child: InkWell(
                           child: Column(
                             children: <Widget>[
                               Image.asset(
                                 Constant.ASSETS_IMG +
-                                    'video_detail_zhuanfa.png',
+                                  'video_detail_zhuanfa.png',
                                 width: 25.0,
                                 height: 25.0,
                               ),
@@ -91,7 +91,7 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                                 child: Text(
                                   "转发",
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                    fontSize: 12, color: Colors.grey),
                                 ),
                               ),
                             ],
@@ -99,7 +99,7 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                         ),
                         flex: 1,
                       ),
-                      new Expanded(
+                      Expanded(
                         child: InkWell(
                           child: Column(
                             children: <Widget>[
@@ -113,7 +113,7 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                                 child: Text(
                                   "点赞",
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                    fontSize: 12, color: Colors.grey),
                                 ),
                               ),
                             ],
@@ -121,7 +121,7 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                         ),
                         flex: 1,
                       ),
-                      new Expanded(
+                      Expanded(
                         child: InkWell(
                           child: Column(
                             children: <Widget>[
@@ -135,7 +135,7 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                                 child: Text(
                                   "分享",
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                    fontSize: 12, color: Colors.grey),
                                 ),
                               ),
                             ],
@@ -143,13 +143,13 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                         ),
                         flex: 1,
                       ),
-                      new Expanded(
+                      Expanded(
                         child: InkWell(
                           child: Column(
                             children: <Widget>[
                               Image.asset(
                                 Constant.ASSETS_IMG +
-                                    'video_detail_downlaod.png',
+                                  'video_detail_downlaod.png',
                                 width: 27.0,
                                 height: 27.0,
                               ),
@@ -158,7 +158,7 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                                 child: Text(
                                   "下载",
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey),
+                                    fontSize: 12, color: Colors.grey),
                                 ),
                               ),
                             ],
@@ -183,7 +183,7 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
                         "自动播放",
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
-                      new Switch(
+                      Switch(
                         value: this.mZiDongPlaySwitch,
                         activeColor: Colors.blue, // 激活时原点颜色
                         onChanged: (bool val) {
@@ -202,9 +202,9 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
             padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
             sliver: SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
+                  (BuildContext context, int index) {
                   return mRecommendVideoWidget(
-                      mRecommendVideoList[index], index, context);
+                    mRecommendVideoList[index], index, context);
                 },
                 childCount: mRecommendVideoList.length,
               ),
@@ -216,8 +216,7 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
   }
 }
 
-Widget mRecommendVideoWidget(
-    VideoModel mModel, int index, BuildContext context) {
+Widget mRecommendVideoWidget(VideoModel mModel, int index, BuildContext context) {
   return Container(
     margin: EdgeInsets.only(top: index == 0 ? 0 : 10),
     child: Row(
@@ -227,18 +226,24 @@ Widget mRecommendVideoWidget(
         Container(
           margin: EdgeInsets.only(right: 10),
           height: 80,
-          width: MediaQuery.of(context).size.width * 3 / 8,
+          width: MediaQuery
+            .of(context)
+            .size
+            .width * 3 / 8,
           child: Stack(
             children: <Widget>[
               Container(
-                width: MediaQuery.of(context).size.width * 3 / 8,
+                width: MediaQuery
+                  .of(context)
+                  .size
+                  .width * 3 / 8,
                 height: 80,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5),
                   child: FadeInImage(
                     fit: BoxFit.cover,
                     placeholder:
-                        AssetImage(Constant.ASSETS_IMG + 'img_default.png'),
+                    AssetImage(Constant.ASSETS_IMG + 'img_default.png'),
                     image: NetworkImage(
                       mModel.coverimg,
                     ),
@@ -246,29 +251,29 @@ Widget mRecommendVideoWidget(
                 ),
               ),
               Positioned(
-                  child: new Align(
-                alignment: FractionalOffset.bottomCenter,
-                child: Container(
-                  padding: EdgeInsets.only(bottom: 5),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    //     mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
+                child: Align(
+                  alignment: FractionalOffset.bottomCenter,
+                  child: Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      //     mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
 
-                    children: <Widget>[
-                      Spacer(),
-                      Container(
-                        margin: EdgeInsets.only(right: 5),
-                        child: Text(
+                      children: <Widget>[
+                        Spacer(),
+                        Container(
+                          margin: EdgeInsets.only(right: 5),
+                          child: Text(
                             DateUtil.getFormatTime4(mModel.videotime)
-                                .toString(),
+                              .toString(),
                             style:
-                                TextStyle(fontSize: 14.0, color: Colors.white)),
-                      ),
-                    ],
+                            TextStyle(fontSize: 14.0, color: Colors.white)),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ))
+                ))
             ],
           ),
         ),
@@ -281,9 +286,9 @@ Widget mRecommendVideoWidget(
                 margin: EdgeInsets.only(top: 3),
 
                 child: Text(mModel.introduce,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontSize: 14.0, color: Colors.black)),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 14.0, color: Colors.black)),
                 //  margin: EdgeInsets.only(left: 60),
               ),
               Container(
@@ -293,20 +298,20 @@ Widget mRecommendVideoWidget(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                        child: Text(
-                      mModel.username.toString() + "  ",
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    )),
+                      child: Text(
+                        mModel.username.toString() + "  ",
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      )),
                     Container(
-                        child: Text(
-                      mModel.playnum.toString(),
-                      style: TextStyle(fontSize: 13, color: Colors.grey),
-                    )),
+                      child: Text(
+                        mModel.playnum.toString(),
+                        style: TextStyle(fontSize: 13, color: Colors.grey),
+                      )),
                     Container(
-                        child: Text(
-                      "次观看 · ",
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    )),
+                      child: Text(
+                        "次观看 · ",
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      )),
                   ],
                 ),
               )
@@ -333,43 +338,43 @@ Widget _authorRow(BuildContext context, VideoModel mVideo) {
           child: Container(
             margin: EdgeInsets.only(right: 5),
             child: mVideo.userisvertify == 0
-                ? Container(
-                    width: 40.0,
-                    height: 40.0,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.transparent,
-                      image: DecorationImage(
-                          image: NetworkImage(mVideo.userheadurl),
-                          fit: BoxFit.cover),
-                    ))
-                : Stack(
-                    children: <Widget>[
-                      Container(
-                          width: 40.0,
-                          height: 40.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.transparent,
-                            image: DecorationImage(
-                                image: NetworkImage(mVideo.userheadurl),
-                                fit: BoxFit.cover),
-                          )),
-                      Positioned(
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                          child: Image.asset(
-                            (mVideo.userisvertify == 1)
-                                ? Constant.ASSETS_IMG + 'home_vertify.webp'
-                                : Constant.ASSETS_IMG + 'home_vertify2.webp',
-                            width: 15.0,
-                            height: 15.0,
-                          ),
-                        ),
-                      ),
-                    ],
+              ? Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.transparent,
+                image: DecorationImage(
+                  image: NetworkImage(mVideo.userheadurl),
+                  fit: BoxFit.cover),
+              ))
+              : Stack(
+              children: <Widget>[
+                Container(
+                  width: 40.0,
+                  height: 40.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.transparent,
+                    image: DecorationImage(
+                      image: NetworkImage(mVideo.userheadurl),
+                      fit: BoxFit.cover),
+                  )),
+                Positioned(
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    child: Image.asset(
+                      (mVideo.userisvertify == 1)
+                        ? Constant.ASSETS_IMG + 'home_vertify.webp'
+                        : Constant.ASSETS_IMG + 'home_vertify2.webp',
+                      width: 15.0,
+                      height: 15.0,
+                    ),
                   ),
+                ),
+              ],
+            ),
           ),
         ),
         Column(
@@ -379,20 +384,20 @@ Widget _authorRow(BuildContext context, VideoModel mVideo) {
               children: <Widget>[
                 Center(
                   child: Padding(
-                      padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
-                      child: Text(mVideo.username,
-                          style:
-                              TextStyle(fontSize: 15.0, color: Colors.black))),
+                    padding: const EdgeInsets.fromLTRB(6.0, 0.0, 0.0, 0.0),
+                    child: Text(mVideo.username,
+                      style:
+                      TextStyle(fontSize: 15.0, color: Colors.black))),
                 ),
                 Center(
                   child: Container(
                     margin: EdgeInsets.only(left: 5),
-                    padding: new EdgeInsets.only(
-                        top: 2.0, bottom: 2.0, left: 3.0, right: 3.0),
-                    decoration: new BoxDecoration(
+                    padding: EdgeInsets.only(
+                      top: 2.0, bottom: 2.0, left: 3.0, right: 3.0),
+                    decoration: BoxDecoration(
                       color: Colors.white,
                       border: Border.all(color: Colors.black, width: 0.5),
-                      borderRadius: new BorderRadius.circular(8.0),
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
                     child: Text(
                       '作者',
@@ -403,30 +408,30 @@ Widget _authorRow(BuildContext context, VideoModel mVideo) {
               ],
             ),
             Padding(
-                padding: const EdgeInsets.fromLTRB(6.0, 2.0, 0.0, 0.0),
-                child: Text(mVideo.userfancount.toString() + "粉丝  " + "视频博主",
-                    style:
-                        TextStyle(color: Color(0xff808080), fontSize: 11.0))),
+              padding: const EdgeInsets.fromLTRB(6.0, 2.0, 0.0, 0.0),
+              child: Text(mVideo.userfancount.toString() + "粉丝  " + "视频博主",
+                style:
+                TextStyle(color: Color(0xff808080), fontSize: 11.0))),
           ],
         ),
         Expanded(
-          child: new Align(
-              alignment: FractionalOffset.centerRight,
-              child: GestureDetector(
-                child: Container(
-                  padding: new EdgeInsets.only(
-                      top: 3.0, bottom: 3.0, left: 6.0, right: 6.0),
-                  decoration: new BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.orange),
-                    borderRadius: new BorderRadius.circular(12.0),
-                  ),
-                  child: Text(
-                    '+ 关注',
-                    style: TextStyle(color: Colors.orange, fontSize: 12),
-                  ),
+          child: Align(
+            alignment: FractionalOffset.centerRight,
+            child: GestureDetector(
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: 3.0, bottom: 3.0, left: 6.0, right: 6.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.orange),
+                  borderRadius: BorderRadius.circular(12.0),
                 ),
-              )),
+                child: Text(
+                  '+ 关注',
+                  style: TextStyle(color: Colors.orange, fontSize: 12),
+                ),
+              ),
+            )),
         )
       ],
     ),

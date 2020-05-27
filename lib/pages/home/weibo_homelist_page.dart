@@ -19,12 +19,12 @@ class WeiBoHomeListPager extends StatefulWidget {
 }
 
 class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
-    with AutomaticKeepAliveClientMixin {
+  with AutomaticKeepAliveClientMixin {
   bool isRefreshloading = true;
   bool isloadingMore = false; //是否显示加载中
   bool ishasMore = true; //是否还有更多
   num mCurPage = 1;
-  ScrollController _scrollController = new ScrollController();
+  ScrollController _scrollController = ScrollController();
   List<WeiBoModel> hotContentList = [];
 
   @override
@@ -38,7 +38,7 @@ class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
     getSubDataRefresh();
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
+        _scrollController.position.maxScrollExtent) {
         print("调用加载更多");
         if (!isloadingMore) {
           if (ishasMore) {
@@ -70,14 +70,14 @@ class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
     ishasMore = true;
     mCurPage = 1;
 
-    FormData formData = FormData.from({
+    var formData = {
       "catid": widget.mCatId,
       "pageNum": "1",
       "pageSize": Constant.PAGE_SIZE,
       "userId": UserUtil.getUserInfo().id,
-    });
+    };
 
-    DioManager.getInstance().post(ServiceUrl.getWeiBo, formData, (data) {
+    DioManager().post(ServiceUrl.getWeiBo, formData, (data) {
       WeiBoListModel category = WeiBoListModel.fromJson(data);
       hotContentList.clear();
       hotContentList.addAll(category.data.list);
@@ -94,14 +94,14 @@ class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
   }
 
   Future getSubDataLoadMore(int page) async {
-    FormData formData = FormData.from({
+    var formData = {
       "catid": widget.mCatId,
       "pageNum": page,
       "pageSize": Constant.PAGE_SIZE,
       "userId": UserUtil.getUserInfo().id,
-    });
-    List<WeiBoModel> mListRecords = new List();
-    await DioManager.getInstance().post(ServiceUrl.getWeiBo, formData, (data) {
+    };
+    List<WeiBoModel> mListRecords = List();
+    await DioManager().post(ServiceUrl.getWeiBo, formData, (data) {
       WeiBoListModel category = WeiBoListModel.fromJson(data);
       mListRecords = category.data.list;
       setState(() {
@@ -119,38 +119,38 @@ class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
 
   Widget _buildLoadMore() {
     return isloadingMore
-        ? Container(
-            child: Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5),
-            child: Center(
-                child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: SizedBox(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-                    height: 12.0,
-                    width: 12.0,
+      ? Container(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 5, bottom: 5),
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                child: SizedBox(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
                   ),
+                  height: 12.0,
+                  width: 12.0,
                 ),
-                Text("加载中..."),
-              ],
-            )),
-          ))
-        : new Container(
-            child: ishasMore
-                ? new Container()
-                : Center(
-                    child: Container(
-                        margin: EdgeInsets.only(top: 5, bottom: 5),
-                        child: Text(
-                          "没有更多数据",
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ))),
-          );
+              ),
+              Text("加载中..."),
+            ],
+          )),
+      ))
+      : Container(
+      child: ishasMore
+        ? Container()
+        : Center(
+        child: Container(
+          margin: EdgeInsets.only(top: 5, bottom: 5),
+          child: Text(
+            "没有更多数据",
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ))),
+    );
   }
 
   @override
@@ -168,7 +168,7 @@ class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
           // key: _refreshIndicatorKey,
 
           onRefresh: getSubDataRefresh,
-          child: new ListView.builder(
+          child: ListView.builder(
             itemCount: hotContentList.length + 1,
             itemBuilder: (context, index) {
               if (index == hotContentList.length) {

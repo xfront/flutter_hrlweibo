@@ -7,18 +7,18 @@ import 'package:flutter_hrlweibo/widget/likebutton/utils/like_button_util.dart';
 ///
 
 class CirclePainter extends CustomPainter {
-  Paint circlePaint = new Paint();
-  //Paint maskPaint = new Paint();
+  Paint circlePaint = Paint();
+
+  //Paint maskPaint = Paint();
 
   final double outerCircleRadiusProgress;
   final double innerCircleRadiusProgress;
   final CircleColor circleColor;
 
-  CirclePainter(
-      {@required this.outerCircleRadiusProgress,
-      @required this.innerCircleRadiusProgress,
-      this.circleColor = const CircleColor(
-          start: const Color(0xFFFF5722), end: const Color(0xFFFFC107))}) {
+  CirclePainter({@required this.outerCircleRadiusProgress,
+    @required this.innerCircleRadiusProgress,
+    this.circleColor = const CircleColor(
+      start: const Color(0xFFFF5722), end: const Color(0xFFFFC107))}) {
     //circlePaint..style = PaintingStyle.fill;
     circlePaint..style = PaintingStyle.stroke;
     //maskPaint..blendMode = BlendMode.clear;
@@ -36,11 +36,11 @@ class CirclePainter extends CustomPainter {
     // canvas.restore();
     //flutter web don't support BlendMode.clear.
     final strokeWidth = outerCircleRadiusProgress * center -
-        (innerCircleRadiusProgress * center);
+      (innerCircleRadiusProgress * center);
     if (strokeWidth > 0.0) {
       circlePaint..strokeWidth = strokeWidth;
       canvas.drawCircle(Offset(center, center),
-          outerCircleRadiusProgress * center, circlePaint);
+        outerCircleRadiusProgress * center, circlePaint);
     }
   }
 
@@ -57,7 +57,7 @@ class CirclePainter extends CustomPainter {
     final CirclePainter old = oldDelegate;
 
     return old.outerCircleRadiusProgress != old.outerCircleRadiusProgress ||
-        old.innerCircleRadiusProgress != old.innerCircleRadiusProgress ||
-        old.circleColor != old.circleColor;
+      old.innerCircleRadiusProgress != old.innerCircleRadiusProgress ||
+      old.circleColor != old.circleColor;
   }
 }

@@ -1,9 +1,6 @@
-
-
 class VedioCategory {
   int id;
   String cname;
-
 
 
   VedioCategory({this.id, this.cname});
@@ -14,7 +11,7 @@ class VedioCategory {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = this.id;
     data['cname'] = this.cname;
     return data;

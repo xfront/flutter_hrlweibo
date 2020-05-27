@@ -9,7 +9,7 @@ class FFRecommendPage extends StatefulWidget {
 }
 
 class _FFRecommendPageState extends State<FFRecommendPage> {
-  ScrollController mListController = new ScrollController();
+  ScrollController mListController = ScrollController();
   List<FanFollowModel> mRecommendList;
 
   num curPage = 1;
@@ -47,47 +47,48 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
 
   //获取数据
   getRecommendList(bool isRefresh) {
+    var uid = UserUtil.getUserInfo().id;
     if (isRefresh) {
       isloadingMore = false;
       ishasMore = true;
       curPage = 1;
-      FormData params = FormData.from({
-        'userId': UserUtil.getUserInfo().id,
+      Map<String, dynamic> params = {
+        'userId': uid,
         'pageNum': "$curPage",
         "pageSize": Constant.PAGE_SIZE,
-      });
-      DioManager.getInstance().post(ServiceUrl.getFanFollowRecommend, params,
+      };
+      DioManager().post(ServiceUrl.getFanFollowRecommend, params,
           (data) {
-        List<FanFollowModel> list = List();
-        data['data']['list'].forEach((data) {
-          list.add(FanFollowModel.fromJson(data));
-        });
-        mRecommendList = [];
-        mRecommendList = list;
-        setState(() {});
-      }, (error) {});
+          List<FanFollowModel> list = List();
+          data['data']['list'].forEach((data) {
+            list.add(FanFollowModel.fromJson(data));
+          });
+          mRecommendList = [];
+          mRecommendList = list;
+          setState(() {});
+        }, (error) {});
     } else {
-      FormData params = FormData.from({
-        'userId': UserUtil.getUserInfo().id,
+      var params = {
+        'userId': uid,
         'pageNum': "$curPage",
         "pageSize": Constant.PAGE_SIZE,
-      });
-      DioManager.getInstance().post(ServiceUrl.getFanFollowRecommend, params,
+      };
+      DioManager().post(ServiceUrl.getFanFollowRecommend, params,
           (data) {
-        List<FanFollowModel> list = List();
-        data['data']['list'].forEach((data) {
-          list.add(FanFollowModel.fromJson(data));
-        });
-        mRecommendList.addAll(list);
-        isloadingMore = false;
-        ishasMore = list.length >= Constant.PAGE_SIZE;
-        setState(() {});
-      }, (error) {
-        setState(() {
+          List<FanFollowModel> list = List();
+          data['data']['list'].forEach((data) {
+            list.add(FanFollowModel.fromJson(data));
+          });
+          mRecommendList.addAll(list);
           isloadingMore = false;
-          ishasMore = false;
+          ishasMore = list.length >= Constant.PAGE_SIZE;
+          setState(() {});
+        }, (error) {
+          setState(() {
+            isloadingMore = false;
+            ishasMore = false;
+          });
         });
-      });
     }
   }
 
@@ -106,42 +107,42 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
       );
     } else {
       return RefreshIndicator(
-          child: ListView.builder(
-            itemCount: mRecommendList.length + 2,
-            itemBuilder: (context, i) => mRecommendItem(i),
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: mListController,
-          ),
-          onRefresh: _pullToRefresh);
+        child: ListView.builder(
+          itemCount: mRecommendList.length + 2,
+          itemBuilder: (context, i) => mRecommendItem(i),
+          physics: const AlwaysScrollableScrollPhysics(),
+          controller: mListController,
+        ),
+        onRefresh: _pullToRefresh);
     }
   }
 
   Widget mRecommendTop() {
-    return new Container(
+    return Container(
       color: Colors.white,
       margin: EdgeInsets.only(top: 12, bottom: 12),
       padding: const EdgeInsets.symmetric(
         vertical: 15.0,
       ),
-      child: new IntrinsicHeight(
-        child: new Row(
+      child: IntrinsicHeight(
+        child: Row(
           children: <Widget>[
-            new Container(
-              margin: new EdgeInsets.only(left: 15.0),
+            Container(
+              margin: EdgeInsets.only(left: 15.0),
               child: Image.asset(
                 Constant.ASSETS_IMG + "icon_find_friend.png",
                 width: 27,
                 height: 27,
               ),
             ),
-            new Expanded(
-              child: new Container(
+            Expanded(
+              child: Container(
                 margin: const EdgeInsets.only(left: 15.0),
                 child: Text("去找名人大V",
-                    style: TextStyle(fontSize: 15, color: Colors.black)),
+                  style: TextStyle(fontSize: 15, color: Colors.black)),
               ),
             ),
-            new Container(
+            Container(
               margin: const EdgeInsets.only(left: 5.0, right: 15),
               child: Image.asset(
                 Constant.ASSETS_IMG + "icon_right_arrow.png",
@@ -167,17 +168,17 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
           Container(
             padding: EdgeInsets.only(top: 13, bottom: 13),
             color: Colors.white,
-            //child:new Text(    '${mModel.nick }'  ),
+            //child:Text(    '${mModel.nick }'  ),
             child: Row(
               children: <Widget>[
                 Container(
-                    margin: EdgeInsets.only(left: 15, right: 15),
-                    child: CircleAvatar(
-                      //头像半径
-                      radius: 22,
-                      //头像图片 -> NetworkImage网络图片，AssetImage项目资源包图片, FileImage本地存储图片
-                      backgroundImage: NetworkImage('${mModel.headurl}'),
-                    )),
+                  margin: EdgeInsets.only(left: 15, right: 15),
+                  child: CircleAvatar(
+                    //头像半径
+                    radius: 22,
+                    //头像图片 -> NetworkImage网络图片，AssetImage项目资源包图片, FileImage本地存储图片
+                    backgroundImage: NetworkImage('${mModel.headurl}'),
+                  )),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -185,9 +186,9 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
                       child: Text(
                         '${mModel.nick}',
                         style: TextStyle(
-                            letterSpacing: 0,
-                            color: Colors.black,
-                            fontSize: 14),
+                          letterSpacing: 0,
+                          color: Colors.black,
+                          fontSize: 14),
                       ),
                     ),
                     Container(
@@ -195,15 +196,15 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
                       child: Text(
                         '${mModel.decs}',
                         style: TextStyle(
-                            letterSpacing: 0,
-                            color: Color(0xff666666),
-                            fontSize: 12),
+                          letterSpacing: 0,
+                          color: Color(0xff666666),
+                          fontSize: 12),
                       ),
                     )
                   ],
                 ),
                 Expanded(
-                  child: new Align(
+                  child: Align(
                     alignment: FractionalOffset.centerRight,
                     child: mFollowBtnWidget(mModel, i - 1),
                   ),
@@ -223,38 +224,38 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
 
   Widget _buildLoadMore() {
     return isloadingMore
-        ? Container(
-            child: Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5),
-            child: Center(
-                child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(right: 10),
-                  child: SizedBox(
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                    ),
-                    height: 12.0,
-                    width: 12.0,
+      ? Container(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 5, bottom: 5),
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(right: 10),
+                child: SizedBox(
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
                   ),
+                  height: 12.0,
+                  width: 12.0,
                 ),
-                Text("加载中..."),
-              ],
-            )),
-          ))
-        : new Container(
-            child: ishasMore
-                ? new Container()
-                : Center(
-                    child: Container(
-                        margin: EdgeInsets.only(top: 5, bottom: 5),
-                        child: Text(
-                          "没有更多数据",
-                          style: TextStyle(fontSize: 14, color: Colors.grey),
-                        ))),
-          );
+              ),
+              Text("加载中..."),
+            ],
+          )),
+      ))
+      : Container(
+      child: ishasMore
+        ? Container()
+        : Center(
+        child: Container(
+          margin: EdgeInsets.only(top: 5, bottom: 5),
+          child: Text(
+            "没有更多数据",
+            style: TextStyle(fontSize: 14, color: Colors.grey),
+          ))),
+    );
   }
 
   Widget mFollowBtnWidget(FanFollowModel mModel, int position) {
@@ -263,25 +264,25 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
         margin: EdgeInsets.only(right: 15),
         child: InkWell(
           child: Container(
-              padding: new EdgeInsets.only(
-                  top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Color(0xff999999)),
-                borderRadius: new BorderRadius.circular(5.0),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Image.asset(
-                    Constant.ASSETS_IMG + "ic_alfllow.png",
-                    width: 10,
-                    height: 10,
-                  ),
-                  Text("已关注",
-                      style: TextStyle(color: Color(0xff333333), fontSize: 12)),
-                ],
-              )),
+            padding: EdgeInsets.only(
+              top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Color(0xff999999)),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset(
+                  Constant.ASSETS_IMG + "ic_alfllow.png",
+                  width: 10,
+                  height: 10,
+                ),
+                Text("已关注",
+                  style: TextStyle(color: Color(0xff333333), fontSize: 12)),
+              ],
+            )),
           onTap: () {
             showCancelFollowDialog(mModel, position);
           },
@@ -292,29 +293,29 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
         margin: EdgeInsets.only(right: 15),
         child: InkWell(
           child: Container(
-            padding: new EdgeInsets.only(
-                top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
-            decoration: new BoxDecoration(
+            padding: EdgeInsets.only(
+              top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
+            decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: Colors.orange),
-              borderRadius: new BorderRadius.circular(5.0),
+              borderRadius: BorderRadius.circular(5.0),
             ),
             child: Text("+关注",
-                style: TextStyle(color: Colors.orange, fontSize: 12)),
+              style: TextStyle(color: Colors.orange, fontSize: 12)),
           ),
           onTap: () {
-            FormData params = FormData.from({
+            var params = {
               'userid': UserUtil.getUserInfo().id,
               'otheruserid': mModel.id,
-            });
-            DioManager.getInstance().post(ServiceUrl.followOther, params,
+            };
+            DioManager().post(ServiceUrl.followOther, params,
                 (data) {
-              int mRelation = data['data']['relation'];
-              (mRecommendList[position]).relation = mRelation;
-              setState(() {});
-            }, (error) {
-              ToastUtil.show(error);
-            });
+                int mRelation = data['data']['relation'];
+                (mRecommendList[position]).relation = mRelation;
+                setState(() {});
+              }, (error) {
+                ToastUtil.show(error);
+              });
           },
         ),
       );
@@ -323,25 +324,25 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
         margin: EdgeInsets.only(right: 15),
         child: InkWell(
           child: Container(
-              padding: new EdgeInsets.only(
-                  top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
-              decoration: new BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Color(0xff999999)),
-                borderRadius: new BorderRadius.circular(5.0),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Image.asset(
-                    Constant.ASSETS_IMG + "ic_huxiangfollow.png",
-                    width: 10,
-                    height: 10,
-                  ),
-                  Text("互相关注",
-                      style: TextStyle(color: Color(0xff333333), fontSize: 12)),
-                ],
-              )),
+            padding: EdgeInsets.only(
+              top: 4.0, bottom: 4.0, left: 6.0, right: 6.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Color(0xff999999)),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Image.asset(
+                  Constant.ASSETS_IMG + "ic_huxiangfollow.png",
+                  width: 10,
+                  height: 10,
+                ),
+                Text("互相关注",
+                  style: TextStyle(color: Color(0xff333333), fontSize: 12)),
+              ],
+            )),
           onTap: () {
             showCancelFollowDialog(mModel, position);
           },
@@ -352,48 +353,48 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
 
   Widget showCancelFollowDialog(FanFollowModel mModel, int position) {
     showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return CupertinoAlertDialog(
-            // title: Text('我是标题'),
-            content: Container(
-              margin: EdgeInsets.only(top: 10, bottom: 5),
-              child: Text('确定不再关注?'),
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          // title: Text('我是标题'),
+          content: Container(
+            margin: EdgeInsets.only(top: 10, bottom: 5),
+            child: Text('确定不再关注?'),
+          ),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text(
+                '取消',
+                style: TextStyle(fontSize: 12, color: Colors.black),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text(
-                  '取消',
-                  style: TextStyle(fontSize: 12, color: Colors.black),
-                ),
-                onPressed: () {
+            CupertinoDialogAction(
+              child: Text(
+                '确定',
+                style: TextStyle(fontSize: 12, color: Colors.deepOrange),
+              ),
+              onPressed: () {
+                var params = {
+                  'userid': UserUtil.getUserInfo().id,
+                  'otheruserid': mModel.id,
+                };
+                DioManager()
+                  .post(ServiceUrl.followCancelOther, params, (data) {
                   Navigator.of(context).pop();
-                },
-              ),
-              CupertinoDialogAction(
-                child: Text(
-                  '确定',
-                  style: TextStyle(fontSize: 12, color: Colors.deepOrange),
-                ),
-                onPressed: () {
-                  FormData params = FormData.from({
-                    'userid': UserUtil.getUserInfo().id,
-                    'otheruserid': mModel.id,
-                  });
-                  DioManager.getInstance()
-                      .post(ServiceUrl.followCancelOther, params, (data) {
-                    Navigator.of(context).pop();
-                    int mRelation = data['data']['relation'];
-                    (mRecommendList[position]).relation = mRelation;
-                    setState(() {});
-                  }, (error) {
-                    ToastUtil.show(error);
-                  });
-                },
-              ),
-            ],
-          );
-        });
+                  int mRelation = data['data']['relation'];
+                  (mRecommendList[position]).relation = mRelation;
+                  setState(() {});
+                }, (error) {
+                  ToastUtil.show(error);
+                });
+              },
+            ),
+          ],
+        );
+      });
   }
 
   @override
