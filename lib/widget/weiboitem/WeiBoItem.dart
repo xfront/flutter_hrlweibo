@@ -223,10 +223,7 @@ Widget mVedioLayout(BuildContext context, String vedioUrl) {
         : Container(
         constraints: BoxConstraints(
           maxHeight: 250,
-          maxWidth: MediaQuery
-            .of(context)
-            .size
-            .width,
+          maxWidth: MediaQuery.of(context).size.width,
           //    maxWidth: 200,
           minHeight: 150,
           minWidth: 150),

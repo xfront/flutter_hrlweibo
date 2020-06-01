@@ -7,8 +7,7 @@ class VideoWidget extends StatefulWidget {
   final String url;
   final String previewImgUrl; //预览图片的地址
   final bool showProgressText; //是否显示进度文本
-  VideoWidget(this.url,
-    {Key key,
+  VideoWidget(this.url, {Key key,
       this.previewImgUrl,
       this.showProgressText = true})
     : super(key: key);
@@ -78,13 +77,15 @@ class _VideoWidgetState extends State<VideoWidget> {
           });
         },
       ),
+      ClosedCaption(text: _controller.value.caption.text),
+      VideoProgressIndicator(_controller, allowScrubbing: true),
       getPlayController(),
     ];
 
     return AspectRatio(
       aspectRatio: _controller.value.aspectRatio,
       child: Stack(
-        fit: StackFit.passthrough,
+        alignment: Alignment.bottomCenter,
         children: children,
       ),
     );

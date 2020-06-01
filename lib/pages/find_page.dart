@@ -221,17 +221,15 @@ class _FindPageState extends State<FindPage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery
-      .of(context)
-      .size;
-    final double mHotSerachTopGridItemHeight = 30;
-    final double mHotSerachTopGridItemWidth = size.width / 2;
+    var size = MediaQuery.of(context).size;
+    final double mHotSearchTopGridItemHeight = 30;
+    final double mHotSearchTopGridItemWidth = size.width / 2;
     final double mFindKindGridItemHeight = 80;
     final double mFindKindGridItemWidth = size.width / 6;
 
     return Material(
       color: Colors.white,
-      //使用NestedScrollViewRefreshIndicator代替RefreshIndicator,解决RefreshIndicatorNestedScrollView与冲突的问题
+      //使用NestedScrollViewRefreshIndicator代替RefreshIndicator,解决RefreshIndicator与NestedScrollView冲突的问题
       //https://juejin.im/post/5beb91275188251d9e0c1d73
       child: NestedScrollViewRefreshIndicator(
         onRefresh: getFindInfoDate,
@@ -244,18 +242,12 @@ class _FindPageState extends State<FindPage> {
                 child: Container(
                   child: Center(
                     child: Container(
-                      width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                      width: MediaQuery.of(context).size.width,
                       margin: EdgeInsets.only(left: 10, top: 15, right: 10),
                       padding: EdgeInsets.only(top: 8, bottom: 8),
                       decoration: BoxDecoration(
                         color: Color(0xffE4E2E8),
-                        borderRadius: BorderRadius.all(
-                          //圆角
-                          Radius.circular(5.0),
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(5.0)),//圆角
                       ),
                       child: Center(
                         child: Container(
@@ -267,9 +259,7 @@ class _FindPageState extends State<FindPage> {
               SliverToBoxAdapter(
                 child: Container(
                   margin: EdgeInsets.only(left: 10, top: 10),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
+                  child: Row(
                         children: <Widget>[
                           Image.asset(
                             Constant.ASSETS_IMG + 'find_search.png',
@@ -285,8 +275,6 @@ class _FindPageState extends State<FindPage> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
                 ),
               ),
               SliverList(
@@ -304,13 +292,12 @@ class _FindPageState extends State<FindPage> {
                                 mainAxisSpacing: 0.0,
                                 crossAxisSpacing: 0.0,
                                 childAspectRatio:
-                                (mHotSerachTopGridItemWidth /
-                                  mHotSerachTopGridItemHeight),
+                                (mHotSearchTopGridItemWidth /
+                                  mHotSearchTopGridItemHeight),
                                 crossAxisCount: 2,
                               ),
                               itemCount: mTopHotSearchList.length + 1,
-                              itemBuilder: (BuildContext context,
-                                int index,) {
+                              itemBuilder: (BuildContext context, int index) {
                                 return mHotSearchTopItem(
                                   context,
                                   index,
@@ -353,8 +340,7 @@ class _FindPageState extends State<FindPage> {
                       crossAxisCount: 6,
                     ),
                     itemCount: isFindKindVisible ? 15 : 6,
-                    itemBuilder: (BuildContext context,
-                      int index,) {
+                    itemBuilder: (BuildContext context, int index) {
                       return mFindKindItem(context, index, mFindKindList);
                     }),
                 ),
@@ -405,38 +391,23 @@ class _FindPageState extends State<FindPage> {
                             isScrollable: true,
                             indicatorColor: Color(0xffFF3700),
                             indicator: UnderlineTabIndicator(
-                              borderSide: BorderSide(
-                                color: Color(0xffFF3700), width: 2),
+                              borderSide: BorderSide(color: Color(0xffFF3700), width: 2),
                               insets: EdgeInsets.only(bottom: 7)),
                             labelColor: Color(0xff333333),
                             unselectedLabelColor: Color(0xff666666),
-                            labelStyle: TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w700),
-                            unselectedLabelStyle:
-                            TextStyle(fontSize: 16.0),
+                            labelStyle: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
+                            unselectedLabelStyle: TextStyle(fontSize: 16.0),
                             indicatorSize: TabBarIndicatorSize.label,
                             controller: _controller,
                             tabs: [
-                              Tab(
-                                text: _tabValues[0],
-                              ),
-                              Tab(
-                                text: _tabValues[1],
-                              ),
-                              Tab(
-                                text: _tabValues[2],
-                              ),
-                              Tab(
-                                text: _tabValues[3],
-                              ),
+                              Tab(text: _tabValues[0],),
+                              Tab(text: _tabValues[1],),
+                              Tab(text: _tabValues[2],),
+                              Tab(text: _tabValues[3],),
                             ]),
                         ),
                       ),
-                      Container(
-                        height: 0.5,
-                        color: Color(0xffE5E5E5),
-                      ),
+                      Container(height: 0.5, color: Color(0xffE5E5E5)),
                     ],
                   )),
               ),

@@ -2,7 +2,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_hrlweibo/public.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'emoji_widget.dart';
@@ -62,8 +62,6 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
 
   bool mEmojiLayoutShow = false;
 
-  KeyboardVisibilityNotification _keyboardVisibility =
-  KeyboardVisibilityNotification();
 
   StreamSubscription streamSubscription;
 
@@ -126,8 +124,7 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
       ),
     );
 
-    _keyboardVisibility.addNewListener(
-      onChange: (bool visible) {
+    KeyboardVisibility.onChange.listen((bool visible) {
         print("mBottomLayoutShow:" +
           mBottomLayoutShow.toString() +
           "mEmojiLayoutShow:" +

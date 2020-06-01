@@ -6,7 +6,7 @@ import 'package:flutter_hrlweibo/model/WeiboAtUser.dart';
 import 'package:flutter_hrlweibo/public.dart';
 import 'package:flutter_hrlweibo/widget/extend_textfield/my_special_text_span_builder.dart';
 import 'package:flutter_hrlweibo/widget/messgae/emoji_widget.dart';
-import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:path/path.dart' as path;
 
 //发布微博界面
@@ -29,7 +29,6 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
   FocusNode focusNode = FocusNode();
   final GlobalKey globalKey = GlobalKey();
   double _softKeyHeight = SpUtil.getDouble(Constant.SP_KEYBOARD_HEGIHT, 200);
-  KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   List<File> mFileList = List();
   File mSelectedImageFile;
   List<MultipartFile> mSubmitFileList = List();
@@ -40,8 +39,7 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
     // TODO: implement initState
     super.initState();
 
-    _keyboardVisibility.addNewListener(
-      onChange: (bool visible) {
+    KeyboardVisibility.onChange.listen((bool visible) {
         if (visible) {
           mEmojiLayoutShow = false;
 
@@ -57,8 +55,7 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
             });
           }
         }
-      },
-    );
+      });
 
     _mEtController.addListener(_printLatestValue);
   }
