@@ -160,16 +160,14 @@ class _ChatBottomInputWidgetState extends State<ChatBottomInputWidget>
 
   Future requestPermission() async {
     // 申请权限
-
-    Map<PermissionGroup, PermissionStatus> permissions =
-    await PermissionHandler().requestPermissions(
-      [PermissionGroup.storage, PermissionGroup.microphone]);
+    // You can request multiple permissions at once.
+    Map<Permission, PermissionStatus> permissions = await [
+      Permission.storage,
+      Permission.microphone,
+    ].request();
 
     // 申请结果
-
-    PermissionStatus permission = await PermissionHandler()
-      .checkPermissionStatus(PermissionGroup.storage);
-
+    PermissionStatus permission = permissions[Permission.storage];
     if (permission == PermissionStatus.granted) {
       //  Fluttertoast.showToast(msg: "权限申请通过");
 

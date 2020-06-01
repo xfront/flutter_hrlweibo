@@ -24,15 +24,13 @@ class _VideoPageState extends State<VideoPage> with TickerProviderStateMixin {
     mTabList.add(VedioCategory(id: 2, cname: "热门"));
     mTabList.add(VedioCategory(id: 3, cname: "小视频"));
     mTabController = TabController(length: mTabList.length, vsync: this);
-    DioManager().post(ServiceUrl.getVedioCategory, null, (data) {
-      List<VedioCategory> mList = VedioCategoryList
-        .fromJson(data)
-        .data;
+    DioManager().post(ServiceUrl.getVedioCategory, null).then((data) {
+      List<VedioCategory> mList = VedioCategoryList.fromJson(data).data;
       setState(() {
         mTabList = mList;
         mTabController = TabController(length: mTabList.length, vsync: this);
       });
-    }, (error) {
+    }, onError: (error) {
       //ToastUtil.show(error);
     });
   }
@@ -63,10 +61,7 @@ class _VideoPageState extends State<VideoPage> with TickerProviderStateMixin {
             Container(
               child: Center(
                 child: Container(
-                  width: MediaQuery
-                    .of(context)
-                    .size
-                    .width,
+                  width: MediaQuery.of(context).size.width,
                   margin: EdgeInsets.only(left: 10, right: 10),
                   padding: EdgeInsets.only(top: 8, bottom: 8),
                   decoration: BoxDecoration(

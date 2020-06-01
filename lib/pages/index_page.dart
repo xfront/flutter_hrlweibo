@@ -90,7 +90,13 @@ class _IndexPageState extends State<IndexPage> {
       BottomNavigationBarItem(icon: getTabIcon(3), title: getTabTitle(3)),
       BottomNavigationBarItem(icon: getTabIcon(4), title: getTabTitle(4)),
     ];
-
+    final List<NavigationRailDestination> nails = [
+      NavigationRailDestination(icon: getTabIcon(0), label: getTabTitle(0)),
+      NavigationRailDestination(icon: getTabIcon(1), label: getTabTitle(1)),
+      NavigationRailDestination(icon: getTabIcon(2), label: getTabTitle(2)),
+      NavigationRailDestination(icon: getTabIcon(3), label: getTabTitle(3)),
+      NavigationRailDestination(icon: getTabIcon(4), label: getTabTitle(4)),
+    ];
     return SafeArea(
       child: WillPopScope(
         child: Scaffold(
@@ -106,10 +112,29 @@ class _IndexPageState extends State<IndexPage> {
               });
             },
           ),
-          body: IndexedStack(
-            index: _tabIndex,
-            children: tabBodies,
-          ),
+          body: /***********Row(
+            children: <Widget>[
+              NavigationRail(
+                selectedIndex: _tabIndex,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    _tabIndex = index;
+                  });
+                },
+                labelType: NavigationRailLabelType.all,
+                destinations: nails,
+              ),
+              VerticalDivider(thickness: 5, width: 5),
+              // This is the main content.
+              Expanded(
+                child:***********/ IndexedStack(
+                  index: _tabIndex,
+                  children: tabBodies,
+                ),
+              /***********)
+
+            ],
+          ),***********/
         ),
         onWillPop: () {
           // 点击返回键的操作

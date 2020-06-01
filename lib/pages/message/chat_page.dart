@@ -162,24 +162,20 @@ class _ChatPageState extends State<ChatPage> {
                                       ?.methodInChild(false, "");
                                     ChatMessageItem mChatItem = ChatMessageItem(
                                       key: mMessageItemKey,
-                                      mMessage: mlistMessage[i],
+                                      message: mlistMessage[i],
                                       onAudioTap: (String str) {
                                         if (isPalyingAudio) {
                                           isPalyingAudio = false;
-                                          mMessageItemKey.currentState
-                                            ?.methodInChild(
+                                          mMessageItemKey.currentState?.methodInChild(
                                             false, mPalyingPosition);
                                           mAudioPlayer
                                             .release(); // manually release when no longer needed
                                           mPalyingPosition = "";
                                           setState(() {});
                                         } else {
-                                          Future<int> result = mAudioPlayer
-                                            .play(str, isLocal: true);
-                                          mAudioPlayer.onPlayerCompletion
-                                            .listen((event) {
-                                            mMessageItemKey.currentState
-                                              ?.methodInChild(
+                                          Future<int> result = mAudioPlayer.play(str, isLocal: true);
+                                          mAudioPlayer.onPlayerCompletion.listen((event) {
+                                            mMessageItemKey.currentState?.methodInChild(
                                               false, mPalyingPosition);
                                             isPalyingAudio = false;
                                             mPalyingPosition = "";
@@ -187,8 +183,7 @@ class _ChatPageState extends State<ChatPage> {
 
                                           isPalyingAudio = true;
                                           mPalyingPosition = mlistMessage[i].uuid;
-                                          mMessageItemKey.currentState
-                                            ?.methodInChild(
+                                          mMessageItemKey.currentState?.methodInChild(
                                             true, mPalyingPosition);
                                         }
                                       },

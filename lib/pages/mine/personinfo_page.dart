@@ -65,10 +65,10 @@ class _PersonInfoPageState extends State<PersonInfoPage>
       'muserId': UserUtil.getUserInfo().id,
       'otheruserId': widget.mOtherUserId,
     };
-    DioManager().post(ServiceUrl.getUserInfo, params, (data) {
+    DioManager().post(ServiceUrl.getUserInfo, params).then((data) {
       mUser = OtherUser.fromJson(data['data']);
       setState(() {});
-    }, (error) {});
+    }, onError: (error) {});
   }
 
   var mTabs = <String>[
@@ -223,12 +223,12 @@ class _PersonInfoPageState extends State<PersonInfoPage>
               'userid': UserUtil.getUserInfo().id,
               'otheruserid': mUser.id,
             };
-            DioManager().post(ServiceUrl.followOther, params,
+            DioManager().post(ServiceUrl.followOther, params).then(
                 (data) {
                 int mRelation = data['data']['relation'];
                 mUser.relation = mRelation;
                 setState(() {});
-              }, (error) {
+              }, onError: (error) {
                 ToastUtil.show(error);
               });
           },
@@ -292,12 +292,12 @@ class _PersonInfoPageState extends State<PersonInfoPage>
                   'otheruserid': mUser.id,
                 };
                 DioManager()
-                  .post(ServiceUrl.followCancelOther, params, (data) {
+                  .post(ServiceUrl.followCancelOther, params).then((data) {
                   Navigator.of(context).pop();
                   int mRelation = data['data']['relation'];
                   mUser.relation = mRelation;
                   setState(() {});
-                }, (error) {
+                }, onError: (error) {
                   ToastUtil.show(error);
                 });
               },

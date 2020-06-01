@@ -58,7 +58,7 @@ class FollowListPageState extends State<FollowListPage> {
         'pageNum': "$curPage",
         'pageSize': "10"
       };
-      DioManager().post(ServiceUrl.getFollowList, params, (data) {
+      DioManager().post(ServiceUrl.getFollowList, params).then((data) {
         List<FanFollowModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(FanFollowModel.fromJson(data));
@@ -66,7 +66,7 @@ class FollowListPageState extends State<FollowListPage> {
         mFollowList = [];
         mFollowList = list;
         setState(() {});
-      }, (error) {});
+      }, onError: (error) {});
     } else {
       var params = {
         'mcurrentuserId': uid,
@@ -74,7 +74,7 @@ class FollowListPageState extends State<FollowListPage> {
         'pageNum': "$curPage",
         'pageSize': "10"
       };
-      DioManager().post(ServiceUrl.getFollowList, params, (data) {
+      DioManager().post(ServiceUrl.getFollowList, params).then((data) {
         List<FanFollowModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(FanFollowModel.fromJson(data));
@@ -83,7 +83,7 @@ class FollowListPageState extends State<FollowListPage> {
         isloadingMore = false;
         ishasMore = list.length >= Constant.PAGE_SIZE;
         setState(() {});
-      }, (error) {
+      }, onError: (error) {
         setState(() {
           isloadingMore = false;
           ishasMore = false;
@@ -319,12 +319,12 @@ class FollowListPageState extends State<FollowListPage> {
               'userid': UserUtil.getUserInfo().id,
               'otheruserid': mModel.id,
             };
-            DioManager().post(ServiceUrl.followOther, params,
+            DioManager().post(ServiceUrl.followOther, params).then(
                 (data) {
                 int mRelation = data['data']['relation'];
                 (mFollowList[position]).relation = mRelation;
                 setState(() {});
-              }, (error) {
+              }, onError: (error) {
                 ToastUtil.show(error);
               });
           },
@@ -393,12 +393,12 @@ class FollowListPageState extends State<FollowListPage> {
                   'otheruserid': mModel.id,
                 };
                 DioManager()
-                  .post(ServiceUrl.followCancelOther, params, (data) {
+                  .post(ServiceUrl.followCancelOther, params).then((data) {
                   Navigator.of(context).pop();
                   int mRelation = data['data']['relation'];
                   (mFollowList[position]).relation = mRelation;
                   setState(() {});
-                }, (error) {
+                }, onError: (error) {
                   ToastUtil.show(error);
                 });
               },

@@ -554,7 +554,7 @@ Future<bool> onLikeButtonTapped(bool isLiked, WeiBoModel weiboItem) async {
     "userId": UserUtil.getUserInfo().id,
     "status": weiboItem.zanStatus == 0 ? 1 : 0, //1点赞,0取消点赞
   };
-  DioManager().post(ServiceUrl.zanWeiBo, formData, (data) {
+  DioManager().post(ServiceUrl.zanWeiBo, formData).then((data) {
     if (weiboItem.zanStatus == 0) {
       //点赞成功
       weiboItem.zanStatus = 1;
@@ -567,7 +567,7 @@ Future<bool> onLikeButtonTapped(bool isLiked, WeiBoModel weiboItem) async {
 
       completer.complete(false);
     }
-  }, (error) {
+  }, onError: (error) {
     if (weiboItem.zanStatus == 0) {
       completer.complete(false);
     } else {

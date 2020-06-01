@@ -58,7 +58,7 @@ class FanListPageState extends State<FanListPage> {
         'pageNum': "$curPage",
         'pageSize': "10"
       };
-      DioManager().post(ServiceUrl.getFanList, params, (data) {
+      DioManager().post(ServiceUrl.getFanList, params).then((data) {
         List<FanFollowModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(FanFollowModel.fromJson(data));
@@ -66,7 +66,7 @@ class FanListPageState extends State<FanListPage> {
         mFanList = [];
         mFanList = list;
         setState(() {});
-      }, (error) {});
+      }, onError: (error) {});
     } else {
       var params = {
         'mcurrentuserId': uid,
@@ -74,7 +74,7 @@ class FanListPageState extends State<FanListPage> {
         'pageNum': "$curPage",
         'pageSize': "10"
       };
-      DioManager().post(ServiceUrl.getFanList, params, (data) {
+      DioManager().post(ServiceUrl.getFanList, params).then((data) {
         List<FanFollowModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(FanFollowModel.fromJson(data));
@@ -83,7 +83,7 @@ class FanListPageState extends State<FanListPage> {
         isloadingMore = false;
         ishasMore = list.length >= Constant.PAGE_SIZE;
         setState(() {});
-      }, (error) {
+      }, onError: (error) {
         setState(() {
           isloadingMore = false;
           ishasMore = false;
@@ -319,12 +319,12 @@ class FanListPageState extends State<FanListPage> {
               'userid': UserUtil.getUserInfo().id,
               'otheruserid': mModel.id,
             };
-            DioManager().post(ServiceUrl.followOther, params,
+            DioManager().post(ServiceUrl.followOther, params).then(
                 (data) {
                 int mRelation = data['data']['relation'];
                 (mFanList[position]).relation = mRelation;
                 setState(() {});
-              }, (error) {
+              }, onError: (error) {
                 ToastUtil.show(error);
               });
           },
@@ -392,13 +392,12 @@ class FanListPageState extends State<FanListPage> {
                   'userid': UserUtil.getUserInfo().id,
                   'otheruserid': mModel.id,
                 };
-                DioManager()
-                  .post(ServiceUrl.followCancelOther, params, (data) {
+                DioManager().post(ServiceUrl.followCancelOther, params).then((data) {
                   Navigator.of(context).pop();
                   int mRelation = data['data']['relation'];
                   (mFanList[position]).relation = mRelation;
                   setState(() {});
-                }, (error) {
+                }, onError: (error) {
                   ToastUtil.show(error);
                 });
               },

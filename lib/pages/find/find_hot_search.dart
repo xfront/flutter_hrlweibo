@@ -29,13 +29,13 @@ class _HotSearchPageState extends State<HotSearchPage> {
     // TODO: implement initState
     super.initState();
 
-    DioManager().post(ServiceUrl.getHotSearchList, null, (data) {
+    DioManager().post(ServiceUrl.getHotSearchList, null).then((data) {
       mHotSearchList.clear();
       data['data'].forEach((data) {
         mHotSearchList.add(Findhottop.fromJson(data));
       });
       setState(() {});
-    }, (error) {});
+    });
   }
 
   Widget mHotSearchItem(int index) {

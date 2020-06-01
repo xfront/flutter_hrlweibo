@@ -6,14 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_hrlweibo/public.dart';
 
 class DioManager {
-  //写一个单例
-  //在 Dart 里，带下划线开头的变量是私有变量
-  static final DioManager _instance = DioManager._internal();
-
-  factory DioManager() {
-    return _instance;
-  }
-
   Dio dio = Dio();
 
   DioManager._internal() {
@@ -24,80 +16,62 @@ class DioManager {
     //  dio.interceptors.add(CookieManager(CookieJar()));//缓存相关类，具体设置见https://github.com/flutterchina/cookie_jar
   }
 
+  static final DioManager _instance = DioManager._internal();
+
+  factory DioManager() {
+    return _instance;
+  }
+
 //get请求
-  get(String url, Map params, Function successCallBack,
-    Function errorCallBack) async {
-    _requstHttp(url, successCallBack, 'get', params, errorCallBack);
+  Future<Map<String, dynamic>> get(String url, Map params) {
+    return _requestHttp(url, 'get', FormData.fromMap(params));
   }
 
   //post请求
-  post(String url, Map params, Function successCallBack,
-    Function errorCallBack) async {
-    _requstHttp(url, successCallBack, "post", params, errorCallBack);
+  Future<Map<String, dynamic>> post(String url, Map params) {
+    return _requestHttp(url, "post", FormData.fromMap(params));
   }
 
   //post请求
-  postNoParams(String url, Function successCallBack, Function errorCallBack) async {
-    _requstHttp(url, successCallBack, "post", null, errorCallBack);
+  Future<Map<String, dynamic>> postNoParams(String url) {
+    return _requestHttp(url, "post", null);
   }
 
-  _requstHttp(String url, Function successCallBack,
-    [String method, Map params, Function errorCallBack]) async {
-    Response response;
-    try {
-      if (method == 'get') {
-        if (params != null && params.isNotEmpty) {
-          response = await dio.get(url, queryParameters: params);
-        } else {
-          response = await dio.get(url);
-        }
-      } else if (method == 'post') {
-        if (params != null && params.isNotEmpty) {
-          response = await dio.post(url, data: FormData.fromMap(params));
-        } else {
-          response = await dio.post(url);
-        }
-      }
-    } on DioError catch (error) {
-      // 请求错误处理
-      Response errorResponse;
-      if (error.response != null) {
-        errorResponse = error.response;
-      } else {
-        errorResponse = Response(statusCode: 201);
-      }
-      // debug模式才打印
-      if (Constant.ISDEBUG) {
-        print('请求异常: ' + error.toString());
-      }
-      _error(errorCallBack, error.message);
-      return '';
-    }
-    // debug模式打印相关数据
-    if (Constant.ISDEBUG) {
-      print('请求url: ' + url);
-      print('请求头: ' + dio.options.headers.toString());
+  Future<Map<String, dynamic>> _requestHttp(String url, [String method, params]) {
+    Future<Response> futureRsp;
+    if (method == 'get') {
       if (params != null) {
-        print('请求参数: ' + params.toString());
+        futureRsp = dio.get(url, queryParameters: params);
+      } else {
+        futureRsp = dio.get(url);
       }
-      if (response != null) {
-        print('返回参数: ' + response.toString());
+    } else if (method == 'post') {
+      if (params != null) {
+        futureRsp = dio.post(url, data: params);
+      } else {
+        futureRsp = dio.post(url);
       }
     }
 
-    String dataStr = json.encode(response.data);
-    Map<String, dynamic> dataMap = json.decode(dataStr);
-    if (dataMap == null || dataMap['status'] != 200) {
-      _error(errorCallBack, dataMap['msg'].toString());
-    } else if (successCallBack != null) {
-      successCallBack(dataMap);
-    }
-  }
+    return futureRsp.then((response) {
+      if (Constant.ISDEBUG) {
+        print('请求url: ' + url);
+        print('请求头: ' + dio.options.headers.toString());
+        if (params != null) {
+          print('请求参数: ' + params.toString());
+        }
+        if (response != null) {
+          print('返回参数: ' + response.toString());
+        }
+      }
 
-  _error(Function errorCallBack, String error) {
-    if (errorCallBack != null) {
-      errorCallBack(error);
-    }
+      String dataStr = json.encode(response.data);
+      Map<String, dynamic> dataMap = json.decode(dataStr);
+      if (dataMap == null || dataMap['status'] != 200) {
+        return Future.error(Exception(dataMap['msg'].toString()));
+      }
+      return Future.value(dataMap);
+    }, onError: (e) => throw e);
   }
 }
 

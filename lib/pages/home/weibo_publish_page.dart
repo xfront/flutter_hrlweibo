@@ -29,14 +29,11 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
   FocusNode focusNode = FocusNode();
   final GlobalKey globalKey = GlobalKey();
   double _softKeyHeight = SpUtil.getDouble(Constant.SP_KEYBOARD_HEGIHT, 200);
-  KeyboardVisibilityNotification _keyboardVisibility =
-  KeyboardVisibilityNotification();
+  KeyboardVisibilityNotification _keyboardVisibility = KeyboardVisibilityNotification();
   List<File> mFileList = List();
   File mSelectedImageFile;
   List<MultipartFile> mSubmitFileList = List();
-
-  MySpecialTextSpanBuilder _mySpecialTextSpanBuilder =
-  MySpecialTextSpanBuilder();
+  MySpecialTextSpanBuilder _mySpecialTextSpanBuilder = MySpecialTextSpanBuilder();
 
   @override
   void initState() {
@@ -145,31 +142,29 @@ class _WeiBoPublishPageState extends State<WeiBoPublishPage> {
           Align(
             alignment: Alignment.centerRight,
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 if (_mEtController.text.isEmpty) {
                   ToastUtil.show("内容不能为空!");
                   return;
                 }
                 mSubmitFileList.clear();
                 for (int i = 0; i < mFileList.length; i++) {
-                  mSubmitFileList.add(MultipartFile.fromFileSync(mFileList
-                    .elementAt(i)
-                    .path));
+                  var data = await MultipartFile.fromFile(mFileList[i].path);
+                  mSubmitFileList.add(data);
                 }
                 var formData = {
                   "userId": "1",
                   "content": _mEtController.text,
                   "files": mSubmitFileList
                 };
-                DioManager()
-                  .post(ServiceUrl.publishWeiBo, formData, (data) {
+                DioManager().post(ServiceUrl.publishWeiBo, formData).then( (data) {
                   ToastUtil.show('提交成功!');
                   setState(() {
                     mFileList.clear();
                     mSubmitFileList.clear();
                     _mEtController.clear();
                   });
-                }, (error) {
+                }, onError: (error) {
                   ToastUtil.show(error);
                 });
               },

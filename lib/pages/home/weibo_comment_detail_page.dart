@@ -64,14 +64,14 @@ class _WeiBoCommentDetailPageState extends State<WeiBoCommentDetailPage> {
       "pageSize": Constant.PAGE_SIZE,
     };
 
-    DioManager().post(ServiceUrl.getWeiBoCommentReplyList, formData,
+    DioManager().post(ServiceUrl.getWeiBoCommentReplyList, formData).then(
         (data) {
         mCommentList.clear();
         mCommentList.addAll(CommentList
           .fromJson(data['data'])
           .list);
         setState(() {});
-      }, (error) {});
+      });
   }
 
   Future getSubDataLoadMore(int page) async {
@@ -80,23 +80,11 @@ class _WeiBoCommentDetailPageState extends State<WeiBoCommentDetailPage> {
       "pageNum": page,
       "pageSize": Constant.PAGE_SIZE,
     };
-    await DioManager()
-      .post(ServiceUrl.getWeiBoCommentReplyList, formData, (data) {
-      DioManager()
-        .post(ServiceUrl.getWeiBoCommentReplyList, formData, (data) {
-        mCommentList.addAll(CommentList
-          .fromJson(data['data'])
-          .list);
+    DioManager().post(ServiceUrl.getWeiBoCommentReplyList, formData).then((data) {
+        mCommentList.addAll(CommentList.fromJson(data['data']).list);
         isloadingMore = false;
-        ishasMore = CommentList
-          .fromJson(data['data'])
-          .list
-          .length >=
-          Constant.PAGE_SIZE;
-
-        setState(() {});
-      }, (error) {});
-    }, (error) {
+        ishasMore = CommentList.fromJson(data['data']).list.length >= Constant.PAGE_SIZE;
+    }, onError:(e) {
       setState(() {
         isloadingMore = false;
         ishasMore = false;

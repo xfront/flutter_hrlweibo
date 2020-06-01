@@ -27,10 +27,9 @@ class _WeiBoPublishAtUserPageState extends State<WeiBoPublishAtUserPage> {
   }
 
   void loadData() async {
-    DioManager().post(ServiceUrl.getWeiBoAtUser, null, (data) {
+    DioManager().post(ServiceUrl.getWeiBoAtUser, null).then( (data) {
       // List<WeiboAtUser> listRecommend = List();
       //  List<WeiboAtUser> listNormal= List();
-
       data['data']['hotusers'].forEach((data) {
         mRecommendList.add(WeiboAtUser.fromJson(data));
       });
@@ -45,7 +44,7 @@ class _WeiBoPublishAtUserPageState extends State<WeiBoPublishAtUserPage> {
       setState(() {
         _suspensionTag = mRecommendList[0].getSuspensionTag();
       });
-    }, (error) {});
+    });
   }
 
   void _handleList(List<WeiboAtUser> list) {

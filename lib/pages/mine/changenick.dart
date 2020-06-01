@@ -93,12 +93,12 @@ class _ChangeNickNamePageState extends State<ChangeNickNamePage> {
                         'nick': _mEtController.text
                       };
                       DioManager()
-                        .post(ServiceUrl.updateNick, params, (data) {
+                        .post(ServiceUrl.updateNick, params).then((data) {
                         ToastUtil.show('修改昵称成功!');
                         UserUtil.saveUserNick(_mEtController.text);
                         Constant.eventBus.fire(ChangeInfoEvent());
                         Navigator.pop(context);
-                      }, (error) {
+                      }, onError: (error) {
                         ToastUtil.show(error);
                       });
                     },

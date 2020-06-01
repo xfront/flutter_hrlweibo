@@ -9,7 +9,6 @@ class HrlMessage {
 
   HrlMessage({this.uuid, this.state, this.isSend, this.from, this.target, this.createTime, this.msgType});
 
-
   Map toJson() {
     return {
       'uuid': uuid,
@@ -34,18 +33,14 @@ class HrlMessage {
       return null;
     }
 
-    HrlMessageType type =
-    getEnumFromString(HrlMessageType.values, json['type']);
+    HrlMessageType type = getEnumFromString(HrlMessageType.values, json['type']);
     switch (type) {
       case HrlMessageType.text:
         return HrlTextMessage.fromJson(json);
-        break;
       case HrlMessageType.image:
         return HrlImageMessage.fromJson(json);
-        break;
       case HrlMessageType.voice:
         return HrlVoiceMessage.fromJson(json);
-        break;
     }
   }
 }
@@ -96,16 +91,13 @@ class HrlImageMessage extends HrlMessage {
 
   HrlImageMessage.fromJson(Map<dynamic, dynamic> json)
     : thumbPath = json['thumbPath'],
-
       super.fromJson(json);
 }
 
 class HrlTextMessage extends HrlMessage {
   String text;
 
-
   HrlTextMessage({this.text });
-
 
   Map toJson() {
     var json = super.toJson();
@@ -124,7 +116,6 @@ class HrlVoiceMessage extends HrlMessage {
 
   int duration; // 语音时长，单位秒
 
-
   HrlVoiceMessage();
 
   Map toJson() {
@@ -140,16 +131,11 @@ class HrlVoiceMessage extends HrlMessage {
     : path = json['path'],
       duration = json['duration'],
       remoteUrl = json['remoteUrl'],
-
       super.fromJson(json);
 }
 
 T getEnumFromString<T>(Iterable<T> values, String str) {
-  return values.firstWhere((f) =>
-  f
-    .toString()
-    .split('.')
-    .last == str,
+  return values.firstWhere((f) =>  f.toString().split('.').last == str,
     orElse: () => null);
 }
 
@@ -157,8 +143,5 @@ String getStringFromEnum<T>(T) {
   if (T == null) {
     return null;
   }
-  return T
-    .toString()
-    .split('.')
-    .last;
+  return T.toString().split('.').last;
 }

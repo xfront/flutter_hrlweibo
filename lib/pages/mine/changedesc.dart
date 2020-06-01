@@ -46,12 +46,12 @@ class _ChangeDescPageState extends State<ChangeDescPage> {
                     'userId': UserUtil.getUserInfo().id,
                     'personSign': _mEtController.text
                   };
-                  DioManager().post(ServiceUrl.updateIntroduce, params, (data) {
+                  DioManager().post(ServiceUrl.updateIntroduce, params).then((data) {
                     ToastUtil.show('修改个性签名成功!');
                     UserUtil.saveUserDesc(_mEtController.text);
                     Constant.eventBus.fire(ChangeInfoEvent());
                     Navigator.pop(context);
-                  }, (error) {
+                  }, onError: (error) {
                     ToastUtil.show(error);
                   });
                 },

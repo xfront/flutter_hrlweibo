@@ -29,12 +29,12 @@ class _MsgZanPageState extends State<MsgZanPage> {
       "pageNum": "1",
       "pageSize": Constant.PAGE_SIZE,
     };
-    DioManager().post(ServiceUrl.getMsgZanList, formData, (data) {
+    DioManager().post(ServiceUrl.getMsgZanList, formData).then((data) {
       ComZanListModel mList = ComZanListModel.fromJson(data['data']);
       mZanList.clear();
       mZanList = mList.list;
       setState(() {});
-    }, (error) {
+    }, onError: (error) {
       setState(() {});
     });
   }
@@ -44,7 +44,7 @@ class _MsgZanPageState extends State<MsgZanPage> {
       "pageNum": page,
       "pageSize": Constant.PAGE_SIZE,
     };
-    await DioManager().post(ServiceUrl.getMsgZanList, formData,
+    await DioManager().post(ServiceUrl.getMsgZanList, formData).then(
         (data) {
         ComZanListModel mList = ComZanListModel.fromJson(data['data']);
         mZanList.addAll(mList.list);
@@ -52,7 +52,7 @@ class _MsgZanPageState extends State<MsgZanPage> {
           isloadingMore = false;
           ishasMore = mList.list.length >= Constant.PAGE_SIZE;
         });
-      }, (error) {
+      }, onError: (error) {
         setState(() {
           isloadingMore = false;
           ishasMore = false;

@@ -12,7 +12,7 @@ class VideoRecommendPage extends StatefulWidget {
   _VideoRecommendPageState createState() => _VideoRecommendPageState();
 }
 
-class _VideoRecommendPageState extends State<VideoRecommendPage> {
+class _VideoRecommendPageState extends State<VideoRecommendPage> with AutomaticKeepAliveClientMixin{
   bool isloadingMore = false; //是否显示加载中
   bool ishasMore = true; //是否还有更多
   num mCurPage = 1;
@@ -20,14 +20,15 @@ class _VideoRecommendPageState extends State<VideoRecommendPage> {
   List<VideoModel> mVideoList = [];
 
   VideoRecommendPageState() {}
-
+  @override
+  bool get wantKeepAlive => true;
   Future getVideoList(bool isRefresh) {
     if (isRefresh) {
       isloadingMore = false;
       ishasMore = true;
       mCurPage = 1;
       var params = {'pageNum': "$mCurPage", 'pageSize': "10",};
-      DioManager().post(ServiceUrl.getVideoRecommendList, params,
+      DioManager().post(ServiceUrl.getVideoRecommendList, params).then(
           (data) {
           List<VideoModel> list = List();
           data['data']['list'].forEach((data) {
@@ -36,10 +37,10 @@ class _VideoRecommendPageState extends State<VideoRecommendPage> {
           mVideoList = [];
           mVideoList = list;
           setState(() {});
-        }, (error) {});
+        }, onError: (error) {});
     } else {
       var params = {'pageNum': "$mCurPage", 'pageSize': "10"};
-      DioManager().post(ServiceUrl.getVideoRecommendList, params,
+      DioManager().post(ServiceUrl.getVideoRecommendList, params).then(
           (data) {
           List<VideoModel> list = List();
           data['data']['list'].forEach((data) {
@@ -49,7 +50,7 @@ class _VideoRecommendPageState extends State<VideoRecommendPage> {
           isloadingMore = false;
           ishasMore = list.length >= Constant.PAGE_SIZE;
           setState(() {});
-        }, (error) {
+        }, onError: (error) {
           setState(() {
             isloadingMore = false;
             ishasMore = false;
@@ -266,9 +267,8 @@ class _VideoRecommendPageState extends State<VideoRecommendPage> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery
-      .of(context)
-      .size;
+    super.build(context);
+    var size = MediaQuery.of(context).size;
     final double mGridItemHeight = 200;
     final double mGridItemWidth = size.width / 2;
 

@@ -25,14 +25,14 @@ class _VideoDetailIntroPageState extends State<VideoDetailIntroPage> {
       'videoid': widget.mVideo.id,
     };
     DioManager()
-      .post(ServiceUrl.getVideoDetailRecommendList, params, (data) {
+      .post(ServiceUrl.getVideoDetailRecommendList, params).then((data) {
       mRecommendVideoList.clear();
       data['data'].forEach((data) {
         mRecommendVideoList.add(VideoModel.fromJson(data));
       });
 
       setState(() {});
-    }, (error) {});
+    }, onError: (error) {});
   }
 
   @override

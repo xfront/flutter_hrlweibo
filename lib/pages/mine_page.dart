@@ -18,10 +18,10 @@ class _MinePageState extends State<MinePage> {
         'muserId': UserUtil.getUserInfo().id,
         'otheruserId': UserUtil.getUserInfo().id,
       };
-      DioManager().post(ServiceUrl.getUserInfo, params, (data) {
+      DioManager().post(ServiceUrl.getUserInfo, params).then((data) {
         UserUtil.saveUserInfo(data['data']);
         setState(() {});
-      }, (error) {});
+      }, onError: (error) {});
     }
   }
 
@@ -38,11 +38,11 @@ class _MinePageState extends State<MinePage> {
           'muserId': UserUtil.getUserInfo().id,
           'otheruserId': UserUtil.getUserInfo().id,
         };
-        DioManager().post(ServiceUrl.getUserInfo, params, (data) {
+        DioManager().post(ServiceUrl.getUserInfo, params).then((data) {
           UserUtil.saveUserInfo(data['data']);
           SchedulerBinding.instance
             .addPostFrameCallback((_) => setState(() {}));
-        }, (error) {});
+        }, onError: (error) {});
       }
     }
   }

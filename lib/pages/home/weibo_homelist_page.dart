@@ -77,14 +77,14 @@ class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
       "userId": UserUtil.getUserInfo().id,
     };
 
-    DioManager().post(ServiceUrl.getWeiBo, formData, (data) {
+    DioManager().post(ServiceUrl.getWeiBo, formData).then((data) {
       WeiBoListModel category = WeiBoListModel.fromJson(data);
       hotContentList.clear();
       hotContentList.addAll(category.data.list);
       setState(() {
         isRefreshloading = false;
       });
-    }, (error) {
+    }, onError: (error) {
       print("接口异常：" + error);
       //  ToastUtil.show(error);
       setState(() {
@@ -101,7 +101,7 @@ class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
       "userId": UserUtil.getUserInfo().id,
     };
     List<WeiBoModel> mListRecords = List();
-    await DioManager().post(ServiceUrl.getWeiBo, formData, (data) {
+    await DioManager().post(ServiceUrl.getWeiBo, formData).then( (data) {
       WeiBoListModel category = WeiBoListModel.fromJson(data);
       mListRecords = category.data.list;
       setState(() {
@@ -109,7 +109,7 @@ class _WeiBoHomeListPagerState extends State<WeiBoHomeListPager>
         isloadingMore = false;
         ishasMore = mListRecords.length >= Constant.PAGE_SIZE;
       });
-    }, (error) {
+    }, onError: (error) {
       setState(() {
         isloadingMore = false;
         ishasMore = false;

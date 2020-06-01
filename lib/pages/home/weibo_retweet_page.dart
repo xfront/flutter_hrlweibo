@@ -146,12 +146,12 @@ class _RetWeetPageState extends State<RetWeetPage> {
                   "zfWeiBoId": widget.mModel.weiboId
                 };
                 DioManager()
-                  .post(ServiceUrl.forwardWeiBo, formData, (data) {
+                  .post(ServiceUrl.forwardWeiBo, formData).then((data) {
                   ToastUtil.show('提交成功!');
                   setState(() {
                     mEtController.clear();
                   });
-                }, (error) {
+                }, onError: (error) {
                   ToastUtil.show(error);
                 });
               },

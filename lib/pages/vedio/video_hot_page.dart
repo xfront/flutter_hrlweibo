@@ -11,64 +11,70 @@ class VideoHotPage extends StatefulWidget {
   _VideoHotPageState createState() => _VideoHotPageState();
 }
 
-class _VideoHotPageState extends State<VideoHotPage> {
-  bool isloadingMore = false; //是否显示加载中
-  bool ishasMore = true; //是否还有更多
-  num mCurPage = 1;
-  ScrollController mScrollController = ScrollController();
-  List<VideoModel> mVideoList = [];
-  List<String> mBannerAdList = [];
+class _VideoHotPageState extends State<VideoHotPage> with AutomaticKeepAliveClientMixin {
+  bool isLoadingMore = false; //是否显示加载中
+  bool hasMore = true; //是否还有更多
+  num curPage = 1;
+  ScrollController scrollController = ScrollController();
+  List<VideoModel> videoList = [];
+  List<String> bannerAdList = [];
 
-  VideoHotPageState() {}
+  _VideoHotPageState() {}
 
-  Future getVideoList(bool isRefresh) {
+  @override
+  bool get wantKeepAlive => true;
+
+  Future getVideoList(bool isRefresh) async {
     if (isRefresh) {
-      isloadingMore = false;
-      ishasMore = true;
-      mCurPage = 1;
-      Map<String, dynamic> params = {'pageNum': "$mCurPage", 'pageSize': "10"};
-      DioManager().post(ServiceUrl.getVideoHotList, params, (data) {
-        List<VideoModel> list = List();
-        data['data']['list'].forEach((data) {
-          list.add(VideoModel.fromJson(data));
-        });
-        mVideoList = [];
-        mVideoList = list;
-        setState(() {});
-      }, (error) {});
+      isLoadingMore = false;
+      hasMore = true;
+      curPage = 1;
+      Map<String, dynamic> params = {'pageNum': "$curPage", 'pageSize': "10"};
 
-      DioManager().post(ServiceUrl.getVideoHotBannerAdList, params,
-          (data) {
-          List<String> list = List();
-          data['data'].forEach((data) {
-            list.add(data.toString());
-          });
-          mBannerAdList = [];
-          mBannerAdList = list;
-          setState(() {});
-        }, (error) {});
+      Future<Map<String, dynamic>> a = DioManager().post(ServiceUrl.getVideoHotList, params);
+
+      Future<Map<String, dynamic>> b = DioManager().post(ServiceUrl.getVideoHotBannerAdList, params);
+
+      try {
+        List<Map<String, dynamic>> results = await Future.wait(<Future<Map<String, dynamic>>>[a, b]);
+        List<VideoModel> list = List();
+        results[0]['data']['list'].forEach((data) {
+          list.add(VideoModel.fromJson(data));
+        });
+        videoList = list;
+
+        List<String> list2 = List();
+        results[1]['data'].forEach((data) {
+          list2.add(data.toString());
+        });
+        bannerAdList = list2;
+
+        setState(() {});
+      } on Exception catch (error) {
+
+      }
     } else {
-      var params = {'pageNum': "$mCurPage", 'pageSize': "10"};
-      DioManager().post(ServiceUrl.getVideoHotList, params, (data) {
+      var params = {'pageNum': "$curPage", 'pageSize': "10"};
+      DioManager().post(ServiceUrl.getVideoHotList, params).then((data) {
         List<VideoModel> list = List();
         data['data']['list'].forEach((data) {
           list.add(VideoModel.fromJson(data));
         });
-        mVideoList.addAll(list);
-        isloadingMore = false;
-        ishasMore = list.length >= Constant.PAGE_SIZE;
+        videoList.addAll(list);
+        isLoadingMore = false;
+        hasMore = list.length >= Constant.PAGE_SIZE;
         setState(() {});
-      }, (error) {
+      }, onError: (error) {
         setState(() {
-          isloadingMore = false;
-          ishasMore = false;
+          isLoadingMore = false;
+          hasMore = false;
         });
       });
     }
   }
 
   Widget _buildLoadMore() {
-    return isloadingMore
+    return isLoadingMore
       ? Container(
       child: Padding(
         padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -91,7 +97,7 @@ class _VideoHotPageState extends State<VideoHotPage> {
           )),
       ))
       : Container(
-      child: ishasMore
+      child: hasMore
         ? Container()
         : Center(
         child: Container(
@@ -241,30 +247,29 @@ class _VideoHotPageState extends State<VideoHotPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getVideoList(true);
-    mScrollController.addListener(() {
-      var maxScroll = mScrollController.position.maxScrollExtent;
-      var pixels = mScrollController.position.pixels;
+    scrollController.addListener(() {
+      var maxScroll = scrollController.position.maxScrollExtent;
+      var pixels = scrollController.position.pixels;
       if (maxScroll == pixels) {
-        if (!isloadingMore) {
-          if (ishasMore) {
+        if (!isLoadingMore) {
+          if (hasMore) {
             setState(() {
-              isloadingMore = true;
-              mCurPage += 1;
+              isLoadingMore = true;
+              curPage += 1;
             });
             Future.delayed(Duration(seconds: 3), () {
               getVideoList(false);
             });
           } else {
             setState(() {
-              ishasMore = false;
+              hasMore = false;
             });
           }
         }
       }
     });
+    getVideoList(true);
   }
 
   Future pullToRefresh() async {
@@ -285,11 +290,12 @@ class _VideoHotPageState extends State<VideoHotPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       padding: EdgeInsets.only(top: 15),
       child: RefreshIndicator(
         onRefresh: pullToRefresh,
-        child: CustomScrollView(controller: mScrollController, slivers: <
+        child: CustomScrollView(controller: scrollController, slivers: <
           Widget>[
           SliverToBoxAdapter(
             child: Row(
@@ -372,11 +378,11 @@ class _VideoHotPageState extends State<VideoHotPage> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                if (index == mVideoList.length + 1) {
+                if (index == videoList.length + 1) {
                   return _buildLoadMore();
                 } else if (index == 0 || index == 1 || index == 2) {
-                  if (mVideoList.length != 0) {
-                    return getContentItem(context, mVideoList[index]);
+                  if (videoList.length != 0) {
+                    return getContentItem(context, videoList[index]);
                   } else {
                     return Container();
                   }
@@ -399,17 +405,17 @@ class _VideoHotPageState extends State<VideoHotPage> {
                           ),
                           margin: EdgeInsets.all(0)),
                         itemBuilder: (c, i) {
-                          return mCenterBannerItemWidegt(mBannerAdList[i]);
+                          return mCenterBannerItemWidegt(bannerAdList[i]);
                         },
-                        itemCount: mBannerAdList.length,
+                        itemCount: bannerAdList.length,
                       ),
                     ),
                   );
                 } else {
-                  return getContentItem(context, mVideoList[index - 1]);
+                  return getContentItem(context, videoList[index - 1]);
                 }
               },
-              childCount: mVideoList.length + 2,
+              childCount: videoList.length + 2,
             ),
           ),
         ]),

@@ -36,20 +36,20 @@ class WeiBoPublishTopicPageState extends State<WeiBoPublishTopicPage> {
   }
 
   void loadLeftTypeData() async {
-    DioManager().post(ServiceUrl.getWeiBoTopicTypeList, null,
+    DioManager().post(ServiceUrl.getWeiBoTopicTypeList, null).then(
         (data) {
         data['data'].forEach((data) {
           mLeftTopicTypeList.add(WeiBoTopicType.fromJson(data));
         });
         loadRightTopicData(mLeftTopicTypeList[0].id.toString());
-      }, (error) {});
+      });
   }
 
   void loadRightTopicData(String type) async {
     var params = {
       'topicType': type,
     };
-    DioManager().post(ServiceUrl.getWeiBoTopicList, params, (data) {
+    DioManager().post(ServiceUrl.getWeiBoTopicList, params).then((data) {
       // List<WeiboAtUser> listRecommend = List();
       //  List<WeiboAtUser> listNormal= List();
       mRightTopicList.clear();
@@ -58,7 +58,7 @@ class WeiBoPublishTopicPageState extends State<WeiBoPublishTopicPage> {
         mRightTopicList.add(WeiBoTopic.fromJson(data));
       });
       setState(() {});
-    }, (error) {
+    }, onError: (error) {
       mRightTopicList.clear();
       setState(() {});
       print("error拉");

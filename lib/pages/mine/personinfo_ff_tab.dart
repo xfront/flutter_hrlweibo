@@ -57,7 +57,7 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
         'pageNum': "$curPage",
         "pageSize": Constant.PAGE_SIZE,
       };
-      DioManager().post(ServiceUrl.getFanFollowRecommend, params,
+      DioManager().post(ServiceUrl.getFanFollowRecommend,params).then(
           (data) {
           List<FanFollowModel> list = List();
           data['data']['list'].forEach((data) {
@@ -66,14 +66,14 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
           mRecommendList = [];
           mRecommendList = list;
           setState(() {});
-        }, (error) {});
+        }, onError: (error) {});
     } else {
       var params = {
         'userId': uid,
         'pageNum': "$curPage",
         "pageSize": Constant.PAGE_SIZE,
       };
-      DioManager().post(ServiceUrl.getFanFollowRecommend, params,
+      DioManager().post(ServiceUrl.getFanFollowRecommend, params).then(
           (data) {
           List<FanFollowModel> list = List();
           data['data']['list'].forEach((data) {
@@ -83,7 +83,7 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
           isloadingMore = false;
           ishasMore = list.length >= Constant.PAGE_SIZE;
           setState(() {});
-        }, (error) {
+        }, onError: (error) {
           setState(() {
             isloadingMore = false;
             ishasMore = false;
@@ -308,12 +308,12 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
               'userid': UserUtil.getUserInfo().id,
               'otheruserid': mModel.id,
             };
-            DioManager().post(ServiceUrl.followOther, params,
+            DioManager().post(ServiceUrl.followOther, params).then(
                 (data) {
                 int mRelation = data['data']['relation'];
                 (mRecommendList[position]).relation = mRelation;
                 setState(() {});
-              }, (error) {
+              }, onError: (error) {
                 ToastUtil.show(error);
               });
           },
@@ -382,12 +382,12 @@ class _FFRecommendPageState extends State<FFRecommendPage> {
                   'otheruserid': mModel.id,
                 };
                 DioManager()
-                  .post(ServiceUrl.followCancelOther, params, (data) {
+                  .post(ServiceUrl.followCancelOther, params).then((data) {
                   Navigator.of(context).pop();
                   int mRelation = data['data']['relation'];
                   (mRecommendList[position]).relation = mRelation;
                   setState(() {});
-                }, (error) {
+                }, onError: (error) {
                   ToastUtil.show(error);
                 });
               },

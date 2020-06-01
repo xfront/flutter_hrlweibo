@@ -1,19 +1,28 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hrlweibo/model/MessageNormal.dart';
 import 'package:flutter_hrlweibo/public.dart';
 import 'package:flutter_hrlweibo/widget/messgae/bubble.dart';
 import 'voice_animation.dart';
+import 'package:flutter/gestures.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatMessageItem extends StatefulWidget {
-  HrlMessage mMessage;
+  HrlMessage message;
   ValueSetter<String> onAudioTap;
 
-  ChatMessageItem({Key key, this.mMessage, this.onAudioTap}) : super(key: key);
+  ChatMessageItem({Key key, this.message, this.onAudioTap}) : super(key: key);
 
   @override
   ChatMessageItemState createState() => ChatMessageItemState();
 }
-
+class SpanInfo {
+  int start;
+  int end;
+  int type;
+  SpanInfo(this.start, this.end, {this.type});
+}
 class ChatMessageItemState extends State<ChatMessageItem> {
   List<String> mAudioAssetRightList = List();
   List<String> mAudioAssetLeftList = List();
@@ -43,28 +52,92 @@ class ChatMessageItemState extends State<ChatMessageItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: widget.mMessage.isSend
+      child: widget.message.isSend
         ? getSentMessageLayout()
         : getReceivedMessageLayout(),
     );
   }
 
-  Widget getmImageLayout(HrlImageMessage mMessgae) {
+  Widget getImageLayout(HrlImageMessage msg) {
     Widget child;
-    if (mMessgae.thumbPath != null && (!mMessgae.thumbPath.isEmpty)) {
-      child =
-        Image.file(File('${(widget.mMessage as HrlImageMessage).thumbPath}'));
+    if (msg.thumbPath != null && (msg.thumbPath.isNotEmpty)) {
+      child = Image.file(File('${msg.thumbPath}'));
     } else {
-      child = Image.network(
-        '${(widget.mMessage as HrlImageMessage).thumbUrl}',
-        fit: BoxFit.fill,
-      );
+      child = Image.network('${msg.thumbUrl}', fit: BoxFit.fill);
     }
     return child;
   }
 
-  Widget getItemContent(HrlMessage mMessage) {
-    switch (mMessage.msgType) {
+  TextSpan buildText(String txt, TextStyle defaultStyle) {
+    List<SpanInfo> spans = List();
+    RegExp uri = new RegExp(r"[a-zA-z]+://[^\s]*");
+    Iterable<Match> uris = uri.allMatches(txt);
+    int last = 0;
+    for (Match m in uris) {
+      if (last < m.start ) spans.add(SpanInfo(last, m.start, type: -1));
+      spans.add(SpanInfo(m.start, m.end, type: 0));
+      last = m.end;
+    }
+    spans.add(SpanInfo(last, txt.length, type: -1));
+
+    RegExp email = new RegExp(r"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*");
+    Iterable<Match> emails = email.allMatches(txt);
+    for (Match m in emails) {
+      int idx = spans.indexWhere((e) => e.start <= m.start && m.end <= e.end );
+      if (idx < 0) continue;
+      SpanInfo info = spans.removeAt(idx);
+      if (info.start < m.start ) spans.add(SpanInfo(info.start, m.start, type: -1));
+      spans.add(SpanInfo(m.start, m.end, type: 1));
+      if (m.end < info.end ) spans.add(SpanInfo(m.end, info.end, type: -1));
+    }
+
+    RegExp mobile = new RegExp(r"(0|86|17951)?(1\d{10})");
+    Iterable<Match> mobiles = mobile.allMatches(txt);
+    for (Match m in mobiles) {
+      int idx = spans.indexWhere((e) => e.start <= m.start && m.end <= e.end );
+      if (idx < 0) continue;
+      SpanInfo info = spans.removeAt(idx);
+      if (info.start < m.start ) spans.add(SpanInfo(info.start, m.start, type: -1));
+      spans.add(SpanInfo(m.start, m.end, type: 2));
+      if (m.end < info.end ) spans.add(SpanInfo(m.end, info.end, type: -1));
+    }
+    
+    spans.sort((a, b){
+      return a.start.compareTo(b.start);
+    });
+    
+    List<TextSpan> txtSpans = List();
+    for (SpanInfo si in spans) {
+      TextSpan span ;
+      var text = txt.substring(si.start, si.end);
+      switch (si.type) {
+        case 0:
+          span = TextSpan(
+            text: text,
+            recognizer: TapGestureRecognizer()..onTap = () {
+              launch(text);
+            },
+            style: defaultStyle.copyWith(decoration: TextDecoration.underline,color: Colors.blue));
+            break;
+        case 1:
+          span = TextSpan(
+            text: text,
+            style: defaultStyle.copyWith(decoration: TextDecoration.underline,color: Colors.blue));
+          break;
+        case 2:
+          span = TextSpan(text: text, style: defaultStyle.copyWith(color: Colors.red));
+          break;
+        default:
+          span = TextSpan(text: text, style: defaultStyle);
+          break;
+      }
+      txtSpans.add(span);
+    }
+    return TextSpan(children: txtSpans);
+  }
+
+  Widget getItemContent(HrlMessage msg) {
+    switch (msg.msgType) {
       case HrlMessageType.image:
         return Container(
           /* width:mImgWidth,
@@ -73,19 +146,17 @@ class ChatMessageItemState extends State<ChatMessageItem> {
             maxWidth: 400,
             maxHeight: 150,
           ),
-          child: getmImageLayout(widget.mMessage as HrlImageMessage),
+          child: getImageLayout(widget.message as HrlImageMessage),
         );
-        break;
       case HrlMessageType.text:
-        return Text(
-          '${(widget.mMessage as HrlTextMessage).text}',
-          softWrap: true,
-          style: TextStyle(fontSize: 14.0, color: Colors.black),
+        return SelectableText.rich(
+          buildText('${(widget.message as HrlTextMessage).text}', TextStyle(fontSize: 16.0, color: Colors.black)),
+          textAlign: TextAlign.left,
+          style: TextStyle(fontSize: 16.0, color: Colors.black),
         );
-        break;
       case HrlMessageType.voice:
         bool isStop = true;
-        if (mUUid == widget.mMessage.uuid) {
+        if (mUUid == widget.message.uuid) {
           if (!mIsPlayint) {
             isStop = true;
           } else {
@@ -99,17 +170,16 @@ class ChatMessageItemState extends State<ChatMessageItem> {
         return GestureDetector(
           onTap: () {
             //  int result = await mAudioPlayer.play((widget.mMessage as HrlVoiceMessage).path, isLocal: true);
-            widget.onAudioTap((widget.mMessage as HrlVoiceMessage).path);
+            widget.onAudioTap((widget.message as HrlVoiceMessage).path);
           },
           child: VoiceAnimationImage(
-            mMessage.isSend ? mAudioAssetRightList : mAudioAssetLeftList,
+            msg.isSend ? mAudioAssetRightList : mAudioAssetLeftList,
             width: 100,
             height: 30,
             isStop: isStop,
             //&&(widget.mUUid==widget.mMessage.uuid)
           ),
         );
-        break;
     }
   }
 
@@ -169,14 +239,11 @@ class ChatMessageItemState extends State<ChatMessageItem> {
 
     switch (mMessage.msgType) {
       case HrlMessageType.image:
-        return widget.mMessage.isSend ? styleSendImg : styleReceiveImg;
-        break;
+        return widget.message.isSend ? styleSendImg : styleReceiveImg;
       case HrlMessageType.text:
-        return widget.mMessage.isSend ? styleSendText : styleReceiveText;
-        break;
+        return widget.message.isSend ? styleSendText : styleReceiveText;
       case HrlMessageType.voice:
-        return widget.mMessage.isSend ? styleSendText : styleReceiveText;
-        break;
+        return widget.message.isSend ? styleSendText : styleReceiveText;
     }
   }
 
@@ -188,14 +255,13 @@ class ChatMessageItemState extends State<ChatMessageItem> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Visibility(
-            visible: widget.mMessage.msgType == HrlMessageType.voice,
+            visible: widget.message.msgType == HrlMessageType.voice,
             child: Container(
-              child: widget.mMessage.msgType == HrlMessageType.voice ? Text(
-                (widget.mMessage as HrlVoiceMessage).duration.toString() + "'",
+              child: widget.message.msgType == HrlMessageType.voice ? Text(
+                (widget.message as HrlVoiceMessage).duration.toString() + "'",
                 style: TextStyle(fontSize: 14, color: Colors.black),) : Container(),
             ),
           ),
-
 
           Container(
             constraints: BoxConstraints(
@@ -205,9 +271,9 @@ class ChatMessageItemState extends State<ChatMessageItem> {
                 .width * 0.8,
             ),
             child: Bubble(
-              style: getItemBundleStyle(widget.mMessage),
+              style: getItemBundleStyle(widget.message),
               // child:    Text(  '${(widget.mMessage as HrlTextMessage).text  }',  softWrap: true,style: TextStyle(fontSize: 14.0,color: Colors.black),),
-              child: getItemContent(widget.mMessage),
+              child: getItemContent(widget.message),
             ),
             margin: EdgeInsets.only(
               bottom: 5.0,
@@ -248,8 +314,8 @@ class ChatMessageItemState extends State<ChatMessageItem> {
                 .width * 0.8,
             ),
             child: Bubble(
-              style: getItemBundleStyle(widget.mMessage),
-              child: getItemContent(widget.mMessage),
+              style: getItemBundleStyle(widget.message),
+              child: getItemContent(widget.message),
             ),
 
             margin: EdgeInsets.only(

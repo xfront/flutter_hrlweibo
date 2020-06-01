@@ -127,11 +127,11 @@ class _CommentDialogPageState extends State<CommentDialogPage> {
                       "weiboId": widget.mWeiBoOrCommentId
                     };
                     DioManager()
-                      .post(ServiceUrl.addComments, formData, (data) {
+                      .post(ServiceUrl.addComments, formData).then((data) {
                       _inputController.clear();
                       ToastUtil.show('评论成功!');
                       widget.notifyParent();
-                    }, (error) {
+                    }, onError:(error) {
                       ToastUtil.show('评论失败:' + error);
                     });
                   } else {
@@ -142,11 +142,11 @@ class _CommentDialogPageState extends State<CommentDialogPage> {
                       "commentid": widget.mWeiBoOrCommentId
                     };
                     DioManager().post(
-                      ServiceUrl.addCommentsReply, formData, (data) {
+                      ServiceUrl.addCommentsReply, formData).then((data) {
                       _inputController.clear();
                       ToastUtil.show('评论成功!');
                       widget.notifyParent();
-                    }, (error) {
+                    }, onError: (error) {
                       ToastUtil.show('评论失败:' + error);
                     });
                   }

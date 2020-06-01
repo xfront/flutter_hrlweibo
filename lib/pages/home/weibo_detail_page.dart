@@ -60,7 +60,7 @@ class _WeiBoDetailState extends State<WeiBoDetailPage> {
     var params = {
       'weiboid': mWeiboTopData.weiboId,
     };
-    DioManager().post(ServiceUrl.getWeiBoDetail, params, (data) {
+    DioManager().post(ServiceUrl.getWeiBoDetail, params).then((data) {
       mForwardList.clear();
       mForwardList.addAll(WeiBoDetail
         .fromJson(data['data'])
@@ -76,13 +76,13 @@ class _WeiBoDetailState extends State<WeiBoDetailPage> {
       isForwarhasMore = true; //是否还有更多
       mForwardCurPage = 1;
       setState(() {});
-    }, (error) {});
+    });
   }
 
   Future getCommentDataLoadMore(int page, String weiboId) async {
     var formData =
     {"pageNum": page, "pageSize": Constant.PAGE_SIZE, "weiboid": weiboId};
-    DioManager().post(ServiceUrl.getWeiBoDetailComment, formData,
+    DioManager().post(ServiceUrl.getWeiBoDetailComment, formData).then(
         (data) {
         CommentList mComment = CommentList.fromJson(data['data']);
         setState(() {
@@ -90,7 +90,7 @@ class _WeiBoDetailState extends State<WeiBoDetailPage> {
           isCommentloadingMore = false;
           isCommenthasMore = mComment.list.length >= Constant.PAGE_SIZE;
         });
-      }, (error) {
+      }, onError: (error) {
         setState(() {
           isCommentloadingMore = false;
           isCommenthasMore = false;
@@ -100,7 +100,7 @@ class _WeiBoDetailState extends State<WeiBoDetailPage> {
 
   Future getForwardDataLoadMore(int page, String weiboId) async {
     var formData = {"pageNum": page, "pageSize": Constant.PAGE_SIZE, "weiboid": weiboId};
-    DioManager().post(ServiceUrl.getWeiBoDetailForward, formData,
+    DioManager().post(ServiceUrl.getWeiBoDetailForward, formData).then(
         (data) {
         ForwardList mComment = ForwardList.fromJson(data['data']);
         setState(() {
@@ -109,7 +109,7 @@ class _WeiBoDetailState extends State<WeiBoDetailPage> {
           isForwarhasMore = mComment.list.length >= Constant.PAGE_SIZE;
           print("是否还有更多赋值:" + isForwarhasMore.toString());
         });
-      }, (error) {
+      }, onError: (error) {
         setState(() {
           isCommentloadingMore = false;
           isCommenthasMore = false;
@@ -125,7 +125,7 @@ class _WeiBoDetailState extends State<WeiBoDetailPage> {
       "userId": UserUtil.getUserInfo().id,
       "status": weiboItem.zanStatus == 0 ? 1 : 0, //1点赞,0取消点赞
     };
-    DioManager().post(ServiceUrl.zanWeiBo, formData, (data) {
+    DioManager().post(ServiceUrl.zanWeiBo, formData).then( (data) {
       if (weiboItem.zanStatus == 0) {
         //点赞成功
         weiboItem.zanStatus = 1;
@@ -137,7 +137,7 @@ class _WeiBoDetailState extends State<WeiBoDetailPage> {
         weiboItem.likeNum--;
         completer.complete(false);
       }
-    }, (error) {
+    }, onError: (error) {
       if (weiboItem.zanStatus == 0) {
         completer.complete(false);
       } else {

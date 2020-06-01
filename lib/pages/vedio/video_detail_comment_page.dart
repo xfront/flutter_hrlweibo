@@ -125,7 +125,7 @@ class _VideoDetailCommentPageState extends State<VideoDetailCommentPage> {
 
   Future getCommentDataLoadMore(int page, String weiboId) async {
     var formData = {"pageNum": page, "pageSize": Constant.PAGE_SIZE, "weiboid": weiboId};
-    DioManager().post(ServiceUrl.getWeiBoDetailComment, formData,
+    DioManager().post(ServiceUrl.getWeiBoDetailComment, formData).then(
         (data) {
         CommentList mComment = CommentList.fromJson(data['data']);
         setState(() {
@@ -133,7 +133,7 @@ class _VideoDetailCommentPageState extends State<VideoDetailCommentPage> {
           isCommentloadingMore = false;
           isCommenthasMore = mComment.list.length >= Constant.PAGE_SIZE;
         });
-      }, (error) {
+      }, onError: (error) {
         setState(() {
           isCommentloadingMore = false;
           isCommenthasMore = false;

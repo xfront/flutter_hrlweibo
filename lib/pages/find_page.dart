@@ -62,7 +62,7 @@ class _FindPageState extends State<FindPage> {
   //获取发现页信息
   Future<Null> getFindInfoDate() async {
     Map<String, dynamic> formData = {"userId": UserUtil.getUserInfo().id,};
-    DioManager().post(ServiceUrl.getFindHomeInfo, formData, (data) {
+    DioManager().post(ServiceUrl.getFindHomeInfo, formData).then((data) {
       print("返回的正确数据:${data}");
       FindHomeModel mModel = FindHomeModel.fromJson(data['data']);
       setState(() {
@@ -75,7 +75,7 @@ class _FindPageState extends State<FindPage> {
         mSuperTopicList = mModel.findsupertopic;
         _loading = false;
       });
-    }, (error) {
+    }, onError: (error) {
       _loading = false;
     });
 
